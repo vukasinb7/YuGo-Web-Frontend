@@ -1,7 +1,7 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width">
+<form class="login-form">
+    <mat-form-field class="full-width">
       <mat-label>Email</mat-label>
-      <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
+      <input type="email" matInput [formControl]="emailFormControl" placeholder="Example@example.com">
       <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
         Please enter a valid email address
       </mat-error>
@@ -9,4 +9,14 @@
         Email is <strong>required</strong>
       </mat-error>
     </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput [formControl]="passwordFormControl" placeholder="Enter your password">
+      <mat-error *ngIf="passwordFormControl.hasError('required')">
+        Password is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <button class="login-button" type="submit" mat-flat-button color="primary">Login</button>
   </form>
