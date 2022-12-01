@@ -1,0 +1,16 @@
+#navbar-logo-img{
+    
+    height: 40px;
+    background-color: transparent;
+}
+#navbar-logo-div{
+    background-color: transparent;
+}
+#navbar-logo-div button{
+    background-color: transparent;
+    border: 0px;
+}
+mat-toolbar{
+    background-color: #424242;
+    margin-top: 0px;
+}
