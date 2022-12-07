@@ -1,0 +1,107 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+/* For use in src/lib/core/theming/_palette.scss */
+$md-mcgpalette0: (
+    50 : #fef9e6,
+    100 : #fef1c0,
+    200 : #fde896,
+    300 : #fcde6b,
+    400 : #fbd74c,
+    500 : #fad02c,
+    600 : #f9cb27,
+    700 : #f9c421,
+    800 : #f8be1b,
+    900 : #f6b310,
+    A100 : #ffffff,
+    A200 : #fffaf0,
+    A400 : #ffeabd,
+    A700 : #ffe2a3,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+/* For use in src/lib/core/theming/_palette.scss */
+$md-mcgpalette1: (
+    50 : #e8e8e8,
+    100 : #c6c6c6,
+    200 : #a1a1a1,
+    300 : #7b7b7b,
+    400 : #5e5e5e,
+    500 : #424242,
+    600 : #3c3c3c,
+    700 : #333333,
+    800 : #2b2b2b,
+    900 : #1d1d1d,
+    A100 : #f07878,
+    A200 : #eb4a4a,
+    A400 : #ff0303,
+    A700 : #e90000,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+
+
+
+
+$YuGo-Frontend-primary: mat.define-palette($md-mcgpalette1);
+$YuGo-Frontend-accent: mat.define-palette($md-mcgpalette0);
+
+// The warn palette is optional (defaults to red).
+$YuGo-Frontend-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$YuGo-Frontend-theme: mat.define-light-theme((
+  color: (
+    primary: $YuGo-Frontend-primary,
+    accent: $YuGo-Frontend-accent,
+    warn: $YuGo-Frontend-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($YuGo-Frontend-theme);
+
