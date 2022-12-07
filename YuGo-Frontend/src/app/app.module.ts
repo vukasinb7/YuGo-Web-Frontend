@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { RegisterComponent } from './components/register/register.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
@@ -17,13 +18,16 @@ import {MatIconModule} from '@angular/material/icon';
 import { HomeComponent } from './components/home/home.component';
 import { HistoryComponent } from './components/history/history.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NavbarComponent,
+    RegisterComponent,
     HomeComponent,
     HistoryComponent
+
   ],
   imports: [
     BrowserModule,
