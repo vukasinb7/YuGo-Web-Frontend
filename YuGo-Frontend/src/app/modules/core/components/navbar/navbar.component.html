@@ -1,6 +1,6 @@
 <mat-toolbar class="h-auto d-flex ">
   <div id="navbar-logo-div" class="d-inline-flex float-start">
-    <a ><img id="navbar-logo-img" src="../../../assets/img/LogoLetters.png" class="img-responsive"></a>
+    <a ><img id="navbar-logo-img" src="../../../../../assets/img/LogoLetters.png" class="img-responsive"></a>
   </div>
   <div *ngIf="userType==='unregistred'">
     <ul >
@@ -64,9 +64,9 @@
   </ul>
 </div>
   <div id="buttons-div" class="d-flex ms-auto my-2" >
-    
+
     <button mat-flat-button (click)="openLoginDialog()" class="mx-2 rounded-pill fw-bold" color="accent">SIGN IN</button>
     <button mat-flat-button (click)="openRegisterDialog()" class="accent-button mx-2 rounded-pill fw-bold" color="accent" >SIGN UP</button>
-    
+
   </div>
 </mat-toolbar>

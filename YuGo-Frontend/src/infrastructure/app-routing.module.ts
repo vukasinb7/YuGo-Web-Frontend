@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { HistoryComponent } from './components/history/history.component';
+import { HomeComponent } from '../app/modules/feature/home/pages/home.component';
+import { HistoryComponent } from '../app/modules/feature/history/pages/history.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
