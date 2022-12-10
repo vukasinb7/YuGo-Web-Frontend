@@ -13,7 +13,10 @@ export class NavbarComponent {
   constructor(public dialog: MatDialog) {}
 
   openLoginDialog() {
-    this.dialog.open(LoginComponent);
+    this.dialog.open(LoginComponent, {
+      height: '400px',
+      width: '500px',
+    });
   }
 
   openRegisterDialog(){
