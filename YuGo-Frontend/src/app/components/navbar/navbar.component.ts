@@ -10,6 +10,8 @@ import { RegisterComponent } from '../register/register.component';
 })
 export class NavbarComponent {
 
+  userType='unregistred';
+
   constructor(public dialog: MatDialog) {}
 
   openLoginDialog() {
@@ -23,5 +25,17 @@ export class NavbarComponent {
     this.dialog.open(RegisterComponent, {
       width: '50%'
     });
+  }
+  authUnregistredUser(){
+    this.userType='unregistred';
+  }
+  authPassenger(){
+    this.userType='passenger';
+  }
+  authDriver(){
+    this.userType='driver';
+  }
+  authAdmin(){
+    this.userType='admin';
   }
 }
