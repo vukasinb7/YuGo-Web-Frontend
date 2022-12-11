@@ -4,14 +4,17 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
 import {SharedModule} from "../shared/shared.module";
 import {CommonModule} from "@angular/common";
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     NavbarComponent,
-    RegisterComponent],
+    RegisterComponent,
+    FooterComponent],
   exports: [
-    NavbarComponent
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
