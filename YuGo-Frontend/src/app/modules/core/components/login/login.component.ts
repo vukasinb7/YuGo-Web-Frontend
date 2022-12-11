@@ -18,7 +18,6 @@ export class LoginComponent {
   hasError: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
-
   submitLogin(){
     const loginVal = {
       email: this.loginForm.value.email,

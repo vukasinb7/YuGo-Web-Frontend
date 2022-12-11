@@ -115,7 +115,7 @@ $dark-blue-palette: (
 );
 
 
-$dark-primary: mat.define-palette($dark-blue-palette);
+$dark-primary: mat.define-palette($yellowish-palette);
 $dark-accent: mat.define-palette($yellowish-palette);
 // The warn palette is optional (defaults to red).
 $dark-warn: mat.define-palette(mat.$red-palette);

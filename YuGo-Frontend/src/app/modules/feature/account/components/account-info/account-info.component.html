@@ -1,5 +1,8 @@
 <div class="p-5 w-100 h-100">
-  <h2 class="font-weight-bold text-center">Personal Info</h2>
+  <div class="d-flex justify-content-center">
+    <h2 class="font-weight-bold">Personal Info</h2>
+    <mat-icon class="my-auto ms-3">edit</mat-icon>
+  </div>
   <div class="d-flex flex-column justify-content-center w-100 h-100">
     <form [formGroup]="accountInfoForm">
       <div class="w-100 text-center my-4">
@@ -13,22 +16,22 @@
 
       <mat-form-field class="py-1 w-100">
         <mat-label>Lastname</mat-label>
-        <input type="text" matInput placeholder="Enter your lastname" name="lastname" formControlName="lastname">
+        <input type="text" matInput placeholder="Enter your lastname" name="lastname" formControlName="lastname" [readonly]="editDisabled">
       </mat-form-field>
 
       <mat-form-field class="py-1 w-100">
         <mat-label>Phone</mat-label>
-        <input type="text" matInput placeholder="Enter your phone number" name="phone" formControlName="phone">
+        <input type="text" matInput placeholder="Enter your phone number" name="phone" formControlName="phone" [disabled]="editDisabled">
       </mat-form-field>
 
       <mat-form-field class="py-1 w-100">
         <mat-label>Address</mat-label>
-        <input type="text" matInput placeholder="Enter your address" name="address" formControlName="address">
+        <input type="text" matInput placeholder="Enter your address" name="address" formControlName="address" [disabled]="editDisabled">
       </mat-form-field>
 
       <mat-form-field class="py-1 w-100">
         <mat-label>Email</mat-label>
-        <input type="email" matInput placeholder="Enter your email" name="email" formControlName="email">
+        <input type="email" matInput placeholder="Enter your email" name="email" formControlName="email" [disabled]="editDisabled">
       </mat-form-field>
     </form>
   </div>

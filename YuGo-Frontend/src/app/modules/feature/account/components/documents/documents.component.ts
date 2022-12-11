@@ -7,8 +7,16 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./documents.component.css']
 })
 export class DocumentsComponent {
-  documentsForm = new FormGroup({
-    driverLicence: new FormControl('', [Validators.required]),
-    vehicleIdentification: new FormControl('', [Validators.required]),
-  });
+
+  documentsForm : FormGroup;
+  editDisabled : boolean;
+
+  constructor() {
+    this.documentsForm = new FormGroup({
+      driverLicence: new FormControl('', [Validators.required]),
+      vehicleIdentification: new FormControl('', [Validators.required]),
+    });
+    this.documentsForm.disable();
+    this.editDisabled = true;
+  }
 }
