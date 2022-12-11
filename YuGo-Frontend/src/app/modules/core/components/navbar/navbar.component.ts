@@ -10,7 +10,7 @@ import { RegisterComponent } from '../register/register.component';
 })
 export class NavbarComponent {
 
-  userType='unregistred';
+  userType='passenger';
 
   constructor(public dialog: MatDialog) {}
 

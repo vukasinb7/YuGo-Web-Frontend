@@ -1,5 +1,5 @@
 #navbar-logo-img{
-    
+    margin-top: 0px;
     height: 40px;
     background-color: transparent;
 }
@@ -13,4 +13,34 @@
 mat-toolbar{
     background-color: #424242;
     margin-top: 0px;
+    height: 50px;
+}
+
+.navbar-nav{
+    height: 100%;
+    list-style: none;
+    vertical-align:middle;
+}
+.nav-item{
+    height: 100%!important;
+    display: flex;
+    float: left;
+    border-bottom:2px solid #424242 ;
+    padding:0px 10px;
+}
+.nav-item:hover{
+    border-bottom:2px solid #FAD02C ;
+    background: rgb(250,208,44);
+    background: linear-gradient(0deg, rgba(250,208,44,0.3169642857142857) 0%, rgba(250,208,44,0) 43%);
+}
+.nav-link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color: #E9EAEC;
+}
+.nav-item:hover .nav-link{
+    color: #FAD02C;
 }
