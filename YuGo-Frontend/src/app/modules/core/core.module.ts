@@ -2,20 +2,20 @@ import { NgModule } from '@angular/core';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RegisterComponent } from './components/register/register.component';
-import {MaterialModule} from "../../../infrastructure/material.module";
 import {SharedModule} from "../shared/shared.module";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
     LoginComponent,
     NavbarComponent,
-    RegisterComponent,],
+    RegisterComponent],
   exports: [
     NavbarComponent
   ],
   imports: [
-    SharedModule,
-    MaterialModule
+    CommonModule,
+    SharedModule
   ]
 })
 export class CoreModule {

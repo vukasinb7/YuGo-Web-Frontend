@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import {SharedModule} from "../../shared/shared.module";
+import {HistoryComponent} from "./pages/history.component";
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    HistoryComponent],
   imports: [
     SharedModule
   ]
