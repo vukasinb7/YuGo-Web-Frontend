@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {MaterialModule} from "../../../infrastructure/material.module";
 import {HttpClientModule} from "@angular/common/http";
+import {AppRoutingModule} from "../../../infrastructure/app-routing.module";
 
 @NgModule({
   declarations: [],
@@ -13,7 +14,8 @@ import {HttpClientModule} from "@angular/common/http";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MaterialModule
+    MaterialModule,
+    AppRoutingModule
   ],
   exports: [
     CommonModule,
@@ -21,7 +23,8 @@ import {HttpClientModule} from "@angular/common/http";
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ]
 })
 export class SharedModule { }

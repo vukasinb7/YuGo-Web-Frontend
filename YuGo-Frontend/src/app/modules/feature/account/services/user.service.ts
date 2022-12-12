@@ -12,7 +12,7 @@ export class UserService {
 
   }
 
-  getUserInfo() : Observable<UserInfo>{
-    return this.http.get<UserInfo>(environment.apiHost + "api/user/1");
+  getPassengerInfo() : Observable<UserInfo>{
+    return this.http.get<UserInfo>(environment.apiHost + "api/passenger/1");
   }
 }

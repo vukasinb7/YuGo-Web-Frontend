@@ -15,7 +15,7 @@ export class AccountInfoComponent implements OnInit{
   constructor(private userService: UserService) {
     this.accountInfoForm = new FormGroup({
       firstname: new FormControl('', [Validators.required]),
-      lastname: new FormControl('', [Validators.required]),
+      surname: new FormControl('', [Validators.required]),
       phone: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
@@ -26,7 +26,7 @@ export class AccountInfoComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.userService.getUserInfo().subscribe({
+    this.userService.getPassengerInfo().subscribe({
       next:(info) => {
         this.accountInfoForm.patchValue({
         firstname: info.name,
@@ -49,6 +49,7 @@ export class AccountInfoComponent implements OnInit{
   cancelEdit() : void{
     this.accountInfoForm.disable();
     this.editEnabled = false;
+    this.ngOnInit();
   }
 
   submitEdit() : void {
