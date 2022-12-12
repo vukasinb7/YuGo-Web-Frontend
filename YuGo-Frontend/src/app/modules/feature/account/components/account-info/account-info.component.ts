@@ -10,8 +10,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class AccountInfoComponent implements OnInit{
   accountInfoForm : FormGroup;
-  editDisabled : boolean;
   hasError : boolean;
+  editEnabled: boolean
   constructor(private userService: UserService) {
     this.accountInfoForm = new FormGroup({
       firstname: new FormControl('', [Validators.required]),
@@ -21,7 +21,7 @@ export class AccountInfoComponent implements OnInit{
       email: new FormControl('', [Validators.required]),
     });
     this.accountInfoForm.disable();
-    this.editDisabled = true;
+    this.editEnabled = false;
     this.hasError = false;
   }
 
@@ -39,6 +39,21 @@ export class AccountInfoComponent implements OnInit{
       if (error instanceof HttpErrorResponse) {
         this.hasError = true;
       }}})
+  }
+
+  enableEdit() : void{
+    this.accountInfoForm.enable();
+    this.editEnabled = true;
+  }
+
+  cancelEdit() : void{
+    this.accountInfoForm.disable();
+    this.editEnabled = false;
+  }
+
+  submitEdit() : void {
+    this.accountInfoForm.disable();
+    this.editEnabled = false;
   }
 }
 

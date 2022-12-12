@@ -9,7 +9,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class DocumentsComponent {
 
   documentsForm : FormGroup;
-  editDisabled : boolean;
+  editEnabled: boolean
 
   constructor() {
     this.documentsForm = new FormGroup({
@@ -17,6 +17,21 @@ export class DocumentsComponent {
       vehicleIdentification: new FormControl('', [Validators.required]),
     });
     this.documentsForm.disable();
-    this.editDisabled = true;
+    this.editEnabled = false;
+  }
+
+  enableEdit() : void{
+    this.documentsForm.enable();
+    this.editEnabled = true;
+  }
+
+  cancelEdit() : void{
+    this.documentsForm.disable();
+    this.editEnabled = false;
+  }
+
+  submitEdit() : void {
+    this.documentsForm.disable();
+    this.editEnabled = false;
   }
 }

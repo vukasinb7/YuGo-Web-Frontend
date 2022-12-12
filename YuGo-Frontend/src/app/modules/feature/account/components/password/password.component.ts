@@ -8,7 +8,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class PasswordComponent {
   passwordForm : FormGroup;
-  editDisabled : boolean;
+  editEnabled: boolean
   constructor() {
     this.passwordForm = new FormGroup({
       oldPassword: new FormControl('', [Validators.required]),
@@ -16,6 +16,21 @@ export class PasswordComponent {
       confirmPassword: new FormControl('', [Validators.required]),
     });
     this.passwordForm.disable();
-    this.editDisabled = true;
+    this.editEnabled = false;
+  }
+
+  enableEdit() : void{
+    this.passwordForm.enable();
+    this.editEnabled = true;
+  }
+
+  cancelEdit() : void{
+    this.passwordForm.disable();
+    this.editEnabled = false;
+  }
+
+  submitEdit() : void {
+    this.passwordForm.disable();
+    this.editEnabled = false;
   }
 }
