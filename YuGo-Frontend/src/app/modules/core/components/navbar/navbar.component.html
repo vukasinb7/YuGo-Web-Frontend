@@ -1,10 +1,13 @@
-<mat-toolbar class=" d-flex ">
+<mat-toolbar >
   
-  <nav class="w-100 h-100 mx-2 d-inline-flex justify-content-beetween" >
+  
+  <nav class="w-100 h-100 mx-2 row" >
+  <div id="logo-container" class="col">
     <a class="navbar-brand h-100" href="#">
       <img id="navbar-logo-img" src="../../../assets/img/LogoLetters.png" class="img-responsive" alt="">
-    </a> 
-    
+    </a>
+  </div>
+  <div class="col"> 
   <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='unregistred'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
@@ -66,13 +69,18 @@
       </li>
     </ul>
   </div>
-</nav>
+  
+</div>
+<div id="button-container" class="col">
 <div id="buttons-div" class="d-flex ms-auto" *ngIf="userType==='unregistred'" >
       
   <button mat-flat-button (click)="openLoginDialog()" class="mx-2 rounded-pill fw-bold" color="accent">SIGN IN</button>
   <button mat-flat-button (click)="openRegisterDialog()" class="accent-button mx-2 rounded-pill fw-bold" color="accent" >SIGN UP</button>
   
 </div>
+</div>
+</nav>
+
 
   
 </mat-toolbar>
