@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './modules/feature/home/pages/home.component';
 import { HistoryComponent } from './modules/feature/history/pages/history.component';
 import {CoreModule} from "./modules/core/core.module";
+import {HistoryModule} from "./modules/feature/history/history.module";
 
 
 @NgModule({
@@ -15,11 +16,12 @@ import {CoreModule} from "./modules/core/core.module";
     HomeComponent,
     HistoryComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        CoreModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    CoreModule,
+    HistoryModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

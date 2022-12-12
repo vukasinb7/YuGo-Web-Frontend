@@ -1,12 +1,20 @@
 import { NgModule } from '@angular/core';
 import {SharedModule} from "../../shared/shared.module";
+import {MaterialModule} from "../../../../infrastructure/material.module";
+import { HistorySimplifiedCardComponent } from './components/history-simplified-card/history-simplified-card.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    HistorySimplifiedCardComponent
+  ],
+  exports: [
+    HistorySimplifiedCardComponent
+  ],
   imports: [
-    SharedModule
+    SharedModule,
+    MaterialModule
   ]
 })
 export class HistoryModule { }
