@@ -1,0 +1,30 @@
+<div class="p-4 w-100 h-100">
+  <h2 class="font-weight-bold text-center">Documents</h2>
+  <div class="mt-3 d-flex flex-column justify-content-center w-100 h-100">
+    <form [formGroup]="documentsForm">
+      <mat-form-field class="py-1 w-100">
+        <mat-label>Driver licence</mat-label>
+        <input type="password" matInput placeholder="Enter driver licence" name="driverLicence" formControlName="driverLicence">
+      </mat-form-field>
+
+      <mat-form-field class="py-1 w-100">
+        <mat-label>Vehicle identification</mat-label>
+        <input type="password" matInput placeholder="Enter driver identification" name="vehicleIdentification" formControlName="vehicleIdentification">
+      </mat-form-field>
+
+      <div class="d-flex justify-content-evenly mt-2">
+        <button mat-button class="w-50" (click)="enableEdit()" style="background-color: #8f6700" *ngIf="!editEnabled">
+          <mat-icon>edit</mat-icon>Edit info
+        </button>
+
+        <button mat-button class="w-25" (click)="cancelEdit()" style="background-color: #790000" *ngIf="editEnabled">
+          <mat-icon>cancel</mat-icon>Cancel
+        </button>
+
+        <button mat-button class="w-25" (click)="submitEdit()" style="background-color: #006400" *ngIf="editEnabled">
+          <mat-icon>check</mat-icon>Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
