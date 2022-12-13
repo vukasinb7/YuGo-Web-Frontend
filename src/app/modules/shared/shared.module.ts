@@ -27,4 +27,4 @@ import {AppRoutingModule} from "../../../infrastructure/app-routing.module";
     AppRoutingModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {}
