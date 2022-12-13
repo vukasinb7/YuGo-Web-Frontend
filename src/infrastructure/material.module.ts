@@ -6,6 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   imports: [
@@ -15,6 +17,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatDialogModule,
     MatToolbarModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     MatFormFieldModule,
@@ -23,6 +27,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatDialogModule,
     MatToolbarModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }

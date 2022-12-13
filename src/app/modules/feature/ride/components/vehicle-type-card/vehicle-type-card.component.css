@@ -1,0 +1,16 @@
+img{
+  max-width: 85px;
+}
+h2{
+  font-size: 20px;
+}
+.details{
+  font-size: 12px;
+}
+.price{
+  font-weight: bold;
+}
+.checkedCard{
+  border: 3px solid #F9CB56;
+  border-radius: 10px;
+}

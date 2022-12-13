@@ -1,5 +1,5 @@
 <div>
-  <h1 class="w-100">Where can we pick you up?</h1>
+  <h1 class="w-100">Choose a ride.</h1>
   <div class="vstack mt-4">
     <div class="d-flex justify-content-between">
       <p class="align-self-center">Include pets</p>
@@ -9,11 +9,18 @@
       <p class="align-self-center">Include babies</p>
       <mat-checkbox labelPosition="before"></mat-checkbox>
     </div>
-    <div class="row ps-3 pe-3">
-      <button mat-flat-button color="accent" class="col-1 me-2">
+    <div class="mt-4">
+      <ul>
+        <li *ngFor="let vehicleType of vehicleTypes">
+          <app-vehicle-type-card [vehicleType]="vehicleType"></app-vehicle-type-card>
+        </li>
+      </ul>
+    </div>
+    <div class="row ps-3 pe-3 mt-4">
+      <button mat-flat-button color="accent" class="col-1 me-2" (click)="previousFormPage()">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
-      <button mat-flat-button color="accent" class="col">Request ride</button>
+      <button mat-flat-button color="accent" class="col" (click)="nextFormPage()">Request ride</button>
     </div>
   </div>
 

@@ -1,0 +1,20 @@
+<div class="vstack">
+  <h1>When do you want to leave for Bulevar Mihajla Pupina 21</h1>
+  <p>From: Bulevar oslobodjenja 30</p>
+  <mat-form-field class="w-100" appearance="outline">
+    <input matInput formControlName="releasedAt" [matDatepicker]="releasedAtPicker">
+    <mat-datepicker-toggle matSuffix [for]="releasedAtPicker"></mat-datepicker-toggle>
+    <mat-datepicker #releasedAtPicker startView="year"></mat-datepicker>
+  </mat-form-field>
+  <div>
+    <input [ngxMatTimepicker]="timePicker">
+    <ngx-mat-timepicker-toggle [for]="timePicker"></ngx-mat-timepicker-toggle>
+    <ngx-mat-timepicker #timePicker></ngx-mat-timepicker>
+  </div>
+  <div class="row ps-3 pe-3 mt-4">
+    <button mat-flat-button color="accent" class="col-1 me-2" (click)="previousFormPage()">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button mat-flat-button color="accent" class="col" (click)="nextFormPage()">Confirm</button>
+  </div>
+</div>

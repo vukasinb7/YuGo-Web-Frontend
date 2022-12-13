@@ -6,8 +6,8 @@ import {Component, EventEmitter, Output} from '@angular/core';
   styleUrls: ['./ride-pick-destination.component.css']
 })
 export class RidePickDestinationComponent {
-  @Output() nextFormPageEvent = new EventEmitter<number>();
-  nextFormPage() {
-    this.nextFormPageEvent.emit(1);
+  @Output() changeFormPageEvent = new EventEmitter<number>();
+  nextFormPage():void {
+    this.changeFormPageEvent.emit(1);
   }
 }

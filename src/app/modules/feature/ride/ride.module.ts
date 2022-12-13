@@ -5,21 +5,23 @@ import {RidePickDestinationComponent} from "./components/ride-pick-destination/r
 import { RidePickPropertiesComponent } from './components/ride-pick-properties/ride-pick-properties.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { VehicleTypeCardComponent } from './components/vehicle-type-card/vehicle-type-card.component';
-
-
+import { RidePickTimeComponent } from './components/ride-pick-time/ride-pick-time.component';
+import {NgxMatTimepickerModule} from "ngx-mat-timepicker";
 
 @NgModule({
   declarations: [
     RideComponent,
     RidePickDestinationComponent,
     RidePickPropertiesComponent,
-    VehicleTypeCardComponent],
+    VehicleTypeCardComponent,
+    RidePickTimeComponent],
   exports: [
     RideComponent,
   ],
   imports: [
     SharedModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    NgxMatTimepickerModule,
   ]
 })
 export class RideModule { }

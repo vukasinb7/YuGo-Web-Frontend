@@ -1,4 +1,5 @@
 <div id="contentDiv" class="pb-lg-5 pt-lg-5 ps-lg-4 pe-lg-4">
-  <app-ride-pick-destination *ngIf="formPageIndex==1" (nextFormPageEvent)="switchFormPage($event)"></app-ride-pick-destination>
-  <app-ride-pick-properties *ngIf="formPageIndex==0"></app-ride-pick-properties>
+  <app-ride-pick-destination *ngIf="formPageIndex==0" (changeFormPageEvent)="switchFormPage($event)"></app-ride-pick-destination>
+  <app-ride-pick-properties *ngIf="formPageIndex==1" (changeFormPageEmiter)="switchFormPage($event)"></app-ride-pick-properties>
+  <app-ride-pick-time *ngIf="formPageIndex==2" (changeFormPageEmiter)="switchFormPage($event)"></app-ride-pick-time>
 </div>

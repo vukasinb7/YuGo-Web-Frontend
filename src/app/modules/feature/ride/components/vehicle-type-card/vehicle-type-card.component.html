@@ -1,1 +1,8 @@
-<p>vehicle-type-card works!</p>
+<div *ngIf="vehicleType" class="w-100 d-flex flex-row p-1" [ngClass]="{checkedCard:isChecked==true}"  (click)="onClick()">
+  <img src="{{vehicleType.carImageSrc}}"/>
+  <div class="vstack col ms-3 align-self-center">
+    <h2>{{vehicleType.vehicleType}}</h2>
+    <p class="details">In {{vehicleType.minutesTillArrival}} mins | {{vehicleType.dropoffTime.hours}}:{{vehicleType.dropoffTime.minutes}} dropoff</p>
+  </div>
+  <p class="price col-2">${{vehicleType.price}}</p>
+</div>
