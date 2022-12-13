@@ -13,7 +13,6 @@ import {HistorySimplifiedCardComponent} from "./components/history-simplified-ca
     SharedModule,
   ],
   exports:[
-    HistoryComponent
-  ]
+    HistoryComponent],
 })
 export class HistoryModule { }
