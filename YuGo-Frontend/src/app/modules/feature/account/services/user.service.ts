@@ -13,6 +13,6 @@ export class UserService {
   }
 
   getPassengerInfo() : Observable<UserInfo>{
-    return this.http.get<UserInfo>(environment.apiHost + "api/passenger/1");
+    return this.http.get<UserInfo>(environment.apiHost + "passenger/1");
   }
 }
