@@ -1,0 +1,10 @@
+
+p{
+  margin: 0;
+}
+mat-icon{
+  font-size: 50px;
+  width: 50px;
+  height: 50px;
+  margin: 0 !important;
+}
