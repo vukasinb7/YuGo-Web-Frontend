@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import {SharedModule} from "../../shared/shared.module";
 import {HomeComponent} from "./pages/home.component";
+import {RideModule} from "../ride/ride.module";
 
 
 
@@ -8,7 +9,8 @@ import {HomeComponent} from "./pages/home.component";
   declarations: [
     HomeComponent],
   imports: [
-    SharedModule
+    SharedModule,
+    RideModule
   ]
 })
 export class HomeModule { }

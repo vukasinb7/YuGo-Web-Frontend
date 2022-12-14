@@ -6,6 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
@@ -16,6 +18,8 @@ import {MatCardModule} from "@angular/material/card";
     MatDialogModule,
     MatToolbarModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCardModule
   ],
   exports: [
@@ -25,6 +29,8 @@ import {MatCardModule} from "@angular/material/card";
     MatDialogModule,
     MatToolbarModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCardModule
   ],
   providers: [

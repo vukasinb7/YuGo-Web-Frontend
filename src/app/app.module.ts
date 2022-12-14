@@ -10,6 +10,8 @@ import {HomeModule} from "./modules/feature/home/home.module";
 import {SharedModule} from "./modules/shared/shared.module";
 import {Interceptor} from "./modules/core/interceptors/interceptor.interceptor";
 import {AccountModule} from "./modules/feature/account/account.module";
+import { RideModule } from './modules/feature/ride/ride.module';
+
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import {AccountModule} from "./modules/feature/account/account.module";
       HomeModule,
       AccountModule,
       SharedModule,
+      RideModule
     ],
   providers: [
     {
