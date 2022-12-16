@@ -1,32 +1,32 @@
-<div class="p-4 w-100 h-100">
-  <h2 class="font-weight-bold text-center">Personal Info</h2>
-  <div class="d-flex flex-column justify-content-center w-100 h-100">
-    <form [formGroup]="accountInfoForm">
-      <div class="w-100 text-center my-4">
-        <img class="rounded-circle m-auto" ngSrc="https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg" width="150 " height="150" >
+<mat-card class="card p-4 w-100 h-100">
+  <div class="d-flex flex-column w-100">
+    <h2 class="font-weight-bold text-center mb-4">Personal Info</h2>
+    <form class="d-block" [formGroup]="accountInfoForm">
+      <div class="w-100 text-center mb-3">
+        <img class="rounded-circle m-auto" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg" width="150 " height="150" >
       </div>
 
-      <mat-form-field class="py-1 w-100">
+      <mat-form-field class="my-1 w-100">
         <mat-label>Firstname</mat-label>
         <input type="text" matInput placeholder="Enter your firstname" name="firstname" formControlName="firstname">
       </mat-form-field>
 
-      <mat-form-field class="py-1 w-100">
+      <mat-form-field class="my-1 w-100">
         <mat-label>Surname</mat-label>
         <input type="text" matInput placeholder="Enter your surname" name="surname" formControlName="surname">
       </mat-form-field>
 
-      <mat-form-field class="py-1 w-100">
+      <mat-form-field class="my-1 w-100">
         <mat-label>Phone</mat-label>
         <input type="text" matInput placeholder="Enter your phone number" name="phone" formControlName="phone">
       </mat-form-field>
 
-      <mat-form-field class="py-1 w-100">
+      <mat-form-field class="my-1 w-100">
         <mat-label>Address</mat-label>
         <input type="text" matInput placeholder="Enter your address" name="address" formControlName="address">
       </mat-form-field>
 
-      <mat-form-field class="py-1 w-100">
+      <mat-form-field class="my-1 w-100">
         <mat-label>Email</mat-label>
         <input type="email" matInput placeholder="Enter your email" name="email" formControlName="email">
       </mat-form-field>
@@ -46,4 +46,4 @@
       </div>
     </form>
   </div>
-</div>
+</mat-card>

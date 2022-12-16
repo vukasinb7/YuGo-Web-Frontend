@@ -1,13 +1,13 @@
-<div class="p-4 w-100 h-100">
-  <h2 class="font-weight-bold text-center">Documents</h2>
-  <div class="mt-3 d-flex flex-column justify-content-center w-100 h-100">
-    <form [formGroup]="documentsForm">
-      <mat-form-field class="py-1 w-100">
+<mat-card class="card p-4 w-100 h-100 justify-content-center">
+  <div class="d-flex flex-column w-100">
+    <h2 class="font-weight-bold text-center mb-4">Documents</h2>
+    <form class="d-block" [formGroup]="documentsForm">
+      <mat-form-field class="mb-1 w-100">
         <mat-label>Driver licence</mat-label>
         <input type="password" matInput placeholder="Enter driver licence" name="driverLicence" formControlName="driverLicence">
       </mat-form-field>
 
-      <mat-form-field class="py-1 w-100">
+      <mat-form-field class="my-1 w-100">
         <mat-label>Vehicle identification</mat-label>
         <input type="password" matInput placeholder="Enter driver identification" name="vehicleIdentification" formControlName="vehicleIdentification">
       </mat-form-field>
@@ -27,4 +27,4 @@
       </div>
     </form>
   </div>
-</div>
+</mat-card>
