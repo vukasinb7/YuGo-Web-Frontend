@@ -1,0 +1,14 @@
+.card-bg{
+  border-radius: 25px;
+  background-color: #26272b;
+}
+
+table {
+  width: 100%;
+  background-color: #26272b;
+}
+
+.divider{
+  height: 1px;
+  background-color:white;
+}
