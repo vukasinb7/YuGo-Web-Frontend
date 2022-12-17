@@ -9,6 +9,7 @@ import { PassengerAccountComponent } from './pages/passenger-account/passenger-a
 import { AdminAccountComponent } from './pages/admin-account/admin-account.component';
 import { CommonModule } from "@angular/common";
 import { UsersTableComponent } from './components/users-table/users-table.component';
+import { NoteDialogComponent } from './components/note-dialog/note-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { UsersTableComponent } from './components/users-table/users-table.compon
     PassengerAccountComponent,
     AdminAccountComponent,
     AccountComponent,
-    UsersTableComponent],
+    UsersTableComponent,
+    NoteDialogComponent],
   imports: [
     CommonModule,
     SharedModule,

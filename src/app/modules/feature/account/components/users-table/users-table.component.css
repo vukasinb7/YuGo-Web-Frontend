@@ -1,6 +1,7 @@
 .card-bg{
   border-radius: 25px;
   background-color: #26272b;
+  overflow-x:scroll;
 }
 
 table {
