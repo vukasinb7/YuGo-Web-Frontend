@@ -9,6 +9,6 @@ export class AccountComponent {
   role: any = "";
 
   constructor() {
-    this.role = 'PASSENGER';
+    this.role = 'ADMIN';
   }
 }

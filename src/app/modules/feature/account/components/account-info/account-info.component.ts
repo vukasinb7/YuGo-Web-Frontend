@@ -66,4 +66,6 @@ export interface UserInfo {
   telephoneNumber: string;
   email: string;
   address: string;
+  role: string;
+  blocked: boolean;
 }

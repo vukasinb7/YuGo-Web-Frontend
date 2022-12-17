@@ -8,6 +8,7 @@ import { AccountComponent } from './pages/account/account.component';
 import { PassengerAccountComponent } from './pages/passenger-account/passenger-account.component';
 import { AdminAccountComponent } from './pages/admin-account/admin-account.component';
 import { CommonModule } from "@angular/common";
+import { UsersTableComponent } from './components/users-table/users-table.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CommonModule } from "@angular/common";
     DriverAccountComponent,
     PassengerAccountComponent,
     AdminAccountComponent,
-    AccountComponent],
+    AccountComponent,
+    UsersTableComponent],
   imports: [
     CommonModule,
     SharedModule,
