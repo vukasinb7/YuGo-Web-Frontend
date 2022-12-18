@@ -2,7 +2,7 @@
   <h1>When do you want to leave for Bulevar Mihajla Pupina 21</h1>
   <p>From: Bulevar oslobodjenja 30</p>
   <mat-form-field class="w-100" appearance="outline">
-    <input matInput formControlName="releasedAt" [matDatepicker]="releasedAtPicker">
+    <input matInput [matDatepicker]="releasedAtPicker">
     <mat-datepicker-toggle matSuffix [for]="releasedAtPicker"></mat-datepicker-toggle>
     <mat-datepicker #releasedAtPicker startView="year"></mat-datepicker>
   </mat-form-field>
