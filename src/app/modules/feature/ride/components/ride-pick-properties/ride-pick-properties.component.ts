@@ -1,6 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {VehicleTypeDetailed} from "../vehicle-type-card/vehicle-type-card.component";
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {VehicleTypeCardComponent, VehicleTypeDetailed} from "../vehicle-type-card/vehicle-type-card.component";
 import {Time} from "@angular/common";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-ride-pick-properties',
@@ -8,8 +9,10 @@ import {Time} from "@angular/common";
   styleUrls: ['./ride-pick-properties.component.css']
 })
 export class RidePickPropertiesComponent implements OnInit{
-  @Output() changeFormPageEmiter = new EventEmitter<number>();
+  @Output() changeFormPageEmitter = new EventEmitter<number>();
   vehicleTypes:VehicleTypeDetailed[] = [];
+  selectedVehicleType?:VehicleTypeDetailed;
+  changeCarTypeEvent:Subject<number> = new Subject<number>();
   constructor() {
   }
   ngOnInit():void{
@@ -37,9 +40,13 @@ export class RidePickPropertiesComponent implements OnInit{
   }
 
   nextFormPage():void{
-    this.changeFormPageEmiter.emit(1);
+    this.changeFormPageEmitter.emit(1);
   }
   previousFormPage():void{
-    this.changeFormPageEmiter.emit(-1);
+    this.changeFormPageEmitter.emit(-1);
+  }
+  changeVehicleType(index:number):void{
+    this.changeCarTypeEvent.next(index);
+    this.selectedVehicleType = this.vehicleTypes.at(index);
   }
 }
