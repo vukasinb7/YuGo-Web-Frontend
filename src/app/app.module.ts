@@ -11,7 +11,7 @@ import {SharedModule} from "./modules/shared/shared.module";
 import {Interceptor} from "./modules/core/interceptors/interceptor.interceptor";
 import {AccountModule} from "./modules/feature/account/account.module";
 import { RideModule } from './modules/feature/ride/ride.module';
-
+import { FavoritePathModule} from "./modules/feature/favorite-path/favorite-path.module";
 
 
 @NgModule({
