@@ -7,7 +7,7 @@ import {Observable, Subscription} from "rxjs";
   styleUrls: ['./vehicle-type-card.component.css']
 })
 export class VehicleTypeCardComponent implements OnInit{
-  @Input() vehicleType?:VehicleTypeDetailed;
+  @Input() vehicleType?:VehicleTypeCardData;
   @Input() index?:number;
   @Input() selectionChangedEvent?: Observable<number>;
   selectionChangedEventSubscription?:Subscription;
@@ -27,11 +27,14 @@ export class VehicleTypeCardComponent implements OnInit{
     this.selectionChangedEventSubscription?.unsubscribe();
   }
 }
-
-export interface VehicleTypeDetailed{
-  carImageSrc: string;
-  price:number;
-  minutesTillArrival:number;
-  dropoffTime:Time;
-  vehicleType:string;
+export interface VehicleTypeCardData {
+  vehicleTypeName:string;
+  imgPath:string;
+  totalPrice:number;
+}
+export interface VehicleType{
+  id:number;
+  vehicleTypeName:string;
+  imgPath:string;
+  pricePerKM:number;
 }

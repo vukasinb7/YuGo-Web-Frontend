@@ -1,7 +1,10 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {VehicleTypeCardComponent, VehicleTypeDetailed} from "../vehicle-type-card/vehicle-type-card.component";
-import {Time} from "@angular/common";
+import {
+  VehicleTypeCardComponent,
+  VehicleTypeCardData,
+} from "../vehicle-type-card/vehicle-type-card.component";
 import {Subject} from "rxjs";
+import {VehicleTypeService} from "../../services/vehicle-type.service";
 
 @Component({
   selector: 'app-ride-pick-properties',
@@ -10,33 +13,13 @@ import {Subject} from "rxjs";
 })
 export class RidePickPropertiesComponent implements OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
-  vehicleTypes:VehicleTypeDetailed[] = [];
-  selectedVehicleType?:VehicleTypeDetailed;
+  vehicleTypes:VehicleTypeCardData[] = [];
+  selectedVehicleType?:VehicleTypeCardData;
   changeCarTypeEvent:Subject<number> = new Subject<number>();
-  constructor() {
+  constructor(private vehicleTypeService:VehicleTypeService) {
   }
   ngOnInit():void{
-    this.vehicleTypes.push({
-      price:13.99,
-      vehicleType:"Standard",
-      carImageSrc:"../../../../../../assets/img/vehicle_type/car_model.png",
-      dropoffTime: {hours:12, minutes:40} as Time,
-      minutesTillArrival:16
-    } as VehicleTypeDetailed);
-    this.vehicleTypes.push({
-      price:19.99,
-      vehicleType:"Lux",
-      carImageSrc:"../../../../../../assets/img/vehicle_type/car_model.png",
-      dropoffTime: {hours:12, minutes:40} as Time,
-      minutesTillArrival:16
-    } as VehicleTypeDetailed);
-    this.vehicleTypes.push({
-      price:15.99,
-      vehicleType:"Van",
-      carImageSrc:"../../../../../../assets/img/vehicle_type/car_model.png",
-      dropoffTime: {hours:12, minutes:40} as Time,
-      minutesTillArrival:16
-    } as VehicleTypeDetailed);
+    this.vehicleTypes = this.vehicleTypeService.getVehicleTypesAsRideProperty();
   }
 
   nextFormPage():void{
