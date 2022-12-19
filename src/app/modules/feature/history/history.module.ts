@@ -4,6 +4,9 @@ import {HistoryComponent} from "./pages/history.component";
 import {HistorySimplifiedCardComponent} from "./components/history-simplified-card/history-simplified-card.component";
 import { HistoryDetailedRideCardComponent } from './components/history-detailed-ride-card/history-detailed-ride-card.component';
 import { HistoryReviewCardDriverComponent } from './components/history-review-card-driver/history-review-card-driver.component';
+import { HistoryMapCardComponent } from './components/history-map-card/history-map-card.component';
+import { HistoryDetailedDialogComponent } from './components/history-detailed-dialog/history-detailed-dialog.component';
+import { HistoryReviewCardPassengerComponent } from './components/history-review-card-passenger/history-review-card-passenger.component';
 
 
 
@@ -12,7 +15,10 @@ import { HistoryReviewCardDriverComponent } from './components/history-review-ca
     HistoryComponent,
     HistorySimplifiedCardComponent,
     HistoryDetailedRideCardComponent,
-    HistoryReviewCardDriverComponent],
+    HistoryReviewCardDriverComponent,
+    HistoryMapCardComponent,
+    HistoryDetailedDialogComponent,
+    HistoryReviewCardPassengerComponent],
   imports: [
     SharedModule,
   ],
