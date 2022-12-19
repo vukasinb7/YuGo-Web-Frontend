@@ -1,0 +1,21 @@
+<div class="h-100 card-bg px-4 pb-4">
+  <div mat-dialog-title>
+    <h2 class="font-weight-bold text-center">Note for {{user.name}} {{user.surname}} (ID: {{user.id}})</h2>
+  </div>
+  <div mat-dialog-content class="p-2">
+    <mat-form-field class="py-2 w-100">
+      <mat-label>Enter note: </mat-label>
+      <textarea matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="12"
+                cdkAutosizeMaxRows="20"
+                [(ngModel)]="note"></textarea>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions class="">
+    <button  mat-dialog-close="" mat-flat-button color="accent"
+             (click)="createNote()" [disabled]="note==''">Leave note</button>
+    <button mat-dialog-close="" mat-flat-button color="warn" >Dismiss</button>
+  </div>
+</div>

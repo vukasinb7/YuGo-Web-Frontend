@@ -26,10 +26,14 @@ export class UserService {
   }
 
   blockUser(userId : number) : Observable<any>{
-    return this.http.put(environment.apiHost + "user/" + userId + "/block", {});
+    return this.http.put(environment.apiHost + `user/${userId}/block`, {});
   }
 
   unblockUser(userId : number) : Observable<any>{
-    return this.http.put(environment.apiHost + "user/" + userId + "/unblock", {});
+    return this.http.put(environment.apiHost + `user/${userId}/unblock`, {});
+  }
+
+  createNote(userId : number, note : string) : Observable<any>{
+    return this.http.post(environment.apiHost + `user/${userId}/note`, {"message":note});
   }
 }

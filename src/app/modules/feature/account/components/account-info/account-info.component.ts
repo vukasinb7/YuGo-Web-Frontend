@@ -59,7 +59,7 @@ export class AccountInfoComponent implements OnInit{
 }
 
 export interface UserInfo {
-  _id: number;
+  id: number;
   name: string;
   surname: string;
   profilePicture: string;

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {UserInfo} from "../account-info/account-info.component";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user.service";
+import {MatDialog} from "@angular/material/dialog";
+import {NoteDialogComponent} from "../note-dialog/note-dialog.component";
 
 @Component({
   selector: 'app-users-table',
@@ -9,21 +11,18 @@ import {UserService} from "../../services/user.service";
   styleUrls: ['./users-table.component.css']
 })
 export class UsersTableComponent implements OnInit{
-  hasError : boolean;
-  totalCount : number;
-  users : UserInfo[];
-  displayedColumns : string[] = ['id','firstname','surname','phone','email','address','role','actions'];
+  hasError : boolean = false;
+  searchText : string = "";
+  totalCount : number = 0;
+  users : UserInfo[] = [];
+  displayedColumns : string[] = ['id','firstname','surname','phone','email','address','role','block','note'];
 
-  constructor(private userService: UserService) {
-    this.hasError = false;
-    this.users = new Array<UserInfo>();
-    this.totalCount = 0;
+  constructor(private userService: UserService, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     this.userService.getUsersInfo(0,5).subscribe({
       next:(info) => {
-        console.log(info.results);
         this.users = info.results
         this.totalCount = info.totalCount;
         },
@@ -53,6 +52,32 @@ export class UsersTableComponent implements OnInit{
         if (error instanceof HttpErrorResponse) {
           this.hasError = true;
         }}});
+  }
+
+  createNote(user :UserInfo){
+    this.dialog.open(NoteDialogComponent,{
+      width:'40%',
+      data:user
+    });
+  }
+
+  filterUsers(){
+    console.log(this.searchText);
+    if (this.searchText != ""){
+      this.searchText = this.searchText.toLowerCase();
+      this.users = this.users.filter((user)=>{
+        return user.id.toString().includes(this.searchText) ||
+          user.surname.toLowerCase().includes(this.searchText) ||
+          user.name.toLowerCase().includes(this.searchText) ||
+          user.email.toLowerCase().includes(this.searchText) ||
+          user.address.toLowerCase().includes(this.searchText) ||
+          user.telephoneNumber.includes(this.searchText) ||
+          user.role.toLowerCase().includes(this.searchText);
+      })
+    }
+    else{
+      this.ngOnInit();
+    }
   }
 }
 
