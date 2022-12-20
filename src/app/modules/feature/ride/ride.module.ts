@@ -7,6 +7,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import { VehicleTypeCardComponent } from './components/vehicle-type-card/vehicle-type-card.component';
 import { RidePickTimeComponent } from './components/ride-pick-time/ride-pick-time.component';
 import {NgxMatTimepickerModule} from "ngx-mat-timepicker";
+import { RecommendedLocationComponent } from './components/recommended-location/recommended-location.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {NgxMatTimepickerModule} from "ngx-mat-timepicker";
     RidePickDestinationComponent,
     RidePickPropertiesComponent,
     VehicleTypeCardComponent,
-    RidePickTimeComponent],
+    RidePickTimeComponent,
+    RecommendedLocationComponent],
   exports: [
     RideComponent,
   ],
