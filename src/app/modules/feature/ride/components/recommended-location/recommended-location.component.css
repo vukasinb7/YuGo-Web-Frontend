@@ -1,0 +1,9 @@
+.hasHoverEffect:hover{
+  background-color: gray;
+}
+p{
+  margin: 0;
+}
+div{
+  border-bottom: white solid 1px;
+}

@@ -1,12 +1,35 @@
 <div>
   <h1 class="w-100">Where can we pick you up?</h1>
-  <form class="vstack">
-    <mat-form-field class="mt-4">
-      <input matInput type="text" placeholder="Add pickup location"/>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Enter destination"/>
-    </mat-form-field>
-    <button (click)="nextFormPage()" mat-flat-button color="accent">Continue</button>
+  <form class="vstack" [formGroup]="destinationForm">
+    <div class="mt-4 row">
+      <mat-form-field class="col pe-0" (focusin)="changeFieldFocus('from')">
+        <input matInput type="text" (ngModelChange)="onCurrentLocationChange($event)" placeholder="Add pickup location" formControlName="from" [ngModel]="destinationForm.value.from"/>
+        <button *ngIf="destinationForm.value.from" (click)="destinationForm.value.from=''" matSuffix mat-icon-button aria-label="Clear">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button class="col-auto noPadMar">
+        <mat-icon>location_on</mat-icon>
+      </button>
+    </div>
+    <div class="mt-4 row">
+      <mat-form-field class="col pe-0" (focusin)="changeFieldFocus('to')">
+        <input matInput type="text" placeholder="Enter destination" formControlName="to" (ngModelChange)="onCurrentLocationChange($event)" [(ngModel)]="destinationForm.value.to"/>
+        <button *ngIf="destinationForm.value.to" (click)="destinationForm.value.to=''" matSuffix mat-icon-button aria-label="Clear">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button class="col-auto noPadMar">
+        <mat-icon>location_on</mat-icon>
+      </button>
+    </div>
+    <div class="mt-4 mb-4 w-100">
+      <ul class="noPadMar">
+        <li *ngFor="let address of recommendedAddresses">
+          <app-recommended-location [address]="address" (isClickedEvent)="onAddressSelected($event)"></app-recommended-location>
+        </li>
+      </ul>
+    </div>
+    <button (click)="nextFormPage()" [disabled]="!destinationForm.valid" mat-flat-button color="accent">Continue</button>
   </form>
 </div>

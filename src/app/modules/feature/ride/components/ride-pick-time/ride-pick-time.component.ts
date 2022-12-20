@@ -7,11 +7,11 @@ import {Component, EventEmitter, Output} from '@angular/core';
 })
 
 export class RidePickTimeComponent {
-  @Output() changeFormPageEmiter = new EventEmitter<number>();
+  @Output() changeFormPageEmitter = new EventEmitter<number>();
   nextFormPage():void{
-    this.changeFormPageEmiter.emit(1);
+    this.changeFormPageEmitter.emit(1);
   }
   previousFormPage():void{
-    this.changeFormPageEmiter.emit(-1);
+    this.changeFormPageEmitter.emit(-1);
   }
 }

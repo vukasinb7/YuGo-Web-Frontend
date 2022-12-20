@@ -1,6 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {VehicleTypeDetailed} from "../vehicle-type-card/vehicle-type-card.component";
-import {Time} from "@angular/common";
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  VehicleTypeCardComponent,
+  VehicleTypeCardData,
+} from "../vehicle-type-card/vehicle-type-card.component";
+import {Subject} from "rxjs";
+import {VehicleTypeService} from "../../services/vehicle-type.service";
 
 @Component({
   selector: 'app-ride-pick-properties',
@@ -8,38 +12,24 @@ import {Time} from "@angular/common";
   styleUrls: ['./ride-pick-properties.component.css']
 })
 export class RidePickPropertiesComponent implements OnInit{
-  @Output() changeFormPageEmiter = new EventEmitter<number>();
-  vehicleTypes:VehicleTypeDetailed[] = [];
-  constructor() {
+  @Output() changeFormPageEmitter = new EventEmitter<number>();
+  vehicleTypes:VehicleTypeCardData[] = [];
+  selectedVehicleType?:VehicleTypeCardData;
+  changeCarTypeEvent:Subject<number> = new Subject<number>();
+  constructor(private vehicleTypeService:VehicleTypeService) {
   }
   ngOnInit():void{
-    this.vehicleTypes.push({
-      price:13.99,
-      vehicleType:"Standard",
-      carImageSrc:"../../../../../../assets/img/vehicle_type/car_model.png",
-      dropoffTime: {hours:12, minutes:40} as Time,
-      minutesTillArrival:16
-    } as VehicleTypeDetailed);
-    this.vehicleTypes.push({
-      price:19.99,
-      vehicleType:"Lux",
-      carImageSrc:"../../../../../../assets/img/vehicle_type/car_model.png",
-      dropoffTime: {hours:12, minutes:40} as Time,
-      minutesTillArrival:16
-    } as VehicleTypeDetailed);
-    this.vehicleTypes.push({
-      price:15.99,
-      vehicleType:"Van",
-      carImageSrc:"../../../../../../assets/img/vehicle_type/car_model.png",
-      dropoffTime: {hours:12, minutes:40} as Time,
-      minutesTillArrival:16
-    } as VehicleTypeDetailed);
+    this.vehicleTypes = this.vehicleTypeService.getVehicleTypesAsRideProperty();
   }
 
   nextFormPage():void{
-    this.changeFormPageEmiter.emit(1);
+    this.changeFormPageEmitter.emit(1);
   }
   previousFormPage():void{
-    this.changeFormPageEmiter.emit(-1);
+    this.changeFormPageEmitter.emit(-1);
+  }
+  changeVehicleType(index:number):void{
+    this.changeCarTypeEvent.next(index);
+    this.selectedVehicleType = this.vehicleTypes.at(index);
   }
 }

@@ -1,8 +1,7 @@
 <div *ngIf="vehicleType" class="w-100 d-flex flex-row p-1" [ngClass]="{checkedCard:isChecked==true}"  (click)="onClick()">
-  <img src="{{vehicleType.carImageSrc}}"/>
+  <img src="{{vehicleType.imgPath}}"/>
   <div class="vstack col ms-3 align-self-center">
-    <h2>{{vehicleType.vehicleType}}</h2>
-    <p class="details">In {{vehicleType.minutesTillArrival}} mins | {{vehicleType.dropoffTime.hours}}:{{vehicleType.dropoffTime.minutes}} dropoff</p>
+    <h2>{{vehicleType.vehicleTypeName}}</h2>
   </div>
-  <p class="price col-2">${{vehicleType.price}}</p>
+  <p class="price col-2">${{vehicleType.totalPrice}}</p>
 </div>
