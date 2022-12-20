@@ -1,15 +1,15 @@
-<mat-card style="border-radius: 25px; height: 100%;">
-  <div id="carouselExampleControls" class="carousel slide h-100" data-bs-ride="carousel">
+<mat-card style="border-radius: 25px; height: 100%; background-color: #26272b;">
+  <div id="carouselExampleControls" class="carousel slide h-100">
     <div class="carousel-inner" >
       <div class="carousel-item active">
         <div class="p-4 justify-content-center">
           <h1 class="text-center mb-1">Vehicle Review</h1>
           <div class="rating">
-            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+            <input type="radio" name="rating" value="5" id="5v"><label for="5">☆</label>
+            <input type="radio" name="rating" value="4" id="4v"><label for="4">☆</label>
+            <input type="radio" name="rating" value="3" id="3v"><label for="3">☆</label>
+            <input type="radio" name="rating" value="2" id="2v"><label for="2">☆</label>
+            <input type="radio" name="rating" value="1" id="1v"><label for="1">☆</label>
           </div>
           <form class="example-form">
             <mat-form-field class="example-full-width w-100">
@@ -17,7 +17,7 @@
               <textarea matInput rows="2" style="resize: none" placeholder="Ex. It makes me feel..."></textarea>
             </mat-form-field>
           </form>
-          <div id="button-container" class="d-flex justify-content-center">
+          <div id="button-container-vehicle" class="d-flex justify-content-center">
             <button mat-flat-button class="mx-2 rounded-pill fw-bold" color="accent">Submit</button>
           </div>
         </div>
@@ -26,11 +26,11 @@
         <div class="p-4 justify-content-center">
           <h1 class="text-center mb-1">Ride Review</h1>
           <div class="rating">
-            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+            <input type="radio" name="rating" value="5" id="5r"><label for="5">☆</label>
+            <input type="radio" name="rating" value="4" id="4r"><label for="4">☆</label>
+            <input type="radio" name="rating" value="3" id="3r"><label for="3">☆</label>
+            <input type="radio" name="rating" value="2" id="2r"><label for="2">☆</label>
+            <input type="radio" name="rating" value="1" id="1r"><label for="1">☆</label>
           </div>
           <form class="example-form">
             <mat-form-field class="example-full-width w-100">
@@ -38,7 +38,7 @@
               <textarea matInput rows="2" style="resize: none" placeholder="Ex. It makes me feel..."></textarea>
             </mat-form-field>
           </form>
-          <div id="button-container" class="d-flex justify-content-center">
+          <div id="button-container-ride" class="d-flex justify-content-center">
             <button mat-flat-button class="mx-2 rounded-pill fw-bold" color="accent">Submit</button>
           </div>
         </div>

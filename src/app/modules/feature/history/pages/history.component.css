@@ -4,3 +4,6 @@ div.mat-mdc-dialog-surface.mdc-dialog__surface{
 ::ng-deep .mat-mdc-dialog-surface{
   background-color: transparent!important;
 }
+body{
+  background-color: #1d1f2f;
+}
