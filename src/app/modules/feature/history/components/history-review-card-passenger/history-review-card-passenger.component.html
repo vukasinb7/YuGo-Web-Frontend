@@ -1,0 +1,57 @@
+<mat-card style="border-radius: 25px; height: 100%;">
+  <div id="carouselExampleControls" class="carousel slide h-100" data-bs-interval="false"  data-bs-ride="carousel">
+    <div class="carousel-inner" >
+      <div class="carousel-item active">
+        <div class="p-4 justify-content-center">
+          <h1 class="text-center mb-1">Vehicle Review</h1>
+          <div class="rating">
+            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+          </div>
+          <form class="example-form">
+            <mat-form-field class="example-full-width w-100">
+              <mat-label>Leave a comment</mat-label>
+              <textarea matInput rows="2" style="resize: none" placeholder="Ex. It makes me feel..."></textarea>
+            </mat-form-field>
+          </form>
+          <div id="button-container" class="d-flex justify-content-center">
+            <button mat-flat-button class="mx-2 rounded-pill fw-bold" color="accent">Submit</button>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="p-4 justify-content-center">
+          <h1 class="text-center mb-1">Ride Review</h1>
+          <div class="rating">
+            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+          </div>
+          <form class="example-form">
+            <mat-form-field class="example-full-width w-100">
+              <mat-label>Leave a comment</mat-label>
+              <textarea matInput rows="2" style="resize: none" placeholder="Ex. It makes me feel..."></textarea>
+            </mat-form-field>
+          </form>
+          <div id="button-container" class="d-flex justify-content-center">
+            <button mat-flat-button class="mx-2 rounded-pill fw-bold" color="accent">Submit</button>
+          </div>
+        </div>
+      </div>
+      </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</mat-card>

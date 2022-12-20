@@ -25,6 +25,7 @@
     "leaflet": "^1.9.3",
     "leaflet-routing-machine": "^3.2.12",
     "ngx-mat-timepicker": "^15.1.2",
+    "ngx-material-timepicker": "^5.5.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
