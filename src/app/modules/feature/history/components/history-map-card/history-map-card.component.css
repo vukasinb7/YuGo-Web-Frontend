@@ -1,3 +1,13 @@
 img{
   border-radius: 25px;
 }
+.map-frame {
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+}
+::ng-deep .leaflet-top.leaflet-right{
+  display:none
+}
