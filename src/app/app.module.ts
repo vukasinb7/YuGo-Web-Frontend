@@ -5,13 +5,8 @@ import { AppComponent } from './app.component';
 
 import {CoreModule} from "./modules/core/core.module";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
-import {HistoryModule} from "./modules/feature/history/history.module";
-import {HomeModule} from "./modules/feature/home/home.module";
 import {SharedModule} from "./modules/shared/shared.module";
 import {Interceptor} from "./modules/core/interceptors/interceptor.interceptor";
-import {AccountModule} from "./modules/feature/account/account.module";
-import { RideModule } from './modules/feature/ride/ride.module';
-import { FavoritePathModule} from "./modules/feature/favorite-path/favorite-path.module";
 
 
 @NgModule({
@@ -21,11 +16,7 @@ import { FavoritePathModule} from "./modules/feature/favorite-path/favorite-path
     imports: [
       BrowserModule,
       CoreModule,
-      HistoryModule,
-      HomeModule,
-      AccountModule,
       SharedModule,
-      RideModule
     ],
   providers: [
     {

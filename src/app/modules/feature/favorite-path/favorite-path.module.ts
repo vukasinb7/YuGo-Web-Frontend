@@ -12,7 +12,6 @@ import { FavoritePathCardComponent } from './components/favorite-path-card/favor
     SharedModule,
   ],
   exports:[
-    FavoritePathComponent,
-    FavoritePathCardComponent,],
+    FavoritePathComponent],
 })
 export class FavoritePathModule { }
