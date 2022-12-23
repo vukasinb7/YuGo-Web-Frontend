@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { RegisterComponent } from '../register/register.component';
@@ -9,19 +9,23 @@ import {AuthService} from "../../services/auth.service";
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
 
   userType='UNREGISTERED';
 
   constructor(public dialog: MatDialog, private authService: AuthService) {
 
   }
+  ngOnInit() {
+    if (this.authService.getRole()!=null){
+      this.userType=this.authService.getRole();
+    }
+  }
 
   openLoginDialog() {
     this.dialog.open(LoginComponent).afterClosed().subscribe(
       value =>{
-        var asd =  this.authService.getRole();
-      this.userType = asd});
+      this.userType = value});
   }
 
   openRegisterDialog(){
