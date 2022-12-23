@@ -27,9 +27,10 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(loginVal).subscribe({
         next: (result) => {
-          localStorage.setItem('user', JSON.stringify(result));
+          localStorage.setItem('user', result.accessToken);
           this.authService.setUser();
           this.router.navigate(['/']);
+
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {

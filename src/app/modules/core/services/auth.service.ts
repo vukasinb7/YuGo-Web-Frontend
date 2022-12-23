@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import {Token} from "@angular/compiler";
 import { environment } from 'src/enviroments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
+import {Token} from "../models/token";
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   logout(): Observable<string> {
-    return this.http.get(environment.apiHost + 'loguut', {
+    return this.http.get(environment.apiHost + 'logout', {
       responseType: 'text',
     });
   }
@@ -37,7 +37,7 @@ export class AuthService {
     if (this.isLoggedIn()) {
       const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
-      const role = helper.decodeToken(accessToken).role[0].authority;
+      const role = helper.decodeToken(accessToken).role;
       return role;
     }
     return null;

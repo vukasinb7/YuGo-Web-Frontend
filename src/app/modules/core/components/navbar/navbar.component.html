@@ -8,14 +8,14 @@
     </a>
   </div>
   <div class="col">
-  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='unregistred'">
+  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='UNREGISTERED'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
         <a class="nav-link" href="#">About</a>
       </li>
     </ul>
 </div>
-  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='driver'">
+  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='DRIVER'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
         <a class="nav-link" href="#">Home</a>
@@ -31,7 +31,7 @@
       </li>
     </ul>
   </div>
-  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='passenger'">
+  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='PASSENGER'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
         <a class="nav-link" href="#">Home</a>
@@ -50,7 +50,7 @@
       </li>
     </ul>
   </div>
-  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='admin'">
+  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='ADMIN'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
         <a class="nav-link" href="#">Home</a>
@@ -72,7 +72,7 @@
 
 </div>
 <div id="button-container" class="col">
-<div id="buttons-div" class="d-flex ms-auto" *ngIf="userType==='unregistred'" >
+<div id="buttons-div" class="d-flex ms-auto" *ngIf="userType==='UNREGISTERED'" >
 
   <button mat-flat-button (click)="openLoginDialog()" class="mx-2 rounded-pill fw-bold" color="accent">SIGN IN</button>
   <button mat-flat-button (click)="openRegisterDialog()" class="accent-button mx-2 rounded-pill fw-bold" color="accent" >SIGN UP</button>
@@ -84,7 +84,7 @@
 
 
 </mat-toolbar>
-<a class="mx-1" (click)="authUnregistredUser()">Unregistred</a>
+<a class="mx-1" (click)="authUnregisteredUser()">Unregistered</a>
 <a class="mx-1"(click)="authPassenger()">Passenger</a>
 <a class="mx-1"(click)="authDriver()">Driver</a>
 <a class="mx-1"(click)="authAdmin()">Admin</a>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { RegisterComponent } from '../register/register.component';
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-navbar',
@@ -10,12 +11,17 @@ import { RegisterComponent } from '../register/register.component';
 })
 export class NavbarComponent {
 
-  userType='passenger';
+  userType='UNREGISTERED';
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private authService: AuthService) {
+
+  }
 
   openLoginDialog() {
-    this.dialog.open(LoginComponent);
+    this.dialog.open(LoginComponent).afterClosed().subscribe(
+      value =>{
+        var asd =  this.authService.getRole();
+      this.userType = asd});
   }
 
   openRegisterDialog(){
@@ -23,16 +29,16 @@ export class NavbarComponent {
       width: '50%'
     });
   }
-  authUnregistredUser(){
-    this.userType='unregistred';
+  authUnregisteredUser(){
+    this.userType='UNREGISTERED';
   }
   authPassenger(){
-    this.userType='passenger';
+    this.userType='PASSENGER';
   }
   authDriver(){
-    this.userType='driver';
+    this.userType='DRIVER';
   }
   authAdmin(){
-    this.userType='admin';
+    this.userType='ADMIN';
   }
 }
