@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {UserInfo} from "../account-info/account-info.component";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -7,6 +6,7 @@ import {NoteDialogComponent} from "../note-dialog/note-dialog.component";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {UserInfo} from "../../models/UserInfo";
 
 @Component({
   selector: 'app-users-table',
@@ -62,7 +62,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
   blockUser(userId : number){
     this.userService.blockUser(userId).subscribe({
       next:() =>{
-        this.ngOnInit();
+        this.loadData();
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
@@ -73,7 +73,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
   unblockUser(userId : number){
     this.userService.unblockUser(userId).subscribe({
       next:() =>{
-        this.ngOnInit();
+        this.loadData();
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
@@ -102,12 +102,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
       })
     }
     else{
-      this.ngOnInit();
+      this.loadData();
     }
   }
-}
-
-export interface AllUsersInfo {
-  totalCount : number;
-  results: UserInfo[];
 }
