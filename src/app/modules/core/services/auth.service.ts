@@ -44,7 +44,6 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return localStorage.getItem('user') != null;
-
   }
 
   setUser(): void {
