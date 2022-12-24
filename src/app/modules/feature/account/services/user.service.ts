@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../../../enviroments/environment";
 import {AllUsersInfo} from "../models/AllUsersInfo";
@@ -9,6 +9,9 @@ import {UserInfo} from "../models/UserInfo";
   providedIn: 'root'
 })
 export class UserService {
+  private headers = new HttpHeaders({
+  'Content-Type': 'application/json',
+  });
   constructor(private http: HttpClient) {
 
   }

@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
   });
   hasError: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private dialogRef:MatDialogRef<LoginComponent>) {}
   submitLogin(){
     const loginVal = {
       email: this.loginForm.value.email,
@@ -25,11 +26,13 @@ export class LoginComponent {
     };
 
     if (this.loginForm.valid) {
-      this.authService.login(loginVal).subscribe({
+      this.authService.logIn(loginVal).subscribe({
         next: (result) => {
-          localStorage.setItem('user', JSON.stringify(result));
+          localStorage.setItem('user', result.accessToken);
           this.authService.setUser();
+          this.dialogRef.close(this.authService.getRole());
           this.router.navigate(['/']);
+
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {

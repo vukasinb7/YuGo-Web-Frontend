@@ -1,21 +1,27 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { RegisterComponent } from '../register/register.component';
+import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
+  userType="";
 
-  userType='passenger';
+  constructor(public dialog: MatDialog, private authService: AuthService, private router: Router) {
 
-  constructor(public dialog: MatDialog) {}
+  }
+  ngOnInit() {
+    this.authService.userState$.subscribe(value => this.userType = value);
+  }
 
   openLoginDialog() {
-    this.dialog.open(LoginComponent);
+    this.dialog.open(LoginComponent).afterClosed();
   }
 
   openRegisterDialog(){
@@ -23,16 +29,17 @@ export class NavbarComponent {
       width: '50%'
     });
   }
-  authUnregistredUser(){
-    this.userType='unregistred';
-  }
-  authPassenger(){
-    this.userType='passenger';
-  }
-  authDriver(){
-    this.userType='driver';
-  }
-  authAdmin(){
-    this.userType='admin';
+
+  logOut(){
+    this.authService.logOut().subscribe({
+      next: (result) => {
+        localStorage.removeItem('user');
+        this.authService.setUser();
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 }
