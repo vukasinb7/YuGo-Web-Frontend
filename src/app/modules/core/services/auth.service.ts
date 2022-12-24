@@ -14,7 +14,7 @@ export class AuthService {
     skip: 'true',
   });
 
-  user$ = new BehaviorSubject(null);
+  user$ = new BehaviorSubject("");
   userState$ = this.user$.asObservable();
 
   constructor(private http: HttpClient) {
@@ -27,27 +27,24 @@ export class AuthService {
     });
   }
 
-  logOut(): Observable<any> {
+  logOut(): Observable<string> {
     return this.http.get(environment.apiHost + 'user/logout', {
       responseType: 'text',
     });
   }
 
-  getRole(): any {
+  getRole(): string {
     if (this.isLoggedIn()) {
       const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
-      const role = helper.decodeToken(accessToken).role;
-      return role;
+      return helper.decodeToken(accessToken).role;
     }
-    return null;
+    return "UNREGISTERED";
   }
 
   isLoggedIn(): boolean {
-    if (localStorage.getItem('user') != null) {
-      return true;
-    }
-    return false;
+    return localStorage.getItem('user') != null;
+
   }
 
   setUser(): void {

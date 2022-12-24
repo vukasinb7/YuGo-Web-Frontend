@@ -11,22 +11,17 @@ import {Router} from "@angular/router";
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit{
-
-  userType='UNREGISTERED';
+  userType="";
 
   constructor(public dialog: MatDialog, private authService: AuthService, private router: Router) {
 
   }
   ngOnInit() {
-    if (this.authService.getRole()!=null){
-      this.userType=this.authService.getRole();
-    }
+    this.authService.userState$.subscribe(value => this.userType = value);
   }
 
   openLoginDialog() {
-    this.dialog.open(LoginComponent).afterClosed().subscribe(
-      value =>{
-      this.userType = value});
+    this.dialog.open(LoginComponent).afterClosed();
   }
 
   openRegisterDialog(){
@@ -42,7 +37,9 @@ export class NavbarComponent implements OnInit{
         this.authService.setUser();
         this.router.navigate(['/']);
       },
-      error: (error) => {},
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
 }
