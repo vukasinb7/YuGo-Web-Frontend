@@ -33,16 +33,8 @@ export class NavbarComponent implements OnInit{
       width: '50%'
     });
   }
-  authUnregisteredUser(){
-    this.userType='UNREGISTERED';
-  }
-  authPassenger(){
-    this.userType='PASSENGER';
-  }
-  authDriver(){
-    this.userType='DRIVER';
-  }
-  authAdmin(){
-    this.userType='ADMIN';
+
+  logOut(){
+    this.authService.logOut().subscribe();
   }
 }

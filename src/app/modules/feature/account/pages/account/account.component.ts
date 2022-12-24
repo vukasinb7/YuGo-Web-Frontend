@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-account',
@@ -6,9 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent {
-  role: any = "";
+  role: string = "";
 
-  constructor() {
-    this.role = 'ADMIN';
+  constructor(authService : AuthService) {
+    this.role = authService.getRole();
   }
 }

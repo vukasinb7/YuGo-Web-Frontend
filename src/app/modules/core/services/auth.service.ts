@@ -21,16 +21,14 @@ export class AuthService {
     this.user$.next(this.getRole());
   }
 
-  login(auth: any): Observable<Token> {
+  logIn(auth: any): Observable<Token> {
     return this.http.post<Token>(environment.apiHost + 'user/login', auth, {
       headers: this.headers,
     });
   }
 
-  logout(): Observable<string> {
-    return this.http.get(environment.apiHost + 'logout', {
-      responseType: 'text',
-    });
+  logOut(): Observable<any> {
+    return this.http.get(environment.apiHost + 'user/logout', {});
   }
 
   getRole(): any {

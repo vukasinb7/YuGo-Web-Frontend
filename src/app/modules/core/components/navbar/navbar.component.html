@@ -73,18 +73,14 @@
 </div>
 <div id="button-container" class="col">
 <div id="buttons-div" class="d-flex ms-auto" *ngIf="userType==='UNREGISTERED'" >
-
   <button mat-flat-button (click)="openLoginDialog()" class="mx-2 rounded-pill fw-bold" color="accent">SIGN IN</button>
   <button mat-flat-button (click)="openRegisterDialog()" class="accent-button mx-2 rounded-pill fw-bold" color="accent" >SIGN UP</button>
-
 </div>
+
+<div id="logout-button-div" class="d-flex ms-auto" *ngIf="userType!='UNREGISTERED'" >
+  <a href="javascript:void(0)" class="text-decoration-none logout-button" (click)="logOut()"><mat-icon>logout</mat-icon></a>
+</div>
+
 </div>
 </nav>
-
-
-
 </mat-toolbar>
-<a class="mx-1" (click)="authUnregisteredUser()">Unregistered</a>
-<a class="mx-1"(click)="authPassenger()">Passenger</a>
-<a class="mx-1"(click)="authDriver()">Driver</a>
-<a class="mx-1"(click)="authAdmin()">Admin</a>

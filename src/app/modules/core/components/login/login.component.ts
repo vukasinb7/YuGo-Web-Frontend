@@ -26,7 +26,7 @@ export class LoginComponent {
     };
 
     if (this.loginForm.valid) {
-      this.authService.login(loginVal).subscribe({
+      this.authService.logIn(loginVal).subscribe({
         next: (result) => {
           localStorage.setItem('user', result.accessToken);
           this.authService.setUser();
