@@ -28,7 +28,9 @@ export class AuthService {
   }
 
   logOut(): Observable<any> {
-    return this.http.get(environment.apiHost + 'user/logout', {});
+    return this.http.get(environment.apiHost + 'user/logout', {
+      responseType: 'text',
+    });
   }
 
   getRole(): any {

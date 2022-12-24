@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { RegisterComponent } from '../register/register.component';
 import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,7 @@ export class NavbarComponent implements OnInit{
 
   userType='UNREGISTERED';
 
-  constructor(public dialog: MatDialog, private authService: AuthService) {
+  constructor(public dialog: MatDialog, private authService: AuthService, private router: Router) {
 
   }
   ngOnInit() {
@@ -35,6 +36,13 @@ export class NavbarComponent implements OnInit{
   }
 
   logOut(){
-    this.authService.logOut().subscribe();
+    this.authService.logOut().subscribe({
+      next: (result) => {
+        localStorage.removeItem('user');
+        this.authService.setUser();
+        this.router.navigate(['/']);
+      },
+      error: (error) => {},
+    });
   }
 }
