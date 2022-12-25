@@ -13,6 +13,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatDividerModule} from "@angular/material/divider";
+import {MatExpansionModule} from '@angular/material/expansion'
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import {MatDividerModule} from "@angular/material/divider";
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatDividerModule
+    MatDividerModule,
+    MatExpansionModule
   ],
   exports: [
     MatFormFieldModule,
@@ -43,7 +45,8 @@ import {MatDividerModule} from "@angular/material/divider";
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatDividerModule
+    MatDividerModule,
+    MatExpansionModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }

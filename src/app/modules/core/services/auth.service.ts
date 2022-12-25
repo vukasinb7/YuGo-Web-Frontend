@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import { environment } from 'src/enviroments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {Token} from "../models/token";
+import {Token} from "../models/Token";
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,15 @@ export class AuthService {
       return helper.decodeToken(accessToken).role;
     }
     return "UNREGISTERED";
+  }
+
+  getId(): number {
+    if (this.isLoggedIn()) {
+      const accessToken: any = localStorage.getItem('user');
+      const helper = new JwtHelperService();
+      return helper.decodeToken(accessToken).id;
+    }
+    return -1;
   }
 
   isLoggedIn(): boolean {

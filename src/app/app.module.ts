@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 
@@ -14,7 +13,6 @@ import {Interceptor} from "./modules/core/interceptors/interceptor.interceptor";
     AppComponent,
   ],
     imports: [
-      BrowserModule,
       CoreModule,
       SharedModule,
     ],

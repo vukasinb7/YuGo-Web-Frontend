@@ -14,15 +14,9 @@ export class UserService {
 
   }
 
-  getUser() : Observable<UserInfo>{
-    const accessToken: any = localStorage.getItem('user');
-    const helper = new JwtHelperService();
-    const userId = helper.decodeToken(accessToken).id;
-    const role = helper.decodeToken(accessToken).role;
-    if (role == "PASSENGER"){
-      return this.http.get<UserInfo>(environment.apiHost + `passenger/${userId}`);
-    }
-    return this.http.get<UserInfo>(environment.apiHost + `driver/${userId}`);
+  getUser(userId : number, role : string) : Observable<UserInfo>{
+    role = role.toLowerCase();
+    return this.http.get<UserInfo>(environment.apiHost + `${role}/${userId}`);
   }
 
   updateUser(values: any) : Observable<UserInfo>{
@@ -30,7 +24,6 @@ export class UserService {
     const helper = new JwtHelperService();
     const userId = helper.decodeToken(accessToken).id;
     const role = helper.decodeToken(accessToken).role;
-    console.log(values);
     if (role == "PASSENGER"){
       return this.http.put<UserInfo>(environment.apiHost + `passenger/${userId}`, values);
     }
@@ -55,5 +48,13 @@ export class UserService {
 
   createNote(userId : number, note : string) : Observable<any>{
     return this.http.post(environment.apiHost + `user/${userId}/note`, {"message":note});
+  }
+
+  getNotes(userId : number, page : number, size :number) : Observable<any>{
+    return this.http.get(environment.apiHost + `user/${userId}/note`,
+      {params : {
+          page: page,
+          size : size
+        }});
   }
 }

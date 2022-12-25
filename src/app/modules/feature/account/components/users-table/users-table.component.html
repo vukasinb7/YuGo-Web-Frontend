@@ -53,9 +53,12 @@
     </ng-container>
 
     <ng-container matColumnDef="note">
-      <th mat-header-cell *matHeaderCellDef> Note </th>
+      <th mat-header-cell *matHeaderCellDef> Notes </th>
       <td mat-cell *matCellDef="let user">
-        <button mat-raised-button (click)="createNote(user)">Note</button>
+        <div class="d-inline-flex">
+          <button class="me-3" mat-raised-button (click)="createNote(user)">Create</button>
+          <button mat-raised-button (click)="showNotes(user)">View</button>
+        </div>
       </td>
     </ng-container>
 
