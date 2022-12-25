@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-account-info',
@@ -14,9 +15,10 @@ export class AccountInfoComponent implements OnInit{
   editEnabled: boolean
   constructor(private userService: UserService) {
     this.accountInfoForm = new FormGroup({
-      firstname: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
-      phone: new FormControl('', [Validators.required]),
+      profilePicture: new FormControl('', [Validators.required]),
+      telephoneNumber: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
     });
@@ -26,19 +28,24 @@ export class AccountInfoComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.userService.getPassengerInfo().subscribe({
+    this.loadUserData();
+  }
+
+  loadUserData() : void{
+    this.userService.getUser().subscribe({
       next:(info) => {
         this.accountInfoForm.patchValue({
-        firstname: info.name,
-        surname: info.surname,
-        phone: info.telephoneNumber,
-        address: info.address,
-        email: info.email,
-      })},
+          name: info.name,
+          surname: info.surname,
+          profilePicture: info.profilePicture,
+          telephoneNumber: info.telephoneNumber,
+          address: info.address,
+          email: info.email,
+        })},
       error: (error) => {
-      if (error instanceof HttpErrorResponse) {
-        this.hasError = true;
-      }}})
+        if (error instanceof HttpErrorResponse) {
+          this.hasError = true;
+        }}})
   }
 
   enableEdit() : void{
@@ -53,6 +60,21 @@ export class AccountInfoComponent implements OnInit{
   }
 
   submitEdit() : void {
+    this.userService.updateUser(this.accountInfoForm.value).subscribe({
+      next:(info) => {
+        this.accountInfoForm.patchValue({
+          name: info.name,
+          surname: info.surname,
+          profilePicture: info.profilePicture,
+          telephoneNumber: info.telephoneNumber,
+          address: info.address,
+          email: info.email,
+        })},
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.hasError = true;
+        }}});
+
     this.accountInfoForm.disable();
     this.editEnabled = false;
   }

@@ -4,23 +4,40 @@ import {Observable} from "rxjs";
 import {environment} from "../../../../../enviroments/environment";
 import {AllUsersInfo} from "../models/AllUsersInfo";
 import {UserInfo} from "../models/UserInfo";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private headers = new HttpHeaders({
-  'Content-Type': 'application/json',
-  });
   constructor(private http: HttpClient) {
 
   }
 
-  getPassengerInfo() : Observable<UserInfo>{
-    return this.http.get<UserInfo>(environment.apiHost + "passenger/1");
+  getUser() : Observable<UserInfo>{
+    const accessToken: any = localStorage.getItem('user');
+    const helper = new JwtHelperService();
+    const userId = helper.decodeToken(accessToken).id;
+    const role = helper.decodeToken(accessToken).role;
+    if (role == "PASSENGER"){
+      return this.http.get<UserInfo>(environment.apiHost + `passenger/${userId}`);
+    }
+    return this.http.get<UserInfo>(environment.apiHost + `driver/${userId}`);
   }
 
-  getUsersInfo(page : number, size :number): Observable<AllUsersInfo>{
+  updateUser(values: any) : Observable<UserInfo>{
+    const accessToken: any = localStorage.getItem('user');
+    const helper = new JwtHelperService();
+    const userId = helper.decodeToken(accessToken).id;
+    const role = helper.decodeToken(accessToken).role;
+    console.log(values);
+    if (role == "PASSENGER"){
+      return this.http.put<UserInfo>(environment.apiHost + `passenger/${userId}`, values);
+    }
+    return this.http.put<UserInfo>(environment.apiHost + `driver/${userId}`, values);
+  }
+
+  getUsers(page : number, size :number): Observable<AllUsersInfo>{
     return this.http.get<AllUsersInfo>(environment.apiHost + "user",
       {params : {
         page: page,

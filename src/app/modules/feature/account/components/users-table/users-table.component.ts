@@ -39,7 +39,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
   }
 
   loadData(){
-    this.userService.getUsersInfo(this.currentPage,this.pageSize).subscribe({
+    this.userService.getUsers(this.currentPage,this.pageSize).subscribe({
       next:(info) => {
         this.dataSource.data = info.results;
         setTimeout(() => {
