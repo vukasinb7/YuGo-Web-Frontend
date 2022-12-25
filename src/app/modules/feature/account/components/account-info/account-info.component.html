@@ -3,7 +3,7 @@
     <h2 class="font-weight-bold text-center mb-4">Personal Info</h2>
     <form class="d-block" [formGroup]="accountInfoForm">
       <div class="w-100 text-center mb-3 d-flex flex-column just">
-        <img src="{{accountInfoForm.controls['profilePicture'].value}}" class="rounded-circle m-auto mb-2" width="150" height="150">
+        <img src="{{accountInfoForm.controls['profilePicture'].value}}" class="rounded-circle m-auto mb-2" width="150" height="150" (error)="onProfilePictureError($event)">
         <div class="justify-content-center">
           <mat-form-field class="my-1 w-75">
             <mat-label>Profile picture</mat-label>

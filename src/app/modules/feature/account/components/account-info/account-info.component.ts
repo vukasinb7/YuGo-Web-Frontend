@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AuthService} from "../../../../core/services/auth.service";
+import {ErrorEvent} from "leaflet";
 
 @Component({
   selector: 'app-account-info',
@@ -77,5 +78,9 @@ export class AccountInfoComponent implements OnInit{
 
     this.accountInfoForm.disable();
     this.editEnabled = false;
+  }
+
+  onProfilePictureError(event : any) {
+    event.target.src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
   }
 }
