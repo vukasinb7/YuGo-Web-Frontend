@@ -2,11 +2,12 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../services/user.service";
 import {MatDialog} from "@angular/material/dialog";
-import {NoteDialogComponent} from "../note-dialog/note-dialog.component";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {UserInfo} from "../../models/UserInfo";
+import {CreateNoteDialogComponent} from "../create-note-dialog/create-note-dialog.component";
+import {ViewNotesDialogComponent} from "../view-notes-dialog/view-notes-dialog.component";
 
 @Component({
   selector: 'app-users-table',
@@ -82,7 +83,14 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
   }
 
   createNote(user :UserInfo){
-    this.dialog.open(NoteDialogComponent,{
+    this.dialog.open(CreateNoteDialogComponent,{
+      width:'40%',
+      data:user
+    });
+  }
+
+  showNotes(user :UserInfo){
+    this.dialog.open(ViewNotesDialogComponent,{
       width:'40%',
       data:user
     });

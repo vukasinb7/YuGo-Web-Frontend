@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {MaterialModule} from "../../../infrastructure/material.module";
 import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from "../../../infrastructure/app-routing.module";
+import {BrowserModule} from "@angular/platform-browser";
 
 @NgModule({
   declarations: [],
@@ -15,7 +16,8 @@ import {AppRoutingModule} from "../../../infrastructure/app-routing.module";
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserModule
   ],
   exports: [
     CommonModule,
@@ -24,7 +26,8 @@ import {AppRoutingModule} from "../../../infrastructure/app-routing.module";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserModule
   ]
 })
 export class SharedModule {}

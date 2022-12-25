@@ -13,7 +13,7 @@ export class AccountInfoComponent implements OnInit{
   accountInfoForm : FormGroup;
   hasError : boolean;
   editEnabled: boolean
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private authService: AuthService) {
     this.accountInfoForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
@@ -32,7 +32,7 @@ export class AccountInfoComponent implements OnInit{
   }
 
   loadUserData() : void{
-    this.userService.getUser().subscribe({
+    this.userService.getUser(this.authService.getId(), this.authService.getRole()).subscribe({
       next:(info) => {
         this.accountInfoForm.patchValue({
           name: info.name,

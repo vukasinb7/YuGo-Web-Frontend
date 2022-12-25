@@ -6,10 +6,12 @@ import { DocumentsComponent } from './components/documents/documents.component';
 import { DriverAccountComponent } from './pages/driver-account/driver-account.component';
 import { AccountComponent } from './pages/account/account.component';
 import { PassengerAccountComponent } from './pages/passenger-account/passenger-account.component';
-import { AdminAccountComponent } from './pages/admin-account/admin-account.component';
 import { CommonModule } from "@angular/common";
 import { UsersTableComponent } from './components/users-table/users-table.component';
-import { NoteDialogComponent } from './components/note-dialog/note-dialog.component';
+import { AdminUsersAccountsComponent } from './pages/admin-users-accounts/admin-users-accounts.component';
+import { AdminAccountComponent } from './pages/admin-account/admin-account.component';
+import { CreateNoteDialogComponent } from './components/create-note-dialog/create-note-dialog.component';
+import { ViewNotesDialogComponent } from './components/view-notes-dialog/view-notes-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,13 +23,17 @@ import { NoteDialogComponent } from './components/note-dialog/note-dialog.compon
     AdminAccountComponent,
     AccountComponent,
     UsersTableComponent,
-    NoteDialogComponent],
+    CreateNoteDialogComponent,
+    AdminUsersAccountsComponent,
+    ViewNotesDialogComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
   ],
   exports: [
-    AccountComponent
+    AccountComponent,
+    AdminUsersAccountsComponent
   ]
 })
 export class AccountModule { }
