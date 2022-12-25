@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit{
 
   openRegisterDialog(){
     this.dialog.open(RegisterComponent, {
-      width: '50%'
+      width: '60%'
     });
   }
 

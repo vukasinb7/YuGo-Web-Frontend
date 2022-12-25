@@ -1,44 +1,56 @@
 <div class="p-5 w-100">
     <h2 class="font-weight-bold d-flex justify-content-center">Sign Up</h2>
     <div mat-dialog-content class="d-flex justify-content-center">
-      <form class="w-100">
+      <form class="w-100" [formGroup] = "registrationForm">
         <div class="row">
             <div class="col-6 vstack">
                 <mat-form-field class="col-xs-4">
                     <mat-label>Email</mat-label>
-                    <input type="email" matInput placeholder="Example@example.com" [(ngModel)]="emailValue" name="email">
+                    <input type="email" matInput placeholder="Example@example.com" formControlName="email" name="email">
                 </mat-form-field>
                 <mat-form-field class="col-xs-4">
                     <mat-label>Frist name</mat-label>
-                    <input type="text" matInput [(ngModel)]="firstNameValue" name="firstName">
+                    <input type="text" matInput formControlName="firstName" name="firstName">
                 </mat-form-field>
                 <mat-form-field class="col-xs-4">
                     <mat-label>Last name</mat-label>
-                    <input type="text" matInput [(ngModel)]="lastNameValue" name="lastName">
+                    <input type="text" matInput formControlName="lastName" name="lastName">
                 </mat-form-field>
             </div>
-    
+
             <div class="col-6 vstack">
                 <mat-form-field class="">
                     <mat-label>Address</mat-label>
-                    <input type="password" matInput placeholder="10 Downing Street" [(ngModel)]="addressValue" name="address">
+                    <input type="password" matInput placeholder="10 Downing Street" formControlName="address" name="address">
                   </mat-form-field>
                   <mat-form-field class="">
                     <mat-label>Password</mat-label>
-                    <input type="password" matInput placeholder="Enter your password" [(ngModel)]="passwordValue" name="password">
+                    <input type="password" matInput placeholder="Enter your password" formControlName="password" name="password">
+                    <mat-error *ngIf="registrationForm.controls.password.hasError('minLength')">
+                      Password must be at least 6 characters long
+                    </mat-error>
+                    <mat-error *ngIf="registrationForm.controls.password.hasError('maxLength')">
+                      Password can not be longer than 20 characters
+                    </mat-error>
+                    <mat-error *ngIf="registrationForm.controls.password.hasError('whitespace')">
+                      Password can not contain whitespace characters
+                    </mat-error>
                   </mat-form-field>
                 <mat-form-field class="">
-                    <mat-label>Confirm passoword</mat-label>
-                    <input type="password" matInput placeholder="Confirm password" [(ngModel)]="confirmPasswordValue" name="confirmPassword">
+                    <mat-label>Confirm password</mat-label>
+                    <input type="password" matInput placeholder="Confirm password" formControlName="confirmPassword" name="confirmPassword">
+                    <mat-error *ngIf="registrationForm.controls.confirmPassword.hasError('passwordsNotMatching')">
+                      Passwords are not matching
+                    </mat-error>
                   </mat-form-field>
             </div>
         </div>
-
+        <div mat-dialog-actions class="d-flex justify-content-center">
+          <button class="w-50" type="submit" mat-flat-button color="accent">Sign Up</button>
+        </div>
       </form>
     </div>
-    <div mat-dialog-actions class="d-flex justify-content-center">
-      <button class="w-50" type="submit" mat-flat-button color="accent">Sign Up</button>
-    </div>
+
     <div class=" d-flex justify-content-center">
       <p>Already have an account?&nbsp;</p>
       <a href="" class="font-weight-bold text-decoration-none">Login</a>
