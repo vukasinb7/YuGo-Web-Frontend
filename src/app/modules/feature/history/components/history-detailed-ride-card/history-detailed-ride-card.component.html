@@ -4,17 +4,17 @@
 
   <div class="d-flex w-100 align-items-center p-4">
     <img  src="assets/img/map.png" class=" profile-pic rounded-circle" alt="Profile Picture" width="70px" height="70px" style="outline: 4px solid  #fad02c;">
-    <h1 class="mb-0 mx-2">Vukasin Bogdanovic</h1>
+    <h1 class="mb-0 mx-2">{{passengerName}}</h1>
   </div>
     <div class="w-100 row pt-3 justify-content-center">
       <div id="driver-container" class="d-flex w-50 align-content-center align-items-center justify-content-center">
         <mat-icon aria-hidden="false" class="me-2">local_taxi</mat-icon>
         <img  src="assets/img/map.png" class=" profile-pic rounded-circle" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
-        <p class="px-2"style="margin-bottom:0;">Pera Peric</p>
+        <p class="px-2"style="margin-bottom:0;">{{driverName}}</p>
       </div>
       <div id="other-passengers-container" class="d-inline-flex w-50 align-content-center align-items-center justify-content-center">
         <mat-icon aria-hidden="false" class="me-2">group</mat-icon>
-        <p class="pe-2"style="margin-bottom:0;">3</p>
+        <p class="pe-2"style="margin-bottom:0;">{{ride.passengers.length}}</p>
         <img  src="assets/img/map.png" class=" profile-pic rounded-circle" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
         <img  src="assets/img/map.png" class=" profile-pic rounded-circle" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
       </div>

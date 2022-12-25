@@ -25,6 +25,12 @@ export class UserService {
     }
     return this.http.get<UserInfo>(environment.apiHost + `driver/${userId}`);
   }
+  getDriver(userId:number):Observable<UserInfo>{
+    return this.http.get<UserInfo>(environment.apiHost + `driver/${userId}`);
+  }
+  getPassenger(userId:number):Observable<UserInfo>{
+    return this.http.get<UserInfo>(environment.apiHost + `passenger/${userId}`);
+  }
 
   updateUser(values: any) : Observable<UserInfo>{
     const accessToken: any = localStorage.getItem('user');
