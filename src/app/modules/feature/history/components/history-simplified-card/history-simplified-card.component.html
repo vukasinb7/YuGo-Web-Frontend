@@ -1,17 +1,17 @@
 
-<mat-card class="w-100 px-2 py-2" style="border-radius:25px; background-color: #26272b">
+<mat-card class="w-100 px-2 py-2" style="border-radius:25px; background-color: #26272b" *ngFor="let ride of obs | async">
   <div class="w-100 d-inline-flex">
     <div id="path-conatiner">
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-start align-items-center py-2 ">
           <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">Bulevar Oslobodjenja 30</p>
+          <p class="m-0 p-1">{{ride.startTime}}</p>
         </div>
       </div>
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-start align-items-center ">
           <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">Majke Jevrosime 112</p>
+          <p class="m-0 p-1">{{ride.endTime}}</p>
         </div>
       </div>
     </div>
@@ -44,6 +44,9 @@
       </div>
     </div>
   </div>
-
 </mat-card>
+<mat-paginator #ridesPaginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page"
+               class="card-bg">
+</mat-paginator>
 

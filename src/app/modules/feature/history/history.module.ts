@@ -7,6 +7,7 @@ import { HistoryReviewCardDriverComponent } from './components/history-review-ca
 import { HistoryMapCardComponent } from './components/history-map-card/history-map-card.component';
 import { HistoryDetailedDialogComponent } from './components/history-detailed-dialog/history-detailed-dialog.component';
 import { HistoryReviewCardPassengerComponent } from './components/history-review-card-passenger/history-review-card-passenger.component';
+import { HistorySearchParametersComponent } from './components/history-search-parameters/history-search-parameters.component';
 
 
 
@@ -18,7 +19,8 @@ import { HistoryReviewCardPassengerComponent } from './components/history-review
     HistoryReviewCardDriverComponent,
     HistoryMapCardComponent,
     HistoryDetailedDialogComponent,
-    HistoryReviewCardPassengerComponent],
+    HistoryReviewCardPassengerComponent,
+    HistorySearchParametersComponent],
   imports: [
     SharedModule,
   ],
