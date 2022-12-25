@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {RideInfo} from "../../../account/models/RideInfo";
 
 @Component({
   selector: 'app-history-detailed-ride-card',
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
 })
 export class HistoryDetailedRideCardComponent {
   public icon = 'star_outlined';
+  @Input() ride:any;
 
   public changeIcon(){
     if (this.icon==='star'){
@@ -15,7 +17,13 @@ export class HistoryDetailedRideCardComponent {
     else{
       this.icon='star';
     }
-
+  }
+  dateToString(date:Date):string{
+    let dateString=date.toString().split(",");
+    return dateString[2] + "." + dateString[1] + "." + dateString[0]+". "+dateString[3]+":"+dateString[4];
+  }
+  padTo2Digits(num:number) {
+    return num.toString().padStart(2, '0');
   }
 
 }

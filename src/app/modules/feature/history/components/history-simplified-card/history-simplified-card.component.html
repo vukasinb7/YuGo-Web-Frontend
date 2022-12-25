@@ -1,18 +1,48 @@
+<div class="w-100 d-flex align-items-center">
+  <form [formGroup]="accountInfoForm">
 
-<mat-card class="w-100 px-2 py-2" style="border-radius:25px; background-color: #26272b" *ngFor="let ride of obs | async">
+  <mat-form-field  class="" appearance="outline" style="width: 30%;">
+    <input matInput [matDatepicker]="startAtPicker" required (dateChange)="onDateChange()" formControlName="startDate">
+    <mat-datepicker-toggle  matSuffix [for]="startAtPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startAtPicker startView="year"></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="ms-2" appearance="outline" style="width: 30%;">
+    <input matInput [matDatepicker]="releasedAtPicker" required  (dateChange)="onDateChange()" formControlName="endDate">
+    <mat-datepicker-toggle matSuffix [for]="releasedAtPicker"></mat-datepicker-toggle>
+    <mat-datepicker #releasedAtPicker startView="year"></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="ms-2" appearance="outline">
+    <mat-label>Sort criterium</mat-label>
+    <mat-select [(value)]="selected" (selectionChange)="loadData()">
+      <mat-option value="startTime">Date</mat-option>
+      <mat-option value="totalCost">Price</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  </form>
+</div>
+
+<mat-card class="w-100 px-2 py-2 my-2" style="border-radius:25px; background-color: #26272b" *ngFor="let ride of obs | async" (click)="viewDetails(ride)">
   <div class="w-100 d-inline-flex">
     <div id="path-conatiner">
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-start align-items-center py-2 ">
           <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">{{ride.startTime}}</p>
+          <p class="m-0 p-1">{{ride.locations[0].departure.address}}</p>
         </div>
       </div>
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-start align-items-center ">
           <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">{{ride.endTime}}</p>
+          <p class="m-0 p-1">{{ride.locations[0].destination.address}}</p>
         </div>
+      </div>
+    </div>
+    <div class="delimiter"></div>
+    <div id="distance-container" >
+      <div class="d-flex h-100 justify-content-center align-items-center ">
+        <mat-icon aria-hidden="false">calendar_month</mat-icon>
+        <p class="m-0 mx-1">{{ride.startTime.toString().split(",")[2]}}.{{ride.startTime.toString().split(",")[1]}}.{{ride.startTime.toString().split(",")[0]}}.</p>
       </div>
     </div>
     <div class="delimiter"></div>
@@ -20,27 +50,21 @@
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-center align-items-center">
           <mat-icon aria-hidden="false" >schedule</mat-icon>
-          <p class="m-0 p-1">17.15</p>
+          <p class="m-0 p-1">{{ride.startTime.toString().split(",")[3]}}.{{ride.startTime.toString().split(",")[4]}}</p>
         </div>
       </div>
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-center align-items-center">
           <mat-icon aria-hidden="false">schedule</mat-icon>
-          <p class="m-0 p-1">17.26</p>
+          <p class="m-0 p-1">{{ride.endTime.toString().split(",")[3]}}.{{ride.endTime.toString().split(",")[4]}}</p>
         </div>
       </div>
     </div>
-    <div class="delimiter"></div>
-    <div id="distance-container" >
-      <div class="d-flex h-100 justify-content-center align-items-center ">
-        <mat-icon aria-hidden="false">route</mat-icon>
-        <p class="m-0 mx-1">4km</p>
-      </div>
-    </div>
+
     <div class="delimiter"></div>
     <div id="price-container"  >
       <div class="d-flex h-100 justify-content-center align-items-center ">
-        <p class="m-0 px-2">$15.60</p>
+        <p class="m-0 px-2">${{ride.totalCost}}</p>
       </div>
     </div>
   </div>
