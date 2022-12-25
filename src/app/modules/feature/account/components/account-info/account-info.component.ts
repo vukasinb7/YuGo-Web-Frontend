@@ -12,7 +12,7 @@ import {AuthService} from "../../../../core/services/auth.service";
 export class AccountInfoComponent implements OnInit{
   accountInfoForm : FormGroup;
   hasError : boolean;
-  editEnabled: boolean
+  editEnabled: boolean;
   constructor(private userService: UserService, private authService: AuthService) {
     this.accountInfoForm = new FormGroup({
       name: new FormControl('', [Validators.required]),

@@ -2,8 +2,14 @@
   <div class="d-flex flex-column w-100">
     <h2 class="font-weight-bold text-center mb-4">Personal Info</h2>
     <form class="d-block" [formGroup]="accountInfoForm">
-      <div class="w-100 text-center mb-3">
-        <input type="text" formControlName="profilePicture">
+      <div class="w-100 text-center mb-3 d-flex flex-column just">
+        <img src="{{accountInfoForm.controls['profilePicture'].value}}" class="rounded-circle m-auto mb-2" width="150" height="150">
+        <div class="justify-content-center">
+          <mat-form-field class="my-1 w-75">
+            <mat-label>Profile picture</mat-label>
+            <input type="text" matInput placeholder="Enter picture url" name="profilePicture" formControlName="profilePicture">
+          </mat-form-field>
+        </div>
       </div>
 
       <mat-form-field class="my-1 w-100">
