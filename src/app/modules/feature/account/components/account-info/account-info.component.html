@@ -3,12 +3,12 @@
     <h2 class="font-weight-bold text-center mb-4">Personal Info</h2>
     <form class="d-block" [formGroup]="accountInfoForm">
       <div class="w-100 text-center mb-3">
-        <img class="rounded-circle m-auto" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg" width="150 " height="150" >
+        <input type="text" formControlName="profilePicture">
       </div>
 
       <mat-form-field class="my-1 w-100">
         <mat-label>Firstname</mat-label>
-        <input type="text" matInput placeholder="Enter your firstname" name="firstname" formControlName="firstname">
+        <input type="text" matInput placeholder="Enter your firstname" name="name" formControlName="name">
       </mat-form-field>
 
       <mat-form-field class="my-1 w-100">
@@ -18,7 +18,7 @@
 
       <mat-form-field class="my-1 w-100">
         <mat-label>Phone</mat-label>
-        <input type="text" matInput placeholder="Enter your phone number" name="phone" formControlName="phone">
+        <input type="text" matInput placeholder="Enter your phone number" name="phone" formControlName="telephoneNumber">
       </mat-form-field>
 
       <mat-form-field class="my-1 w-100">
