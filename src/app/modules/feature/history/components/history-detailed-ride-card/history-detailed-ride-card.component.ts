@@ -32,7 +32,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   }
   dateToString(date:Date):string{
     let dateString=date.toString().split(",");
-    return dateString[2] + "." + dateString[1] + "." + dateString[0]+". "+dateString[3]+":"+dateString[4];
+    return [dateString[2], dateString[1], dateString[0]].join(".")+". "+[dateString[3],dateString[4]].join(":");
   }
   padTo2Digits(num:number) {
     return num.toString().padStart(2, '0');
@@ -47,6 +47,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
           if (error instanceof HttpErrorResponse) {
           }}})
   }
+
   getPassenger(){
     this.userService.getPassenger(this.ride.passengers[0].id).subscribe(
       {next:(passenger) => {
