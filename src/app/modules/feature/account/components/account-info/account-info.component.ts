@@ -12,7 +12,6 @@ import {ErrorEvent} from "leaflet";
 })
 export class AccountInfoComponent implements OnInit{
   accountInfoForm : FormGroup;
-  hasError : boolean;
   editEnabled: boolean;
   constructor(private userService: UserService, private authService: AuthService) {
     this.accountInfoForm = new FormGroup({
@@ -25,7 +24,6 @@ export class AccountInfoComponent implements OnInit{
     });
     this.accountInfoForm.disable();
     this.editEnabled = false;
-    this.hasError = false;
   }
 
   ngOnInit(): void {
@@ -45,7 +43,7 @@ export class AccountInfoComponent implements OnInit{
         })},
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.hasError = true;
+
         }}})
   }
 
@@ -61,23 +59,31 @@ export class AccountInfoComponent implements OnInit{
   }
 
   submitEdit() : void {
-    this.userService.updateUser(this.accountInfoForm.value).subscribe({
-      next:(info) => {
-        this.accountInfoForm.patchValue({
-          name: info.name,
-          surname: info.surname,
-          profilePicture: info.profilePicture,
-          telephoneNumber: info.telephoneNumber,
-          address: info.address,
-          email: info.email,
-        })},
-      error: (error) => {
-        if (error instanceof HttpErrorResponse) {
-          this.hasError = true;
-        }}});
+    if (this.accountInfoForm.valid) {
+      this.userService.updateUser(this.accountInfoForm.value).subscribe({
+        next: (info) => {
+          this.accountInfoForm.patchValue({
+            name: info.name,
+            surname: info.surname,
+            profilePicture: info.profilePicture,
+            telephoneNumber: info.telephoneNumber,
+            address: info.address,
+            email: info.email,
+          })
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
 
-    this.accountInfoForm.disable();
-    this.editEnabled = false;
+          }
+        }
+      });
+
+      this.accountInfoForm.disable();
+      this.editEnabled = false;
+    }
+    else{
+
+    }
   }
 
   onProfilePictureError(event : any) {

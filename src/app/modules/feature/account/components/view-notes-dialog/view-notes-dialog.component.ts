@@ -14,7 +14,6 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./view-notes-dialog.component.css']
 })
 export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
-  hasError : boolean = false;
   dataSource = new MatTableDataSource<Note>();
   displayedColumns : string[] = ['id','date','message'];
   totalRows = 0;
@@ -45,7 +44,7 @@ export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.hasError = true;
+
         }}})
   }
 

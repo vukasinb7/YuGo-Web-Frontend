@@ -38,6 +38,10 @@ export class UserService {
       }});
   }
 
+  changePassword(userId :number, passwordForm: any){
+    return this.http.put(environment.apiHost + `user/${userId}/changePassword`,passwordForm)
+  }
+
   blockUser(userId : number) : Observable<any>{
     return this.http.put(environment.apiHost + `user/${userId}/block`, {});
   }
