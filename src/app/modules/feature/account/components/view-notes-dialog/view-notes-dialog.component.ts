@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../../../shared/services/user.service";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {UserInfo} from "../../models/UserInfo";
+import {UserInfo} from "../../../../shared/models/UserInfo";
 import {MatTableDataSource} from "@angular/material/table";
 import {Note} from "../../models/Note";
 import {MatSort} from "@angular/material/sort";

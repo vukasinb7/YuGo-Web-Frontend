@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../../../shared/services/user.service";
 import {AuthService} from "../../../../core/services/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
 

@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {RideInfo} from "../../../account/models/RideInfo";
-import {UserService} from "../../../account/services/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {UserInfo} from "../../../account/models/UserInfo";
+import {DriverService} from "../../../../shared/services/driver.service";
+import {PassengerService} from "../../../../shared/services/passenger.service";
 
 @Component({
   selector: 'app-history-detailed-ride-card',
@@ -15,7 +14,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   driverName:String="";
   passengerName:String="";
 
-  constructor(private userService:UserService) {
+  constructor(private driverService:DriverService, private passengerService: PassengerService) {
   }
   ngOnInit(){
     this.getDriver();
@@ -39,7 +38,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   }
 
   getDriver(){
-    this.userService.getDriver(this.ride.driver.id).subscribe(
+    this.driverService.getDriver(this.ride.driver.id).subscribe(
       {next:(driver) => {
           this.driverName= driver.name+" "+driver.surname;
         },
@@ -49,7 +48,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   }
 
   getPassenger(){
-    this.userService.getPassenger(this.ride.passengers[0].id).subscribe(
+    this.passengerService.getPassenger(this.ride.passengers[0].id).subscribe(
       {next:(passenger) => {
           this.passengerName= passenger.name+" "+passenger.surname;
         },

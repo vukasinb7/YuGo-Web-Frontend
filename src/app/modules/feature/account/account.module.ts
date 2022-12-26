@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from "../../shared/shared.module";
 import { AccountInfoComponent } from './components/account-info/account-info.component';
 import { PasswordComponent } from './components/password/password.component';
 import { DocumentsComponent } from './components/documents/documents.component';
@@ -12,6 +11,7 @@ import { AdminUsersAccountsComponent } from './pages/admin-users-accounts/admin-
 import { AdminAccountComponent } from './pages/admin-account/admin-account.component';
 import { CreateNoteDialogComponent } from './components/create-note-dialog/create-note-dialog.component';
 import { ViewNotesDialogComponent } from './components/view-notes-dialog/view-notes-dialog.component';
+import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
   declarations: [

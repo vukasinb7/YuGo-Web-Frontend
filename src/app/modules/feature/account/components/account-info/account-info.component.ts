@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../../../shared/services/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AuthService} from "../../../../core/services/auth.service";
-import {ErrorEvent} from "leaflet";
 
 @Component({
   selector: 'app-account-info',
