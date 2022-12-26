@@ -9,12 +9,6 @@ import {HistoryDetailedDialogComponent} from "../components/history-detailed-dia
   styleUrls: ['./history.component.css']
 })
 export class HistoryComponent {
-  constructor(public dialog: MatDialog) {}
-  openDetailedDialog(){
-    this.dialog.open(HistoryDetailedDialogComponent, {
-      width: '75%',
-      backdropClass: 'backdropBackground'
-    });
-  }
+  constructor() {}
 
 }
