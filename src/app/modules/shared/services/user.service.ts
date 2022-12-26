@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {environment} from "../../../../../enviroments/environment";
-import {AllUsersInfo} from "../models/AllUsersInfo";
-import {AllRidesOut} from "../models/AllRidesOut";
+import {environment} from "../../../../enviroments/environment";
+import {UsersInfoPaged} from "../../feature/account/models/UsersInfoPaged";
+import {RidesPaged} from "../../feature/history/models/RidesPaged";
 import {UserInfo} from "../models/UserInfo";
 import {JwtHelperService} from "@auth0/angular-jwt";
 
@@ -19,12 +19,6 @@ export class UserService {
     role = role.toLowerCase();
     return this.http.get<UserInfo>(environment.apiHost + `${role}/${userId}`);
   }
-  getDriver(userId:number):Observable<UserInfo>{
-    return this.http.get<UserInfo>(environment.apiHost + `driver/${userId}`);
-  }
-  getPassenger(userId:number):Observable<UserInfo>{
-    return this.http.get<UserInfo>(environment.apiHost + `passenger/${userId}`);
-  }
 
   updateUser(values: any) : Observable<UserInfo>{
     const accessToken: any = localStorage.getItem('user');
@@ -37,8 +31,8 @@ export class UserService {
     return this.http.put<UserInfo>(environment.apiHost + `driver/${userId}`, values);
   }
 
-  getUsers(page : number, size :number): Observable<AllUsersInfo>{
-    return this.http.get<AllUsersInfo>(environment.apiHost + "user",
+  getUsers(page : number, size :number): Observable<UsersInfoPaged>{
+    return this.http.get<UsersInfoPaged>(environment.apiHost + "user",
       {params : {
         page: page,
         size : size
@@ -60,23 +54,12 @@ export class UserService {
   createNote(userId : number, note : string) : Observable<any>{
     return this.http.post(environment.apiHost + `user/${userId}/note`, {"message":note});
   }
-  
+
   getNotes(userId : number, page : number, size :number) : Observable<any>{
     return this.http.get(environment.apiHost + `user/${userId}/note`,
       {params : {
           page: page,
           size : size
-        }});
-  }
-
-  getPassengerRides(passengerId:number, page : number, size :number, sort: string, from: string, to:string): Observable<AllRidesOut>{
-    return this.http.get<AllRidesOut>(environment.apiHost + `passenger/${passengerId}/ride`,
-      {params : {
-          page: page,
-          size : size,
-          sort :sort,
-          from :from,
-          to: to
         }});
   }
 }

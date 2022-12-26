@@ -1,8 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {HttpErrorResponse} from "@angular/common/http";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {UserService} from "../../services/user.service";
-import {UserInfo} from "../../models/UserInfo";
+import {UserService} from "../../../../shared/services/user.service";
+import {UserInfo} from "../../../../shared/models/UserInfo";
 
 @Component({
   selector: 'app-create-note-dialog',

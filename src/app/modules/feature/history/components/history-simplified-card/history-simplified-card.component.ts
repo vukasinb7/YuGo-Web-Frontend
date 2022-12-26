@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {UserService} from "../../../account/services/user.service";
-import {RideInfo} from "../../../account/models/RideInfo";
+import {RideInfo} from "../../../../shared/models/RideInfo";
 import {MatTableDataSource} from "@angular/material/table";
 import {Observable} from "rxjs";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
@@ -9,6 +8,7 @@ import {HistoryDetailedDialogComponent} from "../history-detailed-dialog/history
 import {MatDialog} from "@angular/material/dialog";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {PassengerService} from "../../../../shared/services/passenger.service";
 
 @Component({
   selector: 'app-history-simplified-card',
@@ -28,7 +28,7 @@ export class HistorySimplifiedCardComponent implements OnInit{
   @Output()
   dateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
 
-  constructor(private userService:UserService,public dialog: MatDialog) {
+  constructor(private passengerService:PassengerService, public dialog: MatDialog) {
     this.accountInfoForm = new FormGroup({
       startDate: new FormControl(new Date(2022,0,1), [Validators.required]),
       endDate: new FormControl(new Date(), [Validators.required])});
@@ -46,7 +46,7 @@ export class HistorySimplifiedCardComponent implements OnInit{
   }
 
   loadData(){
-    this.userService.getPassengerRides(1,this.currentPage,this.pageSize,this.selected,this.dateToString(this.accountInfoForm.get('startDate')?.value),this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
+    this.passengerService.getPassengerRides(1,this.currentPage,this.pageSize,this.selected,this.dateToString(this.accountInfoForm.get('startDate')?.value),this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
       next:(results)=> {
         this.dataSource.data=results.results;
         setTimeout(() => {

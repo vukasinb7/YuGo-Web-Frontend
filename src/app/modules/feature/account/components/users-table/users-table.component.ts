@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {HttpErrorResponse} from "@angular/common/http";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../../../shared/services/user.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {UserInfo} from "../../models/UserInfo";
+import {UserInfo} from "../../../../shared/models/UserInfo";
 import {CreateNoteDialogComponent} from "../create-note-dialog/create-note-dialog.component";
 import {ViewNotesDialogComponent} from "../view-notes-dialog/view-notes-dialog.component";
 

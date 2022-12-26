@@ -1,11 +1,11 @@
-import {PathInfo} from "./PathInfo";
+import {Path} from "./Path";
 import {UserSimpleInfo} from "./UserSimpleInfo";
 import {RejectionInfo} from "./RejectionInfo";
 
 
 export interface RideInfo {
   id: number;
-  locations: PathInfo[];
+  locations: Path[];
   startTime: Date;
   endTime: Date;
   totalCost: number;
