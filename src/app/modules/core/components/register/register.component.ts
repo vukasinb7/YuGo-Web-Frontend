@@ -21,6 +21,7 @@ export class RegisterComponent implements AfterViewInit{
       this.registrationForm.controls.confirmPassword.updateValueAndValidity();
     });
   }
+  TEL_REGEX:string = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
   registrationForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, this.passwordValidator()]),
@@ -28,7 +29,7 @@ export class RegisterComponent implements AfterViewInit{
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     address: new FormControl('', [Validators.required]),
-    phoneNumber: new FormControl('', [Validators.required])
+    phoneNumber: new FormControl('', [Validators.required, Validators.pattern(this.TEL_REGEX)])
   });
 
   private passwordValidator(): ValidatorFn {
@@ -59,6 +60,8 @@ export class RegisterComponent implements AfterViewInit{
       })());
     };
   }
-
+  onSubmit(){
+    console.log("submitted");
+  }
 
 }

@@ -1,3 +1,5 @@
-.mdc-notched-outline--upgraded .mdc-floating-label-float-above{
-  max-width: 150% !important;
+mat-error{
+  white-space: nowrap;
+  overflow: hidden;
+  margin-left: -15px;
 }
