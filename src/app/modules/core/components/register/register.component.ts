@@ -9,6 +9,10 @@ import {
   Validators
 } from "@angular/forms";
 import {Observable, of} from "rxjs";
+import {RegistrationService} from "../../services/registration.service";
+import {UserRegistration} from "../../models/userRegistration";
+import {HttpErrorResponse} from "@angular/common/http";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-register',
@@ -16,12 +20,15 @@ import {Observable, of} from "rxjs";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements AfterViewInit{
+  constructor(private registrationService:RegistrationService, private dialogRef:MatDialogRef<RegisterComponent>) {
+  }
   ngAfterViewInit(): void {
     this.registrationForm.controls.password.valueChanges.subscribe(()=>{
       this.registrationForm.controls.confirmPassword.updateValueAndValidity();
     });
   }
   TEL_REGEX:string = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+  errorMessage:string = '';
   registrationForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, this.passwordValidator()]),
@@ -61,7 +68,18 @@ export class RegisterComponent implements AfterViewInit{
     };
   }
   onSubmit(){
-    console.log("submitted");
+    let user:UserRegistration = {
+      name:this.registrationForm.controls.firstName.value!,
+      surname:this.registrationForm.controls.lastName.value!,
+      address:this.registrationForm.controls.address.value!,
+      telephoneNumber:this.registrationForm.controls.phoneNumber.value!,
+      password:this.registrationForm.controls.password.value!,
+      email:this.registrationForm.controls.email.value!
+    };
+    this.registrationService.register(user).subscribe({
+      next:()=>{this.dialogRef.close()},
+      error:(err:HttpErrorResponse)=>{this.errorMessage = err.error}
+    });
   }
 
 }
