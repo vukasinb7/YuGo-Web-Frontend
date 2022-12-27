@@ -1,29 +1,56 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../../shared/services/user.service";
 import {AuthService} from "../../../../core/services/auth.service";
+import {Vehicle} from "../../../../shared/models/Vehicle";
+import {VehicleService} from "../../services/vehicle.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-vehicle-details',
   templateUrl: './vehicle-details.component.html',
   styleUrls: ['./vehicle-details.component.css']
 })
-export class VehicleDetailsComponent implements AfterViewInit{
+export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   vehicleDetailsForm : FormGroup;
   editEnabled: boolean = false;
-  constructor(private userService: UserService, private authService: AuthService) {
+  constructor(private vehicleService: VehicleService, private authService: AuthService) {
     this.vehicleDetailsForm = new FormGroup({
       model: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required]),
-      licence: new FormControl('', [Validators.required]),
+      licenseNumber: new FormControl('', [Validators.required]),
       babies: new FormControl('', [Validators.required]),
       pets: new FormControl('', [Validators.required]),
-      seats: new FormControl('', [Validators.required]),
+      passengerSeats: new FormControl('', [Validators.required]),
     });
+  }
+
+  ngOnInit(){
+    this.loadVehicleData();
   }
 
   ngAfterViewInit() {
     this.cancelEdit();
+  }
+
+  loadVehicleData(){
+    this.vehicleService.getVehicle(this.authService.getId()).subscribe({
+      next: (vehicle) => {
+        this.vehicleDetailsForm.patchValue({
+          model: vehicle.model,
+          type: vehicle.vehicleType,
+          licenseNumber: vehicle.licenseNumber,
+          babies: vehicle.babyTransport,
+          pets: vehicle.petTransport,
+          passengerSeats: vehicle.passengerSeats,
+        })
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+
+        }
+      }
+    });
   }
 
   enableEdit() : void{

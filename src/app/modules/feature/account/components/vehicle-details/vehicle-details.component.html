@@ -8,14 +8,14 @@
       </mat-form-field>
 
       <mat-button-toggle-group name="vehicleType" aria-label="Vehicle Type" formControlName="type">
-        <mat-button-toggle value="standard" [checked]="true">Standard</mat-button-toggle>
-        <mat-button-toggle value="luxury">Luxury</mat-button-toggle>
-        <mat-button-toggle value="van">Van</mat-button-toggle>
+        <mat-button-toggle value="STANDARD" [checked]="true">Standard</mat-button-toggle>
+        <mat-button-toggle value="LUX">Luxury</mat-button-toggle>
+        <mat-button-toggle value="VAN">Van</mat-button-toggle>
       </mat-button-toggle-group>
 
       <mat-form-field class="mt-4 w-100">
         <mat-label>Vehicle licence plate</mat-label>
-        <input type="text" matInput placeholder="Enter vehicle licence plate" name="licence" formControlName="licence">
+        <input type="text" matInput placeholder="Enter vehicle licence plate" name="licenseNumber" formControlName="licenseNumber">
       </mat-form-field>
 
       <p><mat-checkbox formControlName="babies">Include babies</mat-checkbox></p>
@@ -23,9 +23,9 @@
       <p><mat-checkbox formControlName="pets">Include pats</mat-checkbox></p>
 
       <div class="my-3">
-        <mat-label>Number of free seats:</mat-label>
+        <mat-label>Number of passenger seats:</mat-label>
         <mat-slider class="w-100 mx-auto" min="1" max="8" step="1" showTickMarks discrete>
-          <input matSliderThumb name="seats" formControlName="seats">
+          <input matSliderThumb name="passengerSeats" formControlName="passengerSeats">
         </mat-slider>
       </div>
 
