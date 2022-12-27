@@ -30,7 +30,7 @@ export class AccountInfoComponent implements OnInit{
   }
 
   loadUserData() : void{
-    this.userService.getUser(this.authService.getId(), this.authService.getRole()).subscribe({
+    this.userService.getUser(this.authService.getId()).subscribe({
       next:(info) => {
         this.accountInfoForm.patchValue({
           name: info.name,
