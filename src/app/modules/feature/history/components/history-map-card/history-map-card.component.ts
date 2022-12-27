@@ -1,21 +1,23 @@
-import { Component } from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MapService} from "../../../home/services/map.service";
 import * as L from "leaflet";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {RideInfo} from "../../../../shared/models/RideInfo";
 
 @Component({
   selector: 'app-history-map-card',
   templateUrl: './history-map-card.component.html',
   styleUrls: ['./history-map-card.component.css']
 })
-export class HistoryMapCardComponent {
+export class HistoryMapCardComponent{
   private map:any;
-  constructor(private mapService:MapService) {
+  constructor(private mapService:MapService,@Inject(MAT_DIALOG_DATA) public ride: RideInfo) {
   }
   private initMap():void{
     this.map = L.map('map', {
       center:[45.2396, 19.8227],
       scrollWheelZoom:false,
-      zoom:13
+      zoom:12
     });
     const tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -43,19 +45,10 @@ export class HistoryMapCardComponent {
   }
   route(): void {
     L.Routing.control({
-      waypoints: [L.latLng(57.74, 11.94), L.latLng(57.6792, 11.949)],
+      waypoints: [L.latLng(this.ride.locations[0].departure.latitude, this.ride.locations[0].departure.longitude), L.latLng(this.ride.locations[0].destination.latitude, this.ride.locations[0].destination.longitude)],
     }).addTo(this.map);
   }
 
-  private addMarker(): void {
-    const lat: number = 45.25;
-    const lon: number = 19.8228;
-
-    L.marker([lat, lon])
-      .addTo(this.map)
-      .bindPopup('Trenutno se nalazite ovde.')
-      .openPopup();
-  }
 
   ngAfterViewInit(): void {
     let DefaultIcon = L.icon({
@@ -63,6 +56,7 @@ export class HistoryMapCardComponent {
     });
 
     L.Marker.prototype.options.icon = DefaultIcon;
+
     this.initMap();
   }
 }

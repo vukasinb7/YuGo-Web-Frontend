@@ -6,6 +6,7 @@ import {UsersInfoPaged} from "../../feature/account/models/UsersInfoPaged";
 import {RidesPaged} from "../../feature/history/models/RidesPaged";
 import {UserInfo} from "../models/UserInfo";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {ReviewsPerRideInfo} from "../../feature/history/models/ReviewPerPassengerInfo";
 
 @Injectable({
   providedIn: 'root'

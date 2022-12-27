@@ -15,11 +15,11 @@ import {RegisterComponent} from "../../../../core/components/register/register.c
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.css']
 })
-export class UsersTableComponent implements OnInit, AfterViewInit{
-  hasError : boolean = false;
-  searchText : string = "";
+export class UsersTableComponent implements OnInit, AfterViewInit {
+  hasError: boolean = false;
+  searchText: string = "";
   dataSource = new MatTableDataSource<UserInfo>();
-  displayedColumns : string[] = ['id','firstname','surname','phone','email','address','role','block','note'];
+  displayedColumns: string[] = ['id', 'firstname', 'surname', 'phone', 'email', 'address', 'role', 'block', 'note'];
   totalRows = 0;
   pageSize = 5;
   currentPage = 0;
@@ -35,14 +35,15 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
 
   @ViewChild('usersSort') usersSort = new MatSort();
   @ViewChild('usersPaginator') usersPaginator!: MatPaginator;
+
   ngAfterViewInit(): void {
     this.dataSource.sort = this.usersSort;
     this.dataSource.paginator = this.usersPaginator;
   }
 
-  loadData(){
-    this.userService.getUsers(this.currentPage,this.pageSize).subscribe({
-      next:(info) => {
+  loadData() {
+    this.userService.getUsers(this.currentPage, this.pageSize).subscribe({
+      next: (info) => {
         this.dataSource.data = info.results;
         setTimeout(() => {
           this.usersPaginator.pageIndex = this.currentPage;
@@ -52,7 +53,9 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
           this.hasError = true;
-        }}})
+        }
+      }
+    })
   }
 
   pageChanged(event: PageEvent) {
@@ -61,41 +64,46 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
     this.loadData();
   }
 
-  blockUser(userId : number){
+  blockUser(userId: number) {
     this.userService.blockUser(userId).subscribe({
-      next:() =>{
+      next: () => {
         this.loadData();
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
           this.hasError = true;
-        }}});
+        }
+      }
+    });
   }
 
-  unblockUser(userId : number){
+  unblockUser(userId: number) {
     this.userService.unblockUser(userId).subscribe({
-      next:() =>{
+      next: () => {
         this.loadData();
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
           this.hasError = true;
-        }}});
-  }
-
-  createNote(user :UserInfo){
-    this.dialog.open(CreateNoteDialogComponent,{
-      width:'40%',
-      data:user
+        }
+      }
     });
   }
 
-  showNotes(user :UserInfo){
-    this.dialog.open(ViewNotesDialogComponent,{
-      width:'40%',
-      data:user
+  createNote(user: UserInfo) {
+    this.dialog.open(CreateNoteDialogComponent, {
+      width: '40%',
+      data: user
     });
   }
+
+  showNotes(user: UserInfo) {
+    this.dialog.open(ViewNotesDialogComponent, {
+      width: '40%',
+      data: user
+    });
+  }
+
 
   createDriver(){
     this.dialog.open(RegisterComponent,{
@@ -114,7 +122,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
   filterUsers(){
     if (this.searchText != ""){
       this.searchText = this.searchText.toLowerCase();
-      this.dataSource.data = this.dataSource.data.filter((user)=>{
+      this.dataSource.data = this.dataSource.data.filter((user) => {
         return user.id.toString().includes(this.searchText) ||
           user.surname.toLowerCase().includes(this.searchText) ||
           user.name.toLowerCase().includes(this.searchText) ||
@@ -123,8 +131,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit{
           user.telephoneNumber.includes(this.searchText) ||
           user.role.toLowerCase().includes(this.searchText);
       })
-    }
-    else{
+    } else {
       this.loadData();
     }
   }
