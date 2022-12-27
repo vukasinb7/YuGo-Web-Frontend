@@ -9,6 +9,7 @@ import { HistoryReviewCardPassengerComponent } from './components/history-review
 import {
   HistoryReviewCardDriverComponent
 } from "./components/history-review-card-driver/history-review-card-driver.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -24,6 +25,7 @@ import {
   ],
   imports: [
     SharedModule,
+    ReactiveFormsModule
   ],
   exports:[
     HistoryComponent],

@@ -1,12 +1,12 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-
 .carousel-inner{
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
-.starrating > input {display: none;}  /* Remove radio buttons */
+.starrating > input,.starrating2 > input
+{display: none;}  /* Remove radio buttons */
 
-.starrating > label:before {
+.starrating > label:before,.starrating2 > label:before {
   content: "\f005"; /* Star */
   margin: 2px;
   font-size: 2em;
@@ -16,12 +16,12 @@
 
 a[href], a[href]:hover {color: grey; font-size: 0.5em; text-decoration: none}
 
-.starrating > label
+.starrating > label,.starrating2 > label
 {
   color: #222222; /* Start color when not clicked */
 }
 
-.starrating > input:checked ~ label
+.starrating > input:checked ~ label, .starrating2> input:checked ~ label
 { color: #ffca08 ; } /* Set yellow color when star checked */
 
 .starrating > input:hover ~ label
@@ -32,9 +32,4 @@ h1, p{
   text-align: center;
 
 }
-
-input{
-  pointer-events: none;
-}
-
 

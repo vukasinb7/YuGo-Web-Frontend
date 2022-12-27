@@ -14,4 +14,10 @@ export class ReviewService {
   getReviewsForRide(rideId:number): Observable<ReviewPerPassengerInfo[]> {
     return this.http.get<ReviewPerPassengerInfo[]>(environment.apiHost + `review/${rideId}`);
   }
+  createVehicleReview(rideId : number,rating:number,comment:string):Observable<any>{
+    return this.http.post(environment.apiHost + `review/${rideId}/vehicle`, {"rating":rating,"comment":comment});
+  }
+  createRideReview(rideId : number,rating:number,comment:string):Observable<any>{
+    return this.http.post(environment.apiHost + `review/${rideId}/driver`, {"rating":rating,"comment":comment});
+  }
 }

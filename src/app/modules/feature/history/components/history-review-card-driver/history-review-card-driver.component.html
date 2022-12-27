@@ -6,7 +6,7 @@
         <h5 class="text-center mb-1">{{review.typeOfReview}}</h5>
         <p class="mb-0">By {{review.passengerName}}</p>
         <div class="container-rating w-100 text-center">
-          <div class="starrating risingstar d-flex justify-content-center flex-row-reverse">
+          <div class="starrating  risingstar d-flex justify-content-center flex-row-reverse">
             <input type="radio" id="star5r" name="ratingr+{{review.reviewInfoOut.id}}" value="5" [checked]="review.reviewInfoOut.rating==5"  /><label for="star5r" title="5 star"></label>
             <input type="radio" id="star4r" name="ratingr+{{review.reviewInfoOut.id}}" value="4" [checked]="review.reviewInfoOut.rating==4"/><label for="star4r" title="4 star"></label>
             <input type="radio" id="star3r" name="ratingr+{{review.reviewInfoOut.id}}" value="3" [checked]="review.reviewInfoOut.rating==3"/><label for="star3r" title="3 star"></label>
