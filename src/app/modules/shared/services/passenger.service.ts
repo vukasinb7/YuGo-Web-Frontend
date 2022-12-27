@@ -17,6 +17,10 @@ export class PassengerService {
     return this.http.get<UserInfo>(environment.apiHost + `passenger/${userId}`);
   }
 
+  createPassenger(values: any) : Observable<UserInfo>{
+    return this.http.post<UserInfo>(environment.apiHost + `passenger`, values);
+  }
+
   getPassengerRides(passengerId:number, page : number, size :number, sort: string, from: string, to:string): Observable<RidesPaged>{
     return this.http.get<RidesPaged>(environment.apiHost + `passenger/${passengerId}/ride`,
       {params : {

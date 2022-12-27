@@ -11,5 +11,10 @@ mat-error{
 }
 img{
   max-width: 100%;
-
 }
+
+::ng-deep .card-bg{
+  background-color: #26272b;
+  overflow-x:auto;
+}
+

@@ -11,7 +11,12 @@ export class RegistrationService {
 
   constructor(private http:HttpClient) { }
 
-  register(user:UserRegistration):Observable<any>{
-    return this.http.post(environment.apiHost + "passenger", user);
+  register(user:UserRegistration, userType : string):Observable<any>{
+    if (userType == "PASSENGER"){
+      return this.http.post(environment.apiHost + "passenger", user);
+    }
+    else{
+      return this.http.post(environment.apiHost + "driver", user);
+    }
   }
 }

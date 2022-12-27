@@ -45,7 +45,8 @@ export class NavbarComponent implements OnInit{
 
   openRegisterDialog(){
     this.registerDialog = this.dialog.open(RegisterComponent, {
-      width: '60%'
+      width: '30%',
+      data: 'PASSENGER'
     });
     this.registerDialog.afterClosed().subscribe(result => {
       this.router.navigate(['.'], {relativeTo: this.route});
