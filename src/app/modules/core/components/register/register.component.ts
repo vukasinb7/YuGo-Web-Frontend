@@ -13,6 +13,7 @@ import {RegistrationService} from "../../services/registration.service";
 import {UserRegistration} from "../../models/userRegistration";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialogRef} from "@angular/material/dialog";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,7 @@ import {MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements AfterViewInit{
-  constructor(private registrationService:RegistrationService, private dialogRef:MatDialogRef<RegisterComponent>) {
+  constructor(private registrationService:RegistrationService, private dialogRef:MatDialogRef<RegisterComponent>, private router: Router) {
   }
   ngAfterViewInit(): void {
     this.registrationForm.controls.password.valueChanges.subscribe(()=>{
@@ -29,6 +30,7 @@ export class RegisterComponent implements AfterViewInit{
   }
   TEL_REGEX:string = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
   errorMessage:string = '';
+  isFinished:boolean = false;
   registrationForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, this.passwordValidator()]),
@@ -77,9 +79,16 @@ export class RegisterComponent implements AfterViewInit{
       email:this.registrationForm.controls.email.value!
     };
     this.registrationService.register(user).subscribe({
-      next:()=>{this.dialogRef.close()},
+      next:()=>{
+        this.isFinished = true;
+        this.dialogRef.updateSize("35%");
+      },
       error:(err:HttpErrorResponse)=>{this.errorMessage = err.error}
     });
   }
 
+  navigateToLogin() {
+    this.router.navigate(['home'], {queryParams:{loginDialog:true}});
+    this.dialogRef.close();
+  }
 }
