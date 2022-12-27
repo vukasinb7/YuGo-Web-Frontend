@@ -63,7 +63,4 @@ export class UserService {
           size : size
         }});
   }
-  getReviewsForRide(rideId:number): Observable<ReviewsPerRideInfo> {
-    return this.http.get<ReviewsPerRideInfo>(environment.apiHost + `review/${rideId}`);
-  }
 }
