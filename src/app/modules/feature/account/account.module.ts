@@ -12,6 +12,7 @@ import { AdminAccountComponent } from './pages/admin-account/admin-account.compo
 import { CreateNoteDialogComponent } from './components/create-note-dialog/create-note-dialog.component';
 import { ViewNotesDialogComponent } from './components/view-notes-dialog/view-notes-dialog.component';
 import { SharedModule } from "../../shared/shared.module";
+import { VehicleDetailsComponent } from './components/vehicle-details/vehicle-details.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SharedModule } from "../../shared/shared.module";
     UsersTableComponent,
     CreateNoteDialogComponent,
     AdminUsersAccountsComponent,
-    ViewNotesDialogComponent
+    ViewNotesDialogComponent,
+    VehicleDetailsComponent
   ],
   imports: [
     CommonModule,

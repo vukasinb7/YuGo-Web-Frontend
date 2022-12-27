@@ -54,7 +54,7 @@ export class AccountInfoComponent implements OnInit{
   cancelEdit() : void{
     this.accountInfoForm.disable();
     this.editEnabled = false;
-    this.ngOnInit();
+    this.loadUserData();
   }
 
   submitEdit() : void {
