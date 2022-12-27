@@ -8,6 +8,7 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {UserInfo} from "../../../../shared/models/UserInfo";
 import {CreateNoteDialogComponent} from "../create-note-dialog/create-note-dialog.component";
 import {ViewNotesDialogComponent} from "../view-notes-dialog/view-notes-dialog.component";
+import {RegisterComponent} from "../../../../core/components/register/register.component";
 
 @Component({
   selector: 'app-users-table',
@@ -103,8 +104,23 @@ export class UsersTableComponent implements OnInit, AfterViewInit {
     });
   }
 
-  filterUsers() {
-    if (this.searchText != "") {
+
+  createDriver(){
+    this.dialog.open(RegisterComponent,{
+      width:'30%',
+      data: 'DRIVER'
+    });
+  }
+
+  createPassenger(){
+    this.dialog.open(RegisterComponent,{
+      width:'30%',
+      data: 'PASSENGER'
+    });
+  }
+
+  filterUsers(){
+    if (this.searchText != ""){
       this.searchText = this.searchText.toLowerCase();
       this.dataSource.data = this.dataSource.data.filter((user) => {
         return user.id.toString().includes(this.searchText) ||

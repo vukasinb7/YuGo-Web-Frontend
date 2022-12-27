@@ -30,7 +30,7 @@ export class AccountInfoComponent implements OnInit{
   }
 
   loadUserData() : void{
-    this.userService.getUser(this.authService.getId(), this.authService.getRole()).subscribe({
+    this.userService.getUser(this.authService.getId()).subscribe({
       next:(info) => {
         this.accountInfoForm.patchValue({
           name: info.name,
@@ -54,7 +54,7 @@ export class AccountInfoComponent implements OnInit{
   cancelEdit() : void{
     this.accountInfoForm.disable();
     this.editEnabled = false;
-    this.ngOnInit();
+    this.loadUserData();
   }
 
   submitEdit() : void {

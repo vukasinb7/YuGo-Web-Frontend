@@ -16,20 +16,15 @@ export class UserService {
 
   }
 
-  getUser(userId : number, role : string) : Observable<UserInfo>{
-    role = role.toLowerCase();
-    return this.http.get<UserInfo>(environment.apiHost + `${role}/${userId}`);
+  getUser(userId : number) : Observable<UserInfo>{
+    return this.http.get<UserInfo>(environment.apiHost + `user/${userId}`);
   }
 
   updateUser(values: any) : Observable<UserInfo>{
     const accessToken: any = localStorage.getItem('user');
     const helper = new JwtHelperService();
     const userId = helper.decodeToken(accessToken).id;
-    const role = helper.decodeToken(accessToken).role;
-    if (role == "PASSENGER"){
-      return this.http.put<UserInfo>(environment.apiHost + `passenger/${userId}`, values);
-    }
-    return this.http.put<UserInfo>(environment.apiHost + `driver/${userId}`, values);
+    return this.http.put<UserInfo>(environment.apiHost + `user/${userId}`, values);
   }
 
   getUsers(page : number, size :number): Observable<UsersInfoPaged>{
