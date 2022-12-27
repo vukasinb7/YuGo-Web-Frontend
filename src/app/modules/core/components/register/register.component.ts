@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, Inject} from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -12,7 +12,7 @@ import {Observable, of} from "rxjs";
 import {RegistrationService} from "../../services/registration.service";
 import {UserRegistration} from "../../models/userRegistration";
 import {HttpErrorResponse} from "@angular/common/http";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 
 @Component({
@@ -21,7 +21,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements AfterViewInit{
-  constructor(private registrationService:RegistrationService, private dialogRef:MatDialogRef<RegisterComponent>, private router: Router) {
+  constructor(private registrationService:RegistrationService, private dialogRef:MatDialogRef<RegisterComponent>, private router: Router, @Inject(MAT_DIALOG_DATA) public userType: string) {
   }
   ngAfterViewInit(): void {
     this.registrationForm.controls.password.valueChanges.subscribe(()=>{
@@ -78,7 +78,7 @@ export class RegisterComponent implements AfterViewInit{
       password:this.registrationForm.controls.password.value!,
       email:this.registrationForm.controls.email.value!
     };
-    this.registrationService.register(user).subscribe({
+    this.registrationService.register(user, this.userType).subscribe({
       next:()=>{
         this.isFinished = true;
         this.dialogRef.updateSize("35%");

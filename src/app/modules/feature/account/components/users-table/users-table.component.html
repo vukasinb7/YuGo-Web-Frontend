@@ -1,9 +1,15 @@
 <mat-card class="card-bg p-2 w-100">
-  <div class="d-inline-block">
-    <mat-form-field class="w-50 px-3 pt-3">
-      <input matInput type="text" [(ngModel)]="searchText" placeholder="Search text">
-    </mat-form-field>
-    <button mat-flat-button color="accent" (click)="filterUsers()">Search</button>
+  <div class="d-flex justify-content-between">
+    <div class="p-2">
+      <mat-form-field class="px-3">
+        <input matInput type="text" [(ngModel)]="searchText" placeholder="Search text">
+      </mat-form-field>
+      <button mat-flat-button color="accent" class="my-auto" (click)="filterUsers()"><mat-icon>search</mat-icon> Search</button>
+    </div>
+    <div class="mt-4">
+      <button mat-flat-button color="accent" class="me-3" (click)="createDriver()"><mat-icon>add</mat-icon> Add driver</button>
+      <button mat-flat-button color="accent" class="me-3" (click)="createPassenger()"><mat-icon>add</mat-icon> Add Passenger</button>
+    </div>
   </div>
 
   <table mat-table [dataSource]="dataSource" matSort #usersSort="matSort">

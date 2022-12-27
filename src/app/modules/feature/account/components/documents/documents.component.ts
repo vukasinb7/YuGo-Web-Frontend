@@ -1,23 +1,33 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {DocumentService} from "../../services/document.service";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-documents',
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.css']
 })
-export class DocumentsComponent {
+export class DocumentsComponent implements OnInit{
 
   documentsForm : FormGroup;
   editEnabled: boolean
 
-  constructor() {
+  constructor(private documentService : DocumentService, private authService: AuthService){
     this.documentsForm = new FormGroup({
       driverLicence: new FormControl('', [Validators.required]),
       vehicleIdentification: new FormControl('', [Validators.required]),
     });
     this.documentsForm.disable();
     this.editEnabled = false;
+  }
+
+  ngOnInit() {
+    this.loadDocumentsData();
+  }
+
+  loadDocumentsData(){
+
   }
 
   enableEdit() : void{
