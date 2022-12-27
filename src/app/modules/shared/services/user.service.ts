@@ -6,6 +6,7 @@ import {UsersInfoPaged} from "../../feature/account/models/UsersInfoPaged";
 import {RidesPaged} from "../../feature/history/models/RidesPaged";
 import {UserInfo} from "../models/UserInfo";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {ReviewsPerRideInfo} from "../../feature/history/models/ReviewPerPassengerInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +62,8 @@ export class UserService {
           page: page,
           size : size
         }});
+  }
+  getReviewsForRide(rideId:number): Observable<ReviewsPerRideInfo> {
+    return this.http.get<ReviewsPerRideInfo>(environment.apiHost + `review/${rideId}`);
   }
 }

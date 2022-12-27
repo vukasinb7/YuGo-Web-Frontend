@@ -9,6 +9,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PassengerService} from "../../../../shared/services/passenger.service";
+import {AuthService} from "../../../../core/services/auth.service";
+import {DriverService} from "../../../../shared/services/driver.service";
 
 @Component({
   selector: 'app-history-simplified-card',
@@ -28,7 +30,7 @@ export class HistorySimplifiedCardComponent implements OnInit{
   @Output()
   dateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
 
-  constructor(private passengerService:PassengerService, public dialog: MatDialog) {
+  constructor(private passengerService:PassengerService, public dialog: MatDialog, private authService:AuthService,private driverService: DriverService) {
     this.accountInfoForm = new FormGroup({
       startDate: new FormControl(new Date(2022,0,1), [Validators.required]),
       endDate: new FormControl(new Date(), [Validators.required])});
@@ -46,20 +48,40 @@ export class HistorySimplifiedCardComponent implements OnInit{
   }
 
   loadData(){
-    this.passengerService.getPassengerRides(1,this.currentPage,this.pageSize,this.selected,this.dateToString(this.accountInfoForm.get('startDate')?.value),this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
-      next:(results)=> {
-        this.dataSource.data=results.results;
-        setTimeout(() => {
-          this.ridesPaginator.pageIndex = this.currentPage;
-          this.ridesPaginator.length = results.totalCount;
-        });
+    if (this.authService.getRole()=="PASSENGER") {
+      this.passengerService.getPassengerRides(this.authService.getId(), this.currentPage, this.pageSize, this.selected, this.dateToString(this.accountInfoForm.get('startDate')?.value), this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
+        next: (results) => {
+          this.dataSource.data = results.results;
+          setTimeout(() => {
+            this.ridesPaginator.pageIndex = this.currentPage;
+            this.ridesPaginator.length = results.totalCount;
+          });
 
-      },
-      error: (error) => {
-        if (error instanceof HttpErrorResponse) {
-          this.hasError = true;
-        }}
-    })
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.hasError = true;
+          }
+        }
+      })
+    }else if (this.authService.getRole()=="DRIVER"){
+      this.driverService.getDriverRides(this.authService.getId(), this.currentPage, this.pageSize, this.selected, this.dateToString(this.accountInfoForm.get('startDate')?.value), this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
+        next: (results) => {
+          this.dataSource.data = results.results;
+          setTimeout(() => {
+            this.ridesPaginator.pageIndex = this.currentPage;
+            this.ridesPaginator.length = results.totalCount;
+          });
+
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.hasError = true;
+          }
+        }
+      })
+    }
+    //TODO: Uraditi za admina
   }
 
   pageChanged(event: PageEvent) {
@@ -70,7 +92,7 @@ export class HistorySimplifiedCardComponent implements OnInit{
 
   openDetailedDialog(){
     this.dialog.open(HistoryDetailedDialogComponent, {
-      width: '75%',
+      width: '100%',
       backdropClass: 'backdropBackground'
     });
   }
@@ -94,6 +116,8 @@ export class HistorySimplifiedCardComponent implements OnInit{
   viewDetails(ride: any) {
     this.dialog.open(HistoryDetailedDialogComponent,{
       data:ride,
+      width: '60%',
+      backdropClass: 'backdropBackground'
     })
 
   }

@@ -3,13 +3,15 @@
     <div class="carousel-inner" >
       <div class="carousel-item active">
         <div class="p-4 justify-content-center">
-          <h1 class="text-center mb-1">Vehicle Review</h1>
-          <div class="rating">
-            <input type="radio" name="rating" value="5" id="5v"><label for="5">☆</label>
-            <input type="radio" name="rating" value="4" id="4v"><label for="4">☆</label>
-            <input type="radio" name="rating" value="3" id="3v"><label for="3">☆</label>
-            <input type="radio" name="rating" value="2" id="2v"><label for="2">☆</label>
-            <input type="radio" name="rating" value="1" id="1v"><label for="1">☆</label>
+          <h3 class="text-center mb-1">Vehicle Review</h3>
+          <div class="container-rating w-100 text-center">
+            <div class="starrating risingstar d-flex justify-content-center flex-row-reverse">
+              <input type="radio" id="star5v" name="ratingv" value="5" /><label for="star5v" title="5 star"></label>
+              <input type="radio" id="star4v" name="ratingv" value="4" /><label for="star4v" title="4 star"></label>
+              <input type="radio" id="star3v" name="ratingv" value="3" /><label for="star3v" title="3 star"></label>
+              <input type="radio" id="star2v" name="ratingv" value="2" /><label for="star2v" title="2 star"></label>
+              <input type="radio" id="star1v" name="ratingv" value="1" /><label for="star1v" title="1 star"></label>
+            </div>
           </div>
           <form class="example-form">
             <mat-form-field class="example-full-width w-100">
@@ -24,13 +26,15 @@
       </div>
       <div class="carousel-item">
         <div class="p-4 justify-content-center">
-          <h1 class="text-center mb-1">Ride Review</h1>
-          <div class="rating">
-            <input type="radio" name="rating" value="5" id="5r"><label for="5">☆</label>
-            <input type="radio" name="rating" value="4" id="4r"><label for="4">☆</label>
-            <input type="radio" name="rating" value="3" id="3r"><label for="3">☆</label>
-            <input type="radio" name="rating" value="2" id="2r"><label for="2">☆</label>
-            <input type="radio" name="rating" value="1" id="1r"><label for="1">☆</label>
+          <h3 class="text-center mb-1">Ride Review</h3>
+          <div class="container-rating w-100 text-center">
+            <div class="starrating risingstar d-flex justify-content-center flex-row-reverse">
+              <input type="radio" id="star5r" name="ratingr" value="5" /><label for="star5r" title="5 star"></label>
+              <input type="radio" id="star4r" name="ratingr" value="4" /><label for="star4r" title="4 star"></label>
+              <input type="radio" id="star3r" name="ratingr" value="3" /><label for="star3r" title="3 star"></label>
+              <input type="radio" id="star2r" name="ratingr" value="2" /><label for="star2r" title="2 star"></label>
+              <input type="radio" id="star1r" name="ratingr" value="1" /><label for="star1r" title="1 star"></label>
+            </div>
           </div>
           <form class="example-form">
             <mat-form-field class="example-full-width w-100">
