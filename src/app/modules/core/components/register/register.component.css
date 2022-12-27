@@ -1,0 +1,15 @@
+mat-error{
+  white-space: nowrap;
+  overflow: hidden;
+  margin-left: -15px;
+}
+.errorMessage{
+  color: #f44336
+}
+.clickable{
+  cursor: pointer;
+}
+img{
+  max-width: 100%;
+
+}
