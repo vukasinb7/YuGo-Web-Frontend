@@ -4,6 +4,7 @@ import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialogRef} from "@angular/material/dialog";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import {MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent {
+export class LoginComponent{
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
@@ -26,7 +27,7 @@ export class LoginComponent {
     };
 
     if (this.loginForm.valid) {
-      this.authService.logIn(loginVal).subscribe({
+      this.authService.logIn(loginVal).pipe(take(1)).subscribe({
         next: (result) => {
           localStorage.setItem('user', result.accessToken);
           this.authService.setUser();

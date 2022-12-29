@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'history', component: HistoryComponent, canActivate: [LoginGuard]},
   {path: 'account', component: AccountComponent, canActivate: [LoginGuard]},
-  {path: 'user-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
+  {path: 'users-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},
   {path: '**',  redirectTo: '/home'}
 ];

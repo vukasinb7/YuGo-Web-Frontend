@@ -5,6 +5,7 @@ import {AuthService} from "../../../../core/services/auth.service";
 import {Vehicle} from "../../../../shared/models/Vehicle";
 import {VehicleService} from "../../services/vehicle.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-vehicle-details',
@@ -34,7 +35,7 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   }
 
   loadVehicleData(){
-    this.vehicleService.getVehicle(this.authService.getId()).subscribe({
+    this.vehicleService.getVehicle(this.authService.getId()).pipe(take(1)).subscribe({
       next: (vehicle) => {
         this.vehicleDetailsForm.patchValue({
           model: vehicle.model,

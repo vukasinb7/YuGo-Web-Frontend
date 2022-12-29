@@ -7,6 +7,7 @@ import {Note} from "../../models/Note";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {HttpErrorResponse} from "@angular/common/http";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-view-notes-dialog',
@@ -34,7 +35,7 @@ export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
   }
 
   getNotes(){
-    this.userService.getNotes(this.user.id, this.currentPage,this.pageSize).subscribe({
+    this.userService.getNotes(this.user.id, this.currentPage,this.pageSize).pipe(take(1)).subscribe({
       next:(info) => {
         this.dataSource.data = info.results;
         setTimeout(() => {

@@ -3,6 +3,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {UserService} from "../../../../shared/services/user.service";
 import {UserInfo} from "../../../../shared/models/UserInfo";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-create-note-dialog',
@@ -14,7 +15,7 @@ export class CreateNoteDialogComponent {
   constructor(private userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo) {  }
 
   createNote(){
-    this.userService.createNote(this.user.id, this.note).subscribe({
+    this.userService.createNote(this.user.id, this.note).pipe(take(1)).subscribe({
       next:() =>{
 
       },

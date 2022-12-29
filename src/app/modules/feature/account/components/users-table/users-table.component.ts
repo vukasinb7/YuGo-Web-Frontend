@@ -9,6 +9,7 @@ import {UserInfo} from "../../../../shared/models/UserInfo";
 import {CreateNoteDialogComponent} from "../create-note-dialog/create-note-dialog.component";
 import {ViewNotesDialogComponent} from "../view-notes-dialog/view-notes-dialog.component";
 import {RegisterComponent} from "../../../../core/components/register/register.component";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-users-table',
@@ -42,7 +43,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit {
   }
 
   loadData() {
-    this.userService.getUsers(this.currentPage, this.pageSize).subscribe({
+    this.userService.getUsers(this.currentPage, this.pageSize).pipe(take(1)).subscribe({
       next: (info) => {
         this.dataSource.data = info.results;
         setTimeout(() => {
@@ -65,7 +66,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit {
   }
 
   blockUser(userId: number) {
-    this.userService.blockUser(userId).subscribe({
+    this.userService.blockUser(userId).pipe(take(1)).subscribe({
       next: () => {
         this.loadData();
       },
@@ -78,7 +79,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit {
   }
 
   unblockUser(userId: number) {
-    this.userService.unblockUser(userId).subscribe({
+    this.userService.unblockUser(userId).pipe(take(1)).subscribe({
       next: () => {
         this.loadData();
       },

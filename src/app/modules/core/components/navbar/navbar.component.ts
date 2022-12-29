@@ -18,7 +18,6 @@ export class NavbarComponent implements OnInit{
   registerDialog?: MatDialogRef<RegisterComponent>;
 
   constructor(public dialog: MatDialog, private authService: AuthService, private router: Router, private route:ActivatedRoute) {
-    console.log(route);
     this.routeQueryParams = route.queryParams.subscribe(params => {
       if(params['loginDialog']){
         this.registerDialog?.close();
@@ -54,11 +53,12 @@ export class NavbarComponent implements OnInit{
   }
 
   logOut(){
+    localStorage.removeItem('user');
+    this.authService.setUser();
+    this.router.navigate(['/']);
     this.authService.logOut().subscribe({
       next: (result) => {
-        localStorage.removeItem('user');
-        this.authService.setUser();
-        this.router.navigate(['/']);
+
       },
       error: (error) => {
         console.log(error);
