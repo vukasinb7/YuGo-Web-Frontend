@@ -27,7 +27,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit {
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
 
-  constructor(private userService: UserService, public dialog: MatDialog) {
+  constructor(private _userService: UserService, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -43,7 +43,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit {
   }
 
   loadData() {
-    this.userService.getUsers(this.currentPage, this.pageSize).pipe(take(1)).subscribe({
+    this._userService.getUsers(this.currentPage, this.pageSize).pipe(take(1)).subscribe({
       next: (info) => {
         this.dataSource.data = info.results;
         setTimeout(() => {
@@ -66,7 +66,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit {
   }
 
   blockUser(userId: number) {
-    this.userService.blockUser(userId).pipe(take(1)).subscribe({
+    this._userService.blockUser(userId).pipe(take(1)).subscribe({
       next: () => {
         this.loadData();
       },
@@ -79,7 +79,7 @@ export class UsersTableComponent implements OnInit, AfterViewInit {
   }
 
   unblockUser(userId: number) {
-    this.userService.unblockUser(userId).pipe(take(1)).subscribe({
+    this._userService.unblockUser(userId).pipe(take(1)).subscribe({
       next: () => {
         this.loadData();
       },

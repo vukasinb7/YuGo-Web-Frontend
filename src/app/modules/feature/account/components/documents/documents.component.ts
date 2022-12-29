@@ -10,10 +10,10 @@ import {AuthService} from "../../../../core/services/auth.service";
 })
 export class DocumentsComponent implements OnInit{
 
-  documentsForm : FormGroup;
-  editEnabled: boolean
+  public documentsForm : FormGroup;
+  public editEnabled: boolean
 
-  constructor(private documentService : DocumentService, private authService: AuthService){
+  constructor(private _documentService : DocumentService){
     this.documentsForm = new FormGroup({
       driverLicence: new FormControl('', [Validators.required]),
       vehicleIdentification: new FormControl('', [Validators.required]),

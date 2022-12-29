@@ -21,7 +21,7 @@ export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-  constructor(private userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo) {  }
+  constructor(private _userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo) {  }
 
   ngOnInit(): void {
     this.getNotes();
@@ -35,7 +35,7 @@ export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
   }
 
   getNotes(){
-    this.userService.getNotes(this.user.id, this.currentPage,this.pageSize).pipe(take(1)).subscribe({
+    this._userService.getNotes(this.user.id, this.currentPage,this.pageSize).pipe(take(1)).subscribe({
       next:(info) => {
         this.dataSource.data = info.results;
         setTimeout(() => {

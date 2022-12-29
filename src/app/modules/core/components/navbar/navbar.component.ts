@@ -17,14 +17,14 @@ export class NavbarComponent implements OnInit{
   loginDialog?: MatDialogRef<LoginComponent>;
   registerDialog?: MatDialogRef<RegisterComponent>;
 
-  constructor(public dialog: MatDialog, private authService: AuthService, private router: Router, private route:ActivatedRoute) {
-    this.routeQueryParams = route.queryParams.subscribe(params => {
+  constructor(private _dialog: MatDialog, private _authService: AuthService, private _router: Router, private _route:ActivatedRoute) {
+    this.routeQueryParams = _route.queryParams.subscribe(params => {
       if(params['loginDialog']){
         this.registerDialog?.close();
         this.openLoginDialog();
       }
     });
-    this.routeQueryParams = route.queryParams.subscribe(params => {
+    this.routeQueryParams = _route.queryParams.subscribe(params => {
       if(params['registerDialog']){
         this.loginDialog?.close();
         this.openRegisterDialog();
@@ -32,31 +32,31 @@ export class NavbarComponent implements OnInit{
     });
   }
   ngOnInit() {
-    this.authService.userState$.subscribe(value => this.userType = value);
+    this._authService.userState$.subscribe(value => this.userType = value);
   }
 
   openLoginDialog() {
-    this.loginDialog = this.dialog.open(LoginComponent);
+    this.loginDialog = this._dialog.open(LoginComponent);
     this.loginDialog.afterClosed().subscribe(result => {
-      this.router.navigate(['.'], {relativeTo: this.route});
+      this._router.navigate(['.'], {relativeTo: this._route});
     });
   }
 
   openRegisterDialog(){
-    this.registerDialog = this.dialog.open(RegisterComponent, {
-      width: '30%',
+    this.registerDialog = this._dialog.open(RegisterComponent, {
+      width: '40%',
       data: 'PASSENGER'
     });
     this.registerDialog.afterClosed().subscribe(result => {
-      this.router.navigate(['.'], {relativeTo: this.route});
+      this._router.navigate(['.'], {relativeTo: this._route});
     });
   }
 
   logOut(){
     localStorage.removeItem('user');
-    this.authService.setUser();
-    this.router.navigate(['/']);
-    this.authService.logOut().subscribe({
+    this._authService.setUser();
+    this._router.navigate(['/']);
+    this._authService.logOut().subscribe({
       next: (result) => {
 
       },

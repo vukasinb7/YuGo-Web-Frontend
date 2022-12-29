@@ -12,7 +12,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class PasswordComponent {
   passwordForm : FormGroup;
   editEnabled: boolean
-  constructor(private userService : UserService, private authService: AuthService) {
+  constructor(private _userService : UserService, private _authService: AuthService) {
     this.passwordForm = new FormGroup({
       oldPassword: new FormControl('', [Validators.required]),
       newPassword: new FormControl('', [Validators.required]),
@@ -37,7 +37,7 @@ export class PasswordComponent {
 
     }
     else {
-      this.userService.changePassword(this.authService.getId(), {
+      this._userService.changePassword(this._authService.getId(), {
         "oldPassword": this.passwordForm.controls['oldPassword'].value,
         "newPassword": this.passwordForm.controls['newPassword'].value
       }).subscribe({

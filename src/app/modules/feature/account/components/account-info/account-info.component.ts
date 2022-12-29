@@ -11,9 +11,9 @@ import {take} from "rxjs";
   styleUrls: ['./account-info.component.css']
 })
 export class AccountInfoComponent implements OnInit{
-  accountInfoForm : FormGroup;
-  editEnabled: boolean;
-  constructor(private userService: UserService, private authService: AuthService) {
+  public accountInfoForm : FormGroup;
+  public editEnabled: boolean;
+  constructor(private _userService: UserService, private _authService: AuthService) {
     this.accountInfoForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
@@ -31,7 +31,7 @@ export class AccountInfoComponent implements OnInit{
   }
 
   loadUserData() : void{
-    this.userService.getUser(this.authService.getId()).pipe(take(1)).subscribe({
+    this._userService.getUser(this._authService.getId()).pipe(take(1)).subscribe({
       next:(info) => {
         this.accountInfoForm.patchValue({
           name: info.name,
@@ -60,7 +60,7 @@ export class AccountInfoComponent implements OnInit{
 
   submitEdit() : void {
     if (this.accountInfoForm.valid) {
-      this.userService.updateUser(this.accountInfoForm.value).pipe(take(1)).subscribe({
+      this._userService.updateUser(this.accountInfoForm.value).pipe(take(1)).subscribe({
         next: (info) => {
           this.accountInfoForm.patchValue({
             name: info.name,

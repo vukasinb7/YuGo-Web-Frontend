@@ -11,11 +11,11 @@ import {take} from "rxjs";
   styleUrls: ['./create-note-dialog.component.css']
 })
 export class CreateNoteDialogComponent {
-  note : string = "";
-  constructor(private userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo) {  }
+  public note : string = "";
+  constructor(private _userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo) {  }
 
   createNote(){
-    this.userService.createNote(this.user.id, this.note).pipe(take(1)).subscribe({
+    this._userService.createNote(this.user.id, this.note).pipe(take(1)).subscribe({
       next:() =>{
 
       },

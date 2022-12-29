@@ -15,7 +15,7 @@ import {take} from "rxjs";
 export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   vehicleDetailsForm : FormGroup;
   editEnabled: boolean = false;
-  constructor(private vehicleService: VehicleService, private authService: AuthService) {
+  constructor(private _vehicleService: VehicleService, private _authService: AuthService) {
     this.vehicleDetailsForm = new FormGroup({
       model: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required]),
@@ -35,7 +35,7 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   }
 
   loadVehicleData(){
-    this.vehicleService.getVehicle(this.authService.getId()).pipe(take(1)).subscribe({
+    this._vehicleService.getVehicle(this._authService.getId()).pipe(take(1)).subscribe({
       next: (vehicle) => {
         this.vehicleDetailsForm.patchValue({
           model: vehicle.model,

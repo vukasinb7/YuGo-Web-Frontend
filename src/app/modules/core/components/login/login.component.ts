@@ -43,4 +43,9 @@ export class LoginComponent{
       });
     }
   }
+
+  navigateToRegister() {
+    this.router.navigate(['home'], {queryParams:{registerDialog:true}});
+    this.dialogRef.close();
+  }
 }
