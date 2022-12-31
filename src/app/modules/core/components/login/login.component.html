@@ -2,8 +2,6 @@
   <h2 class="font-weight-bold text-center">Login</h2>
   <div mat-dialog-content class="d-flex justify-content-center">
     <form class="w-100" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
-
-      <mat-error *ngIf="hasError" class="mb-2">Username or password is not correct!</mat-error>
       <mat-form-field class="py-2 w-100">
         <mat-label>Email</mat-label>
         <input type="email" matInput placeholder="Example@example.com" name="email" formControlName="email">
@@ -17,7 +15,9 @@
         <a href="" class="font-weight-bold text-decoration-none">Forgot password?</a>
       </div>
 
-      <div mat-dialog-actions class="d-flex justify-content-center mt-2">
+      <p class="errorMessage mt-2 mb-1" *ngIf="this.errorMessage != ''">{{errorMessage}}</p>
+
+      <div mat-dialog-actions class="d-flex justify-content-center">
         <button class="w-50" type="submit" mat-flat-button color="accent" [disabled]="!loginForm.value.password || !loginForm.value.email">Login</button>
       </div>
 

@@ -8,14 +8,14 @@
     </a>
   </div>
   <div class="col">
-  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='UNREGISTERED'">
+  <div class="navbar-collapse d-inline-block h-100" *ngIf="role==='UNREGISTERED'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
         <a class="nav-link" href="#">About</a>
       </li>
     </ul>
 </div>
-  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='DRIVER'">
+  <div class="navbar-collapse d-inline-block h-100" *ngIf="role==='DRIVER'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
         <a class="nav-link" href="#">Home</a>
@@ -27,11 +27,11 @@
         <a class="nav-link" href="#">Reports</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/account">Account</a>
+        <a class="nav-link" [routerLink]="['/account', this.role, this.userId]">Account</a>
       </li>
     </ul>
   </div>
-  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='PASSENGER'">
+  <div class="navbar-collapse d-inline-block h-100" *ngIf="role==='PASSENGER'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
         <a class="nav-link" href="#">Home</a>
@@ -46,11 +46,11 @@
         <a class="nav-link" href="/favorite">Favorite</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/account">Account</a>
+        <a class="nav-link" [routerLink]="['/account', this.role, this.userId]">Account</a>
       </li>
     </ul>
   </div>
-  <div class="navbar-collapse d-inline-block h-100" *ngIf="userType==='ADMIN'">
+  <div class="navbar-collapse d-inline-block h-100" *ngIf="role==='ADMIN'">
     <ul class="navbar-nav d-inline-block" >
       <li class="nav-item">
         <a class="nav-link" href="#">Home</a>
@@ -62,7 +62,7 @@
         <a class="nav-link" href="#">Reports</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/account">Account</a>
+        <a class="nav-link" [routerLink]="['/account', this.role, this.userId]">Account</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/users-accounts">User accounts</a>
@@ -72,12 +72,12 @@
 
 </div>
 <div id="button-container" class="col">
-<div id="buttons-div" class="d-flex ms-auto" *ngIf="userType==='UNREGISTERED'" >
+<div id="buttons-div" class="d-flex ms-auto" *ngIf="role==='UNREGISTERED'" >
   <button mat-flat-button routerLink="home" [queryParams]="{loginDialog:true}" class="mx-2 rounded-pill fw-bold" color="accent">SIGN IN</button>
   <button mat-flat-button routerLink="home" [queryParams]="{registerDialog:true}" class="accent-button mx-2 rounded-pill fw-bold" color="accent" >SIGN UP</button>
 </div>
 
-<div id="logout-button-div" class="d-flex ms-auto" *ngIf="userType!='UNREGISTERED'" >
+<div id="logout-button-div" class="d-flex ms-auto" *ngIf="role!='UNREGISTERED'" >
   <a href="javascript:void(0)" class="text-decoration-none logout-button" (click)="logOut()"><mat-icon>logout</mat-icon></a>
 </div>
 

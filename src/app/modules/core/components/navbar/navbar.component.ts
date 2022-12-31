@@ -12,7 +12,8 @@ import {Subscription} from "rxjs";
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit{
-  userType="";
+  role: string ="";
+  userId: number = -1;
   routeQueryParams: Subscription;
   loginDialog?: MatDialogRef<LoginComponent>;
   registerDialog?: MatDialogRef<RegisterComponent>;
@@ -32,13 +33,15 @@ export class NavbarComponent implements OnInit{
     });
   }
   ngOnInit() {
-    this._authService.userState$.subscribe(value => this.userType = value);
+    this._authService.userState$.subscribe(value => this.role = value);
+    this.userId = this._authService.getId();
   }
 
   openLoginDialog() {
     this.loginDialog = this._dialog.open(LoginComponent);
     this.loginDialog.afterClosed().subscribe(result => {
       this._router.navigate(['.'], {relativeTo: this._route});
+      this.ngOnInit();
     });
   }
 

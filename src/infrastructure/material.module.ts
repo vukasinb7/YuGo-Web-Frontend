@@ -17,6 +17,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSliderModule} from '@angular/material/slider'
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import {MatSliderModule} from '@angular/material/slider'
     MatSelectModule,
     MatButtonToggleModule,
     MatCheckboxModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSnackBarModule
   ],
   exports: [
     MatFormFieldModule,
@@ -57,7 +59,8 @@ import {MatSliderModule} from '@angular/material/slider'
     MatSelectModule,
     MatButtonToggleModule,
     MatCheckboxModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSnackBarModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }

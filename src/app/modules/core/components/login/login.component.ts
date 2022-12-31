@@ -17,7 +17,7 @@ export class LoginComponent{
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
-  hasError: boolean = false;
+  errorMessage:string = '';
 
   constructor(private authService: AuthService, private router: Router, private dialogRef:MatDialogRef<LoginComponent>) {}
   submitLogin(){
@@ -37,7 +37,7 @@ export class LoginComponent{
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
-            this.hasError = true;
+            this.errorMessage = error.error;
           }
         },
       });

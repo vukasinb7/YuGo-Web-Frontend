@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {UserService} from "../../../../shared/services/user.service";
 import {UserInfo} from "../../../../shared/models/UserInfo";
 import {take} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-create-note-dialog',
@@ -12,12 +13,12 @@ import {take} from "rxjs";
 })
 export class CreateNoteDialogComponent {
   public note : string = "";
-  constructor(private _userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo) {  }
+  constructor(private _userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo, private _snackBar: MatSnackBar) {  }
 
   createNote(){
     this._userService.createNote(this.user.id, this.note).pipe(take(1)).subscribe({
       next:() =>{
-
+        this._snackBar.open("Note created successfully", "OK");
       },
       error : (error) =>{
         if (error instanceof HttpErrorResponse) {

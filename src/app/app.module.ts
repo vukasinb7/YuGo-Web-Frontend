@@ -14,7 +14,7 @@ import {Interceptor} from "./modules/core/interceptors/interceptor.interceptor";
   ],
     imports: [
       CoreModule,
-      SharedModule,
+      SharedModule
     ],
   providers: [
     {
