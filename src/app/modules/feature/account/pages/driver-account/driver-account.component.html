@@ -2,14 +2,14 @@
 <div class="container-fluid">
   <div class="w-100 row row-cols-md p-5">
     <div class="col-md-4 h-100">
-      <app-account-info></app-account-info>
+      <app-account-info [userId]="userId" [role]="role"></app-account-info>
     </div>
     <div class="col-md-4 h-inherit d-flex flex-column">
-      <app-password></app-password>
+      <app-password [userId]="userId">></app-password>
       <app-documents class="mt-auto"></app-documents>
     </div>
     <div class="col-md-4 h-inherit">
-      <app-vehicle-details></app-vehicle-details>
+      <app-vehicle-details [userId]="userId">></app-vehicle-details>
     </div>
   </div>
 </div>

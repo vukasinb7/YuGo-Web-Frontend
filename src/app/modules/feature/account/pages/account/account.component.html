@@ -1,3 +1,3 @@
-<app-driver-account *ngIf="role === 'DRIVER'"></app-driver-account>
-<app-passenger-account *ngIf="role === 'PASSENGER'"></app-passenger-account>
-<app-admin-account *ngIf="role === 'ADMIN'"></app-admin-account>
+<app-driver-account *ngIf="role === 'DRIVER'" [userId]="userId" [role]="role"></app-driver-account>
+<app-passenger-account *ngIf="role === 'PASSENGER'" [userId]="userId" [role]="role"></app-passenger-account>
+<app-admin-account *ngIf="role === 'ADMIN'" [userId]="userId" [role]="role"></app-admin-account>

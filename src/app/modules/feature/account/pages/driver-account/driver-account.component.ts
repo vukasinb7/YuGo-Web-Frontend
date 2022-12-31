@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-driver-account',
@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./driver-account.component.css']
 })
 export class DriverAccountComponent {
-
+  @Input()
+  public userId: number = -1;
+  @Input()
+  public role: string = "";
+  constructor() {
+  }
 }

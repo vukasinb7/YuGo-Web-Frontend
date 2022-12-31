@@ -10,6 +10,8 @@ import {ViewNotesDialogComponent} from "../view-notes-dialog/view-notes-dialog.c
 import {RegisterComponent} from "../../../../core/components/register/register.component";
 import {take} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-users-table',
@@ -27,7 +29,8 @@ export class UsersTableComponent implements AfterViewInit {
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
-  constructor(private _userService: UserService, private _dialog: MatDialog) {
+  constructor(private _userService: UserService, private _dialog: MatDialog, private _snackBar: MatSnackBar,
+              private _router: Router) {
   }
 
   selectHandler(user: UserInfo) {
@@ -86,6 +89,7 @@ export class UsersTableComponent implements AfterViewInit {
       // @ts-ignore
       this._userService.blockUser(this.selection.selected.at(0).id).pipe(take(1)).subscribe({
         next: () => {
+          this._snackBar.open("User blocked successfully", "OK");
           this.loadData();
         },
         error: (error) => {
@@ -102,6 +106,7 @@ export class UsersTableComponent implements AfterViewInit {
       // @ts-ignore
       this._userService.unblockUser(this.selection.selected.at(0).id).pipe(take(1)).subscribe({
         next: () => {
+          this._snackBar.open("User unblocked successfully", "OK");
           this.loadData();
         },
         error: (error) => {
@@ -123,23 +128,29 @@ export class UsersTableComponent implements AfterViewInit {
   }
 
   updateUser(){
-
+    if (this.selection.hasValue()) {
+      // @ts-ignore
+      let userId = this.selection.selected.at(0).id;
+      // @ts-ignore
+      let userRole = this.selection.selected.at(0).role;
+      this._router.navigate(['/account', userRole, userId])
+    }
   }
 
   showHistory(){
-
+    
   }
 
   createDriver(){
     this._dialog.open(RegisterComponent,{
-      width:'30%',
+      width:'40%',
       data: 'DRIVER'
     });
   }
 
   createPassenger(){
     this._dialog.open(RegisterComponent,{
-      width:'30%',
+      width:'40%',
       data: 'PASSENGER'
     });
   }

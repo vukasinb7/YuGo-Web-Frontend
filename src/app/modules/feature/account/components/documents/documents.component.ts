@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DocumentService} from "../../services/document.service";
-import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-documents',
