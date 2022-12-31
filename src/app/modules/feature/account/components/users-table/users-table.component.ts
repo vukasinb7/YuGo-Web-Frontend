@@ -28,7 +28,7 @@ export class UsersTableComponent implements AfterViewInit {
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-
+  public selectedUser: UserInfo = {} as UserInfo;
   constructor(private _userService: UserService, private _dialog: MatDialog, private _snackBar: MatSnackBar,
               private _router: Router) {
   }
@@ -38,15 +38,11 @@ export class UsersTableComponent implements AfterViewInit {
       this.selection.clear();
     }
     this.selection.toggle(user);
+    this.selectedUser = user;
   }
 
   isUserBlocked() : boolean{
-    if(this.selection.hasValue())
-    {
-      // @ts-ignore
-      return this.selection.selected.at(0).blocked
-    }
-    return false
+    return this.selectedUser.blocked
   }
 
   @ViewChild('usersSort') usersSort = new MatSort();
@@ -85,60 +81,46 @@ export class UsersTableComponent implements AfterViewInit {
   }
 
   blockUser() {
-    if (this.selection.hasValue()) {
-      // @ts-ignore
-      this._userService.blockUser(this.selection.selected.at(0).id).pipe(take(1)).subscribe({
-        next: () => {
-          this._snackBar.open("User blocked successfully", "OK");
-          this.loadData();
-        },
-        error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-            this.hasError = true;
-          }
+    this._userService.blockUser(this.selectedUser.id).pipe(take(1)).subscribe({
+      next: () => {
+        this._snackBar.open("User blocked successfully", "OK");
+        this.loadData();
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.hasError = true;
         }
-      });
-    }
+      }
+    });
   }
 
   unblockUser() {
-    if (this.selection.hasValue()) {
-      // @ts-ignore
-      this._userService.unblockUser(this.selection.selected.at(0).id).pipe(take(1)).subscribe({
-        next: () => {
-          this._snackBar.open("User unblocked successfully", "OK");
-          this.loadData();
-        },
-        error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-            this.hasError = true;
-          }
+    this._userService.unblockUser(this.selectedUser.id).pipe(take(1)).subscribe({
+      next: () => {
+        this._snackBar.open("User unblocked successfully", "OK");
+        this.loadData();
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.hasError = true;
         }
-      });
-    }
+      }
+    });
   }
 
   showNotes() {
-    if (this.selection.hasValue()) {
-      this._dialog.open(ViewNotesDialogComponent, {
-        width: '40%',
-        data: this.selection.selected.at(0)
-      });
-    }
+    this._dialog.open(ViewNotesDialogComponent, {
+      width: '40%',
+      data: this.selectedUser
+    });
   }
 
   updateUser(){
-    if (this.selection.hasValue()) {
-      // @ts-ignore
-      let userId = this.selection.selected.at(0).id;
-      // @ts-ignore
-      let userRole = this.selection.selected.at(0).role;
-      this._router.navigate(['/account', userRole, userId])
-    }
+    this._router.navigate(['/account', this.selectedUser.role, this.selectedUser.id])
   }
 
   showHistory(){
-    
+    this._router.navigate(['/history', this.selectedUser.role, this.selectedUser.id])
   }
 
   createDriver(){

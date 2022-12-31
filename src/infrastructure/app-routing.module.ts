@@ -9,12 +9,12 @@ import {
   AdminUsersAccountsComponent
 } from "../app/modules/feature/account/pages/admin-users-accounts/admin-users-accounts.component";
 import {AdminGuard} from "../app/modules/core/guards/admin.guard";
-import {AccountGuard} from "../app/modules/core/guards/account.guard";
+import {ProfileGuard} from "../app/modules/core/guards/profile.guard";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
-  {path: 'history', component: HistoryComponent, canActivate: [LoginGuard]},
-  {path: 'account/:role/:userId', component: AccountComponent, canActivate: [LoginGuard, AccountGuard]},
+  {path: 'history/:role/:userId', component: HistoryComponent, canActivate: [LoginGuard, ProfileGuard]},
+  {path: 'account/:role/:userId', component: AccountComponent, canActivate: [LoginGuard, ProfileGuard]},
   {path: 'users-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},
   {path: '**',  redirectTo: '/home'}

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {MatTableDataSource} from "@angular/material/table";
 import {Observable} from "rxjs";
@@ -17,7 +17,11 @@ import {DriverService} from "../../../../shared/services/driver.service";
   templateUrl: './history-simplified-card.component.html',
   styleUrls: ['./history-simplified-card.component.css']
 })
-export class HistorySimplifiedCardComponent implements OnInit{
+export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
+  @Input()
+  public userId: number = -1;
+  @Input()
+  public role: string = "";
   hasError : boolean = false;
   selected:string="startTime";
   accountInfoForm : FormGroup;
@@ -30,7 +34,8 @@ export class HistorySimplifiedCardComponent implements OnInit{
   @Output()
   dateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
 
-  constructor(private passengerService:PassengerService, public dialog: MatDialog, private authService:AuthService,private driverService: DriverService) {
+  constructor(private passengerService:PassengerService, public dialog: MatDialog,
+              private driverService: DriverService) {
     this.accountInfoForm = new FormGroup({
       startDate: new FormControl(new Date(2022,0,1), [Validators.required]),
       endDate: new FormControl(new Date(), [Validators.required])});
@@ -48,8 +53,8 @@ export class HistorySimplifiedCardComponent implements OnInit{
   }
 
   loadData(){
-    if (this.authService.getRole()=="PASSENGER") {
-      this.passengerService.getPassengerRides(this.authService.getId(), this.currentPage, this.pageSize, this.selected, this.dateToString(this.accountInfoForm.get('startDate')?.value), this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
+    if (this.role=="PASSENGER") {
+      this.passengerService.getPassengerRides(this.userId, this.currentPage, this.pageSize, this.selected, this.dateToString(this.accountInfoForm.get('startDate')?.value), this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
         next: (results) => {
           this.dataSource.data = results.results;
           setTimeout(() => {
@@ -64,8 +69,8 @@ export class HistorySimplifiedCardComponent implements OnInit{
           }
         }
       })
-    }else if (this.authService.getRole()=="DRIVER"){
-      this.driverService.getDriverRides(this.authService.getId(), this.currentPage, this.pageSize, this.selected, this.dateToString(this.accountInfoForm.get('startDate')?.value), this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
+    }else if (this.role=="DRIVER"){
+      this.driverService.getDriverRides(this.userId, this.currentPage, this.pageSize, this.selected, this.dateToString(this.accountInfoForm.get('startDate')?.value), this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
         next: (results) => {
           this.dataSource.data = results.results;
           setTimeout(() => {
@@ -90,13 +95,6 @@ export class HistorySimplifiedCardComponent implements OnInit{
     this.loadData();
   }
 
-  openDetailedDialog(){
-    this.dialog.open(HistoryDetailedDialogComponent, {
-      width: '100%',
-      backdropClass: 'backdropBackground'
-    });
-  }
-
   onDateChange(): void{
     this.dateChange.emit();
     this.loadData();
@@ -115,7 +113,7 @@ export class HistorySimplifiedCardComponent implements OnInit{
 
   viewDetails(ride: any) {
     this.dialog.open(HistoryDetailedDialogComponent,{
-      data:ride,
+      data: {ride:ride, userId:this.userId, role:this.role},
       width: '60%',
       backdropClass: 'backdropBackground'
     })
