@@ -5,7 +5,6 @@ import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
 import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
 import {Address} from "../../../ride/model/Address";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-map',
@@ -46,7 +45,7 @@ export class MapComponent implements AfterViewInit{
       addWaypoints:false,
       waypoints: [L.latLng(fromLat, fromLong), L.latLng(toLat, toLong)],
     }).addTo(this.map);
-
+    this.destinationPickerService.path.next(this.path);
   }
 
   ngAfterViewInit(): void {
@@ -64,7 +63,6 @@ export class MapComponent implements AfterViewInit{
         }
         if(!address){
           this.fromAddressMarker = undefined;
-          this.map.removeControl(this.path);
         }else{
           this.fromAddressMarker = L.marker([address.lat, address.long]).addTo(this.map);
         }
@@ -78,7 +76,6 @@ export class MapComponent implements AfterViewInit{
         }
         if(!address){
           this.toAddressMarker = undefined;
-          this.map.removeControl(this.path);
         }else {
           this.toAddressMarker = L.marker([address.lat, address.long]).addTo(this.map);
         }
@@ -125,6 +122,12 @@ export class MapComponent implements AfterViewInit{
       let fromLatlng:any = this.fromAddressMarker.getLatLng();
       let toLatlng:any = this.toAddressMarker.getLatLng();
       this.route(fromLatlng.lat, fromLatlng.lng, toLatlng.lat, toLatlng.lng);
+    }else{
+      if(this.path){
+        this.map.removeControl(this.path);
+      }
+      this.path = undefined;
+      this.destinationPickerService.path.next(undefined);
     }
   }
   private reverseAddressSearch(lat:number, lng:number): Promise<Address>{

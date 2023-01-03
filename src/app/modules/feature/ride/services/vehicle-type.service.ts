@@ -17,7 +17,7 @@ export class VehicleTypeService {
         (vehicleTypes:VehicleType[]) =>{
           for(let vehicleType of vehicleTypes){
             this.imageService.getImage(vehicleType.imgPath).then(resp => {
-              let totalPrice = Math.round(distance / 1000.0 * vehicleType.pricePerKm * 100) / 100;
+              let totalPrice:number = Math.round(distance * vehicleType.pricePerKm * 100) / 100;
               let vehicleTypeCardData:VehicleTypeCardData = {
                 id: vehicleType.id,
                 image: resp,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subject} from "rxjs";
 import {Address} from "../model/Address";
+import {Control} from "leaflet";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class DestinationPickerService {
   private toAddressPublisher:Subject<Address | undefined> = new Subject<Address | undefined>();
   private toAddress?:Address;
   private fromAddress?:Address;
+  path:Subject<any> = new Subject<any>();
   enableManualFromAddressSelection:Subject<void> = new Subject<void>();
   enableManualToAddressSelection:Subject<void> = new Subject<void>();
   manuallySelectedFromAddress:Subject<Address> = new Subject<Address>();

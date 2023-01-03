@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MapService} from "../../../home/services/map.service";
-import * as events from "events";
 import {DestinationPickerService} from "../../services/destination-picker.service";
 import {Address} from "../../model/Address";
 
