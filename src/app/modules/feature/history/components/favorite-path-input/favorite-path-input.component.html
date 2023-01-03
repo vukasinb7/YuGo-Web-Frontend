@@ -1,0 +1,14 @@
+<div class="" id="input-password-name" style="background-color: #26272b;border-radius: 25px;">
+  <h2 class="font-weight-bold text-center">Enter Path Name</h2>
+  <div mat-dialog-content class="d-flex justify-content-center">
+    <form class="w-100" [formGroup]="newPathForm" (ngSubmit)="submitPath()">
+      <mat-form-field class="py-2 w-100">
+        <mat-label>Name</mat-label>
+        <input type="text" matInput placeholder="Example" name="name" formControlName="name">
+      </mat-form-field>
+      <div mat-dialog-actions class="d-flex justify-content-center mt-2">
+        <button class="w-50" type="submit" mat-flat-button color="accent">Create Path</button>
+      </div>
+    </form>
+  </div>
+</div>
