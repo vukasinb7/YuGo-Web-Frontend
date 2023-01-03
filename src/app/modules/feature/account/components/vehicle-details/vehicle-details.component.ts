@@ -1,10 +1,11 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../../shared/services/user.service";
 import {AuthService} from "../../../../core/services/auth.service";
 import {Vehicle} from "../../../../shared/models/Vehicle";
 import {VehicleService} from "../../services/vehicle.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-vehicle-details',
@@ -12,9 +13,11 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./vehicle-details.component.css']
 })
 export class VehicleDetailsComponent implements OnInit, AfterViewInit{
+  @Input()
+  public userId: number = -1;
   vehicleDetailsForm : FormGroup;
   editEnabled: boolean = false;
-  constructor(private vehicleService: VehicleService, private authService: AuthService) {
+  constructor(private _vehicleService: VehicleService) {
     this.vehicleDetailsForm = new FormGroup({
       model: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required]),
@@ -34,7 +37,7 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   }
 
   loadVehicleData(){
-    this.vehicleService.getVehicle(this.authService.getId()).subscribe({
+    this._vehicleService.getVehicle(this.userId).pipe(take(1)).subscribe({
       next: (vehicle) => {
         this.vehicleDetailsForm.patchValue({
           model: vehicle.model,

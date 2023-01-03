@@ -22,7 +22,9 @@ export class HistoryReviewCardDriverComponent implements OnInit,AfterViewInit{
   dataSource= new MatTableDataSource<ReviewOut>();
   obs: Observable<any>;
   passengerName:string="";
-  constructor(private reviewService: ReviewService, private passengerService: PassengerService, @Inject(MAT_DIALOG_DATA) public ride: RideInfo) {
+  public ride : RideInfo;
+  constructor(private reviewService: ReviewService, private passengerService: PassengerService, @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.ride = data.ride;
     this.obs = this.dataSource.connect();
   }
   ngOnInit(){

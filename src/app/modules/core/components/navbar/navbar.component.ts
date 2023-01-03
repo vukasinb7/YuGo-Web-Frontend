@@ -12,20 +12,20 @@ import {Subscription} from "rxjs";
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit{
-  userType="";
+  role: string ="";
+  userId: number = -1;
   routeQueryParams: Subscription;
   loginDialog?: MatDialogRef<LoginComponent>;
   registerDialog?: MatDialogRef<RegisterComponent>;
 
-  constructor(public dialog: MatDialog, private authService: AuthService, private router: Router, private route:ActivatedRoute) {
-    console.log(route);
-    this.routeQueryParams = route.queryParams.subscribe(params => {
+  constructor(private _dialog: MatDialog, private _authService: AuthService, private _router: Router, private _route:ActivatedRoute) {
+    this.routeQueryParams = _route.queryParams.subscribe(params => {
       if(params['loginDialog']){
         this.registerDialog?.close();
         this.openLoginDialog();
       }
     });
-    this.routeQueryParams = route.queryParams.subscribe(params => {
+    this.routeQueryParams = _route.queryParams.subscribe(params => {
       if(params['registerDialog']){
         this.loginDialog?.close();
         this.openRegisterDialog();
@@ -33,7 +33,8 @@ export class NavbarComponent implements OnInit{
     });
   }
   ngOnInit() {
-    this.authService.userState$.subscribe(value => this.userType = value);
+    this._authService.userState$.subscribe(value => this.role = value);
+    this.userId = this._authService.getId();
   }
 
   openLoginDialog() {
@@ -42,26 +43,28 @@ export class NavbarComponent implements OnInit{
       height:'37%'
     });
     this.loginDialog.afterClosed().subscribe(result => {
-      this.router.navigate(['.'], {relativeTo: this.route});
+      this._router.navigate(['.'], {relativeTo: this._route});
+      this.ngOnInit();
     });
   }
 
   openRegisterDialog(){
-    this.registerDialog = this.dialog.open(RegisterComponent, {
-      width: '30%',
+    this.registerDialog = this._dialog.open(RegisterComponent, {
+      width: '40%',
       data: 'PASSENGER'
     });
     this.registerDialog.afterClosed().subscribe(result => {
-      this.router.navigate(['.'], {relativeTo: this.route});
+      this._router.navigate(['.'], {relativeTo: this._route});
     });
   }
 
   logOut(){
-    this.authService.logOut().subscribe({
+    localStorage.removeItem('user');
+    this._authService.setUser();
+    this._router.navigate(['/']);
+    this._authService.logOut().subscribe({
       next: (result) => {
-        localStorage.removeItem('user');
-        this.authService.setUser();
-        this.router.navigate(['/']);
+
       },
       error: (error) => {
         console.log(error);

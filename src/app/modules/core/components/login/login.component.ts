@@ -4,6 +4,7 @@ import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialogRef} from "@angular/material/dialog";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -11,12 +12,12 @@ import {MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent {
+export class LoginComponent{
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
-  hasError: boolean = false;
+  errorMessage:string = '';
 
   forgotPasswordForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
@@ -31,7 +32,7 @@ export class LoginComponent {
     };
 
     if (this.loginForm.valid) {
-      this.authService.logIn(loginVal).subscribe({
+      this.authService.logIn(loginVal).pipe(take(1)).subscribe({
         next: (result) => {
           localStorage.setItem('user', result.accessToken);
           this.authService.setUser();
@@ -41,7 +42,7 @@ export class LoginComponent {
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
-            this.hasError = true;
+            this.errorMessage = error.error;
           }
         },
       });
@@ -50,5 +51,10 @@ export class LoginComponent {
   changeToForgotPassword() {
     document.getElementById("login-item")?.classList.remove("active");
     document.getElementById("forgot-password-item")?.classList.add("active");
+  }
+
+  navigateToRegister() {
+    this.router.navigate(['home'], {queryParams:{registerDialog:true}});
+    this.dialogRef.close();
   }
 }

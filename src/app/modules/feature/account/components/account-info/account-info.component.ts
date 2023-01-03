@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../../shared/services/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {AuthService} from "../../../../core/services/auth.service";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-account-info',
@@ -10,9 +10,13 @@ import {AuthService} from "../../../../core/services/auth.service";
   styleUrls: ['./account-info.component.css']
 })
 export class AccountInfoComponent implements OnInit{
-  accountInfoForm : FormGroup;
-  editEnabled: boolean;
-  constructor(private userService: UserService, private authService: AuthService) {
+  @Input()
+  public userId: number = -1;
+  @Input()
+  public role: string = "";
+  public accountInfoForm : FormGroup;
+  public editEnabled: boolean;
+  constructor(private _userService: UserService) {
     this.accountInfoForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
@@ -30,7 +34,7 @@ export class AccountInfoComponent implements OnInit{
   }
 
   loadUserData() : void{
-    this.userService.getUser(this.authService.getId()).subscribe({
+    this._userService.getUser(this.userId, this.role).pipe(take(1)).subscribe({
       next:(info) => {
         this.accountInfoForm.patchValue({
           name: info.name,
@@ -59,7 +63,7 @@ export class AccountInfoComponent implements OnInit{
 
   submitEdit() : void {
     if (this.accountInfoForm.valid) {
-      this.userService.updateUser(this.accountInfoForm.value).subscribe({
+      this._userService.updateUser(this.userId, this.role, this.accountInfoForm.value).pipe(take(1)).subscribe({
         next: (info) => {
           this.accountInfoForm.patchValue({
             name: info.name,

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../../shared/services/user.service";
 import {AuthService} from "../../../../core/services/auth.service";
@@ -10,9 +10,11 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./password.component.css']
 })
 export class PasswordComponent {
+  @Input()
+  public userId: number = -1;
   passwordForm : FormGroup;
   editEnabled: boolean
-  constructor(private userService : UserService, private authService: AuthService) {
+  constructor(private _userService : UserService) {
     this.passwordForm = new FormGroup({
       oldPassword: new FormControl('', [Validators.required]),
       newPassword: new FormControl('', [Validators.required]),
@@ -37,7 +39,7 @@ export class PasswordComponent {
 
     }
     else {
-      this.userService.changePassword(this.authService.getId(), {
+      this._userService.changePassword(this.userId, {
         "oldPassword": this.passwordForm.controls['oldPassword'].value,
         "newPassword": this.passwordForm.controls['newPassword'].value
       }).subscribe({

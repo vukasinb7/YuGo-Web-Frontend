@@ -9,3 +9,7 @@
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface{
   background-color: #26272b;
 }
+
+.errorMessage{
+  color: #f44336
+}

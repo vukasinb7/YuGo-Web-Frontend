@@ -1,12 +1,14 @@
 import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {UserService} from "../../../../shared/services/user.service";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {UserInfo} from "../../../../shared/models/UserInfo";
 import {MatTableDataSource} from "@angular/material/table";
 import {Note} from "../../models/Note";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {HttpErrorResponse} from "@angular/common/http";
+import {take} from "rxjs";
+import {CreateNoteDialogComponent} from "../create-note-dialog/create-note-dialog.component";
 
 @Component({
   selector: 'app-view-notes-dialog',
@@ -20,7 +22,7 @@ export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-  constructor(private userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo) {  }
+  constructor(private _userService : UserService, @Inject(MAT_DIALOG_DATA) public user: UserInfo, private _dialog: MatDialog) {  }
 
   ngOnInit(): void {
     this.getNotes();
@@ -34,9 +36,10 @@ export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
   }
 
   getNotes(){
-    this.userService.getNotes(this.user.id, this.currentPage,this.pageSize).subscribe({
+    this._userService.getNotes(this.user.id, this.currentPage,this.pageSize).pipe(take(1)).subscribe({
       next:(info) => {
-        this.dataSource.data = info.results;
+        this.dataSource = new MatTableDataSource<Note>(info.results);
+        this.dataSource.sort = this.notesSort;
         setTimeout(() => {
           this.notesPaginator.pageIndex = this.currentPage;
           this.notesPaginator.length = info.totalCount;
@@ -57,5 +60,15 @@ export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
   dateToString(date:Date):string{
     let dateString=date.toString().split(",");
     return [dateString[2], dateString[1], dateString[0]].join(".")+". "+[dateString[3],dateString[4]].join(":");
+  }
+
+  createNote() {
+    this._dialog.open(CreateNoteDialogComponent, {
+      width: '40%',
+      data: this.user
+    }).afterClosed().pipe(take(1)).subscribe({
+      next: () => {
+        this.getNotes();
+      }});
   }
 }

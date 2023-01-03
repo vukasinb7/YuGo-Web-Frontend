@@ -18,8 +18,6 @@ import {NgClass} from "@angular/common";
   styleUrls: ['./history-review-card-passenger.component.css']
 })
 export class HistoryReviewCardPassengerComponent implements DoCheck {
-
-  dataSource = new MatTableDataSource<ReviewOut>();
   foundReview: boolean[] = [false, false];
   enabledReview: boolean[] = [true, true];
   reviewList: ReviewInfoOut[] = [{rating: 0, id: 0} as ReviewInfoOut, {} as ReviewInfoOut];
@@ -27,8 +25,14 @@ export class HistoryReviewCardPassengerComponent implements DoCheck {
   rideForm: FormGroup;
   vehicleRating: number = 0;
   rideRating: number = 0;
+  ride: RideInfo;
+  userId: number;
+  role: string;
 
-  constructor(private reviewService: ReviewService, private passengerService: PassengerService, @Inject(MAT_DIALOG_DATA) public ride: RideInfo, private authService: AuthService) {
+  constructor(private reviewService: ReviewService, @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.ride = data.ride;
+    this.userId = data.userId;
+    this.role = data.role;
     this.vehicleForm = new FormGroup({
       rating5v: new FormControl(false, [Validators.required]),
       rating4v: new FormControl(false, [Validators.required]),
@@ -59,13 +63,13 @@ export class HistoryReviewCardPassengerComponent implements DoCheck {
         next: (reviews) => {
           reviews.forEach((reviewPerPassenger) => {
             if (reviewPerPassenger.vehicleReview != null) {
-              if (this.authService.getId() == reviewPerPassenger.vehicleReview.passenger.id) {
+              if (this.userId == reviewPerPassenger.vehicleReview.passenger.id) {
                 this.foundReview[0] = true;
                 this.reviewList[0] = reviewPerPassenger.vehicleReview;
               }
             }
             if (reviewPerPassenger.driverReview != null) {
-              if (this.authService.getId() == reviewPerPassenger.driverReview.passenger.id) {
+              if (this.userId == reviewPerPassenger.driverReview.passenger.id) {
                 this.foundReview[1] = true;
                 this.reviewList[1] = reviewPerPassenger.driverReview;
               }

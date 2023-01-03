@@ -11,7 +11,6 @@
               <mat-label>Email</mat-label>
               <input type="email" matInput placeholder="Example@example.com" name="email" formControlName="email">
             </mat-form-field>
-
             <mat-form-field class="py-2 w-100">
               <mat-label>Password</mat-label>
               <input type="password" matInput placeholder="Enter your password" name="password" formControlName="password">
@@ -23,11 +22,11 @@
             <div mat-dialog-actions class="d-flex justify-content-center mt-2">
               <button class="w-50" type="submit" mat-flat-button color="accent" [disabled]="!loginForm.value.password || !loginForm.value.email">Login</button>
             </div>
-
             <div class="d-flex justify-content-center align-bottom">
-              <p>Don't have an account?&nbsp;</p>
-              <a href="" class="font-weight-bold text-decoration-none">Register now</a>
-            </div>
+             <p>Don't have an account?&nbsp;</p>
+            <a href="javascript:void(0)" (click)="navigateToRegister()" class="font-weight-bold text-decoration-none">Register now</a>
+              </div>
+            <p class="errorMessage mt-2 mb-1" *ngIf="this.errorMessage != ''">{{errorMessage}}</p>
           </form>
         </div>
       </div>
@@ -46,7 +45,6 @@
             <div mat-dialog-actions class="d-flex justify-content-center mt-2">
               <button class="w-50" type="submit" mat-flat-button color="accent">Send email</button>
             </div>
-
           </form>
         </div>
       </div>
