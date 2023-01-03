@@ -2,41 +2,35 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../../../../enviroments/environment";
 import {HttpClient} from "@angular/common/http";
 import {VehicleType, VehicleTypeCardData} from "../components/vehicle-type-card/vehicle-type-card.component";
+import {ImageService} from "../../../core/services/image.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class VehicleTypeService {
 
-  constructor(private http:HttpClient) { }
-  getVehicleTypesAsRideProperty(/* Should contain parameters in form of distance */):VehicleTypeCardData[]{
-    let output:VehicleTypeCardData[] = [];
-    this.http.get<VehicleType[]>(environment.apiHost + "vehicleType").subscribe({
-      next:(types:VehicleType[]) => {
-        for(let type of types){
-          let price:number = -1;
-          this.http.get<any>(environment.apiHost + "vehicleType/price",
-            {params : {
-                vehicle_type_id: type.id,
-                from_lat: 1,
-                from_lng:1,
-                to_lat:1,
-                to_lng:1
-            }}).subscribe({
-            next:(val:number)=>{
-              price = val;
-            }
-          });
-          let data:VehicleTypeCardData = {
-            vehicleTypeName:type.vehicleTypeName,
-            imgPath:type.imgPath,
-            totalPrice:price
-          } as VehicleTypeCardData;
-          output.push(data);
+  constructor(private http:HttpClient, private imageService:ImageService) { }
+  getVehicleTypesAsRideProperty(distance:number):Promise<VehicleTypeCardData[]>{
+    return new Promise<VehicleTypeCardData[]>( resolve => {
+      let output:VehicleTypeCardData[] = [];
+      this.http.get<VehicleType[]>(environment.apiHost + 'vehicleType').subscribe(
+        (vehicleTypes:VehicleType[]) =>{
+          for(let vehicleType of vehicleTypes){
+            this.imageService.getImage(vehicleType.imgPath).then(resp => {
+              let totalPrice:number = Math.round(distance * vehicleType.pricePerKm * 100) / 100;
+              let vehicleTypeCardData:VehicleTypeCardData = {
+                id: vehicleType.id,
+                image: resp,
+                totalPrice: totalPrice,
+                vehicleTypeName: vehicleType.vehicleType
+              }
+              output.push(vehicleTypeCardData);
+            });
+          }
         }
-      }
-    })
-    return output;
+      );
+      resolve(output);
+    });
   }
 
 }

@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Time} from "@angular/common";
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
+import {DomSanitizer} from "@angular/platform-browser";
 @Component({
   selector: 'app-vehicle-type-card',
   templateUrl: './vehicle-type-card.component.html',
@@ -10,6 +10,7 @@ export class VehicleTypeCardComponent implements OnInit{
   @Input() vehicleType?:VehicleTypeCardData;
   @Input() index?:number;
   @Input() selectionChangedEvent?: Observable<number>;
+  image:any;
   selectionChangedEventSubscription?:Subscription;
   isChecked:boolean = false;
 
@@ -17,7 +18,7 @@ export class VehicleTypeCardComponent implements OnInit{
     this.isChecked = !this.isChecked;
   }
 
-  constructor() {}
+  constructor(private sanitizer: DomSanitizer) {}
   ngOnInit():void{
     this.selectionChangedEventSubscription = this.selectionChangedEvent?.subscribe((n:number) => {
       this.isChecked = this.index == n;
@@ -26,15 +27,21 @@ export class VehicleTypeCardComponent implements OnInit{
   ngOnDestroy(){
     this.selectionChangedEventSubscription?.unsubscribe();
   }
+
+  ngAfterContentInit(): void {
+    let objectURL = URL.createObjectURL(this.vehicleType?.image);
+    this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
 }
 export interface VehicleTypeCardData {
+  id:number;
   vehicleTypeName:string;
-  imgPath:string;
+  image:any;
   totalPrice:number;
 }
 export interface VehicleType{
   id:number;
-  vehicleTypeName:string;
+  vehicleType:string;
   imgPath:string;
-  pricePerKM:number;
+  pricePerKm:number;
 }

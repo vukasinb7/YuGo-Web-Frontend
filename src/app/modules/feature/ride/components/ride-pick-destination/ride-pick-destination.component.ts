@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MapService} from "../../../home/services/map.service";
-import * as events from "events";
 import {DestinationPickerService} from "../../services/destination-picker.service";
 import {Address} from "../../model/Address";
 
@@ -24,12 +23,12 @@ export class RidePickDestinationComponent implements AfterViewInit{
   constructor(private mapService: MapService, private destinationPickerService: DestinationPickerService) {}
 
   ngAfterViewInit(): void {
-        this.destinationPickerService.manuallySelectedToAddress.subscribe({
-          next:(address: Address)=>{
-            this.selectedToAddress = address;
-            this.destinationForm.value.to = address.name;
-          }
-        });
+    this.destinationPickerService.manuallySelectedToAddress.subscribe({
+      next:(address: Address)=>{
+        this.selectedToAddress = address;
+        this.destinationForm.value.to = address.name;
+      }
+    });
     this.destinationPickerService.manuallySelectedFromAddress.subscribe({
       next:(address: Address)=>{
         this.selectedFromAddress = address;
@@ -71,6 +70,17 @@ export class RidePickDestinationComponent implements AfterViewInit{
 
   }
 
+  clearToAddress(){
+    this.destinationForm.value.to = "";
+    this.selectedToAddress = undefined;
+    this.destinationPickerService.updateToAddress(undefined);
+  }
+  clearFromAddress(){
+    this.destinationForm.value.from = "";
+    this.selectedFromAddress = undefined;
+    this.destinationPickerService.updateFromAddress(undefined);
+  }
+
   enableManualFromAddressSelection(){
     this.destinationPickerService.enableManualFromAddressSelection.next();
   }
@@ -80,7 +90,11 @@ export class RidePickDestinationComponent implements AfterViewInit{
 
   onAddressSelected(address:any){
     if(this.selectedField == "from"){
-      this.selectedFromAddress = address;
+      this.selectedFromAddress = {
+        name: address.display_name,
+        lat: address.lat,
+        long: address.lng
+      } as Address;
       this.destinationPickerService.updateFromAddress ({
         name:address.display_name,
         lat:address.lat,
@@ -88,7 +102,11 @@ export class RidePickDestinationComponent implements AfterViewInit{
       });
       this.destinationForm.value.from = address.display_name
     }else if(this.selectedField == "to"){
-      this.selectedToAddress = address;
+      this.selectedToAddress = {
+        name: address.display_name,
+        lat: address.lat,
+        long: address.lng
+      } as Address;
       this.destinationPickerService.updateToAddress({
         name:address.display_name,
         lat:address.lat,
@@ -96,6 +114,7 @@ export class RidePickDestinationComponent implements AfterViewInit{
       });
       this.destinationForm.value.to = address.display_name;
     }
+    this.selectedField = undefined;
     this.recommendedAddresses = [];
   }
   changeFieldFocus(fieldName:string){

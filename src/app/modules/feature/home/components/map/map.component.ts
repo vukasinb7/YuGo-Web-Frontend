@@ -5,7 +5,6 @@ import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
 import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
 import {Address} from "../../../ride/model/Address";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-map',
@@ -37,19 +36,6 @@ export class MapComponent implements AfterViewInit{
       }
     );
     tiles.addTo(this.map);
-    //this.route();
-  }
-  search(): void {
-    this.mapService.search('Strazilovska 19').subscribe({
-      next: (result) => {
-        console.log(result);
-        L.marker([result[0].lat, result[0].lon])
-          .addTo(this.map)
-          .bindPopup('Pozdrav iz Strazilovske 19.')
-          .openPopup();
-      },
-      error: () => {},
-    });
   }
   route(fromLat:number, fromLong:number, toLat:number, toLong:number): void {
     if(this.path){
@@ -59,16 +45,7 @@ export class MapComponent implements AfterViewInit{
       addWaypoints:false,
       waypoints: [L.latLng(fromLat, fromLong), L.latLng(toLat, toLong)],
     }).addTo(this.map);
-
-  }
-
-  private addMarker(): void {
-    const lat: number = 45.25;
-    const lon: number = 19.8228;
-    L.marker([lat, lon])
-      .addTo(this.map)
-      .bindPopup('Trenutno se nalazite ovde.')
-      .openPopup();
+    this.destinationPickerService.path.next(this.path);
   }
 
   ngAfterViewInit(): void {
@@ -80,19 +57,29 @@ export class MapComponent implements AfterViewInit{
     this.initMap();
 
     this.destinationPickerService.currentFromAddress.subscribe({
-      next:(address:Address) => {
+      next:(address?:Address) => {
         if(this.fromAddressMarker){
           this.map.removeControl(this.fromAddressMarker);
         }
-        this.fromAddressMarker = L.marker([address.lat, address.long]).addTo(this.map);
+        if(!address){
+          this.fromAddressMarker = undefined;
+        }else{
+          this.fromAddressMarker = L.marker([address.lat, address.long]).addTo(this.map);
+        }
+        this.checkForPath();
       }
     });
     this.destinationPickerService.currentToAddress.subscribe({
-      next:(address:Address) => {
+      next:(address?:Address) => {
         if(this.toAddressMarker){
           this.map.removeControl(this.toAddressMarker);
         }
-        this.toAddressMarker = L.marker([address.lat, address.long]).addTo(this.map);
+        if(!address){
+          this.toAddressMarker = undefined;
+        }else {
+          this.toAddressMarker = L.marker([address.lat, address.long]).addTo(this.map);
+        }
+        this.checkForPath();
       }
     });
     this.destinationPickerService.enableManualFromAddressSelection.subscribe({
@@ -106,23 +93,27 @@ export class MapComponent implements AfterViewInit{
       }
     });
     this.map.on('click', (e:LeafletMouseEvent)=>{
-      if(this.canSelectFromAddress){
-        this.fromAddressMarker = L.marker(e.latlng).addTo(this.map);
-        this.reverseAddressSearch(e.latlng.lat, e.latlng.lng).then((address:Address)=>{
-          this.destinationPickerService.manuallySelectedFromAddress.next(address);
-          this.canSelectFromAddress = false;
-        });
-        this.checkForPath();
-      }
-    });
-    this.map.on('click', (e:LeafletMouseEvent)=>{
       if(this.canSelectToAddress){
+        if(this.toAddressMarker){
+          this.map.removeControl(this.toAddressMarker);
+        }
         this.toAddressMarker = L.marker(e.latlng).addTo(this.map);
         this.reverseAddressSearch(e.latlng.lat, e.latlng.lng).then((address:Address) => {
           this.destinationPickerService.manuallySelectedToAddress.next(address);
           this.canSelectToAddress = false;
+          this.checkForPath();
         });
-        this.checkForPath();
+      }
+      else if(this.canSelectFromAddress){
+        if(this.fromAddressMarker){
+          this.map.removeControl(this.fromAddressMarker);
+        }
+        this.fromAddressMarker = L.marker(e.latlng).addTo(this.map);
+        this.reverseAddressSearch(e.latlng.lat, e.latlng.lng).then((address:Address)=>{
+          this.destinationPickerService.manuallySelectedFromAddress.next(address);
+          this.canSelectFromAddress = false;
+          this.checkForPath();
+        });
       }
     });
   }
@@ -131,6 +122,12 @@ export class MapComponent implements AfterViewInit{
       let fromLatlng:any = this.fromAddressMarker.getLatLng();
       let toLatlng:any = this.toAddressMarker.getLatLng();
       this.route(fromLatlng.lat, fromLatlng.lng, toLatlng.lat, toLatlng.lng);
+    }else{
+      if(this.path){
+        this.map.removeControl(this.path);
+      }
+      this.path = undefined;
+      this.destinationPickerService.path.next(undefined);
     }
   }
   private reverseAddressSearch(lat:number, lng:number): Promise<Address>{

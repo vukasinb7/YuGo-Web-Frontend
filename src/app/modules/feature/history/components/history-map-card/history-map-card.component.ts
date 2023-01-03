@@ -36,7 +36,6 @@ export class HistoryMapCardComponent{
   search(): void {
     this.mapService.search('Strazilovska 19').subscribe({
       next: (result) => {
-        console.log(result);
         L.marker([result[0].lat, result[0].lon])
           .addTo(this.map)
           .bindPopup('Pozdrav iz Strazilovske 19.')

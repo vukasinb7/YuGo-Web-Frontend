@@ -1,5 +1,7 @@
 <div>
   <h1 class="w-100">Choose a ride.</h1>
+  <p>Estimated time: {{estMinutes}} minutes</p>
+  <p>Ride distance: {{rideLength}}km</p>
   <div class="vstack mt-4">
     <div class="d-flex justify-content-between">
       <p class="align-self-center">Include pets</p>
@@ -20,7 +22,7 @@
       <button mat-flat-button color="accent" class="col-1 me-2" (click)="previousFormPage()">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
-      <button mat-flat-button color="accent" class="col" (click)="nextFormPage()">Request ride</button>
+      <button mat-flat-button color="accent" class="col" [disabled]="!selectedVehicleType" (click)="nextFormPage()">Request ride</button>
     </div>
   </div>
 
