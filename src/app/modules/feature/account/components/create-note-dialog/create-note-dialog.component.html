@@ -8,12 +8,14 @@
       <textarea matInput
                 cdkTextareaAutosize
                 #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="12"
-                cdkAutosizeMaxRows="20"
-                [(ngModel)]="note"></textarea>
+                maxlength="255"
+                [cdkAutosizeMinRows]="6"
+                [cdkAutosizeMaxRows]="6"
+                [(ngModel)]="note"
+                style="font-size: 20px"></textarea>
     </mat-form-field>
   </div>
-  <div mat-dialog-actions class="">
+  <div mat-dialog-actions class="w-100 d-inline-flex justify-content-center">
     <button  mat-dialog-close="" mat-flat-button color="accent"
              (click)="createNote()" [disabled]="note==''">Leave note</button>
     <button mat-dialog-close="" mat-flat-button color="warn" >Dismiss</button>

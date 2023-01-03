@@ -1,0 +1,8 @@
+::ng-deep .card-bg{
+  background-color: #26272b;
+  overflow-x:auto;
+}
+
+.errorMessage{
+  color: #f44336
+}

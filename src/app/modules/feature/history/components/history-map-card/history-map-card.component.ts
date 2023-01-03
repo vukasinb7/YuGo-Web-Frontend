@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import {MapService} from "../../../home/services/map.service";
+import * as L from "leaflet";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {RideInfo} from "../../../../shared/models/RideInfo";
 
 @Component({
   selector: 'app-history-map-card',
@@ -44,4 +48,14 @@ export class HistoryMapCardComponent{
     }).addTo(this.map);
   }
 
+
+  ngAfterViewInit(): void {
+    let DefaultIcon = L.icon({
+      iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
+    });
+
+    L.Marker.prototype.options.icon = DefaultIcon;
+
+    this.initMap();
+  }
 }

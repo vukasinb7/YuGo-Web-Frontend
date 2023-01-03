@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import {Token} from "@angular/compiler";
 import { environment } from 'src/enviroments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
+import {Token} from "../models/Token";
 
 @Injectable({
   providedIn: 'root'
@@ -14,40 +14,45 @@ export class AuthService {
     skip: 'true',
   });
 
-  user$ = new BehaviorSubject(null);
+  user$ = new BehaviorSubject("");
   userState$ = this.user$.asObservable();
 
   constructor(private http: HttpClient) {
     this.user$.next(this.getRole());
   }
 
-  login(auth: any): Observable<Token> {
+  logIn(auth: any): Observable<Token> {
     return this.http.post<Token>(environment.apiHost + 'user/login', auth, {
       headers: this.headers,
     });
   }
 
-  logout(): Observable<string> {
-    return this.http.get(environment.apiHost + 'loguut', {
+  logOut(): Observable<string> {
+    return this.http.get(environment.apiHost + 'user/logout', {
       responseType: 'text',
     });
   }
 
-  getRole(): any {
+  getRole(): string {
     if (this.isLoggedIn()) {
       const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
-      const role = helper.decodeToken(accessToken).role[0].authority;
-      return role;
+      return helper.decodeToken(accessToken).role;
     }
-    return null;
+    return "UNREGISTERED";
+  }
+
+  getId(): number {
+    if (this.isLoggedIn()) {
+      const accessToken: any = localStorage.getItem('user');
+      const helper = new JwtHelperService();
+      return helper.decodeToken(accessToken).id;
+    }
+    return -1;
   }
 
   isLoggedIn(): boolean {
-    if (localStorage.getItem('user') != null) {
-      return true;
-    }
-    return false;
+    return localStorage.getItem('user') != null;
   }
 
   setUser(): void {

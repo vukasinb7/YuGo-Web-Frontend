@@ -1,14 +1,20 @@
-<mat-card class="card-bg p-4 w-100 h-100">
+<mat-card class="card-bg p-3 p-md-4 p-lg-5 w-100 h-100">
   <div class="d-flex flex-column w-100">
     <h2 class="font-weight-bold text-center mb-4">Personal Info</h2>
     <form class="d-block" [formGroup]="accountInfoForm">
-      <div class="w-100 text-center mb-3">
-        <img class="rounded-circle m-auto" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg" width="150 " height="150" >
+      <div class="w-100 text-center mb-3 d-flex flex-column just">
+        <img src="{{accountInfoForm.controls['profilePicture'].value}}" class="rounded-circle m-auto mb-2" width="150" height="150" (error)="onProfilePictureError($event)">
+        <div class="justify-content-center">
+          <mat-form-field class="my-1 w-75">
+            <mat-label>Profile picture</mat-label>
+            <input type="text" matInput placeholder="Enter picture url" name="profilePicture" formControlName="profilePicture">
+          </mat-form-field>
+        </div>
       </div>
 
       <mat-form-field class="my-1 w-100">
         <mat-label>Firstname</mat-label>
-        <input type="text" matInput placeholder="Enter your firstname" name="firstname" formControlName="firstname">
+        <input type="text" matInput placeholder="Enter your firstname" name="name" formControlName="name">
       </mat-form-field>
 
       <mat-form-field class="my-1 w-100">
@@ -18,7 +24,7 @@
 
       <mat-form-field class="my-1 w-100">
         <mat-label>Phone</mat-label>
-        <input type="text" matInput placeholder="Enter your phone number" name="phone" formControlName="phone">
+        <input type="text" matInput placeholder="Enter your phone number" name="phone" formControlName="telephoneNumber">
       </mat-form-field>
 
       <mat-form-field class="my-1 w-100">

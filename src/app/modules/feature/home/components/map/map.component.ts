@@ -1,7 +1,12 @@
 import {AfterViewInit, Component} from '@angular/core';
 import * as L from 'leaflet';
+import {Control, LatLng, latLng, LeafletMouseEvent, Marker} from 'leaflet';
 import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
+import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
+import {Address} from "../../../ride/model/Address";
+import {Observable} from "rxjs";
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -9,7 +14,12 @@ import {MapService} from "../../services/map.service";
 })
 export class MapComponent implements AfterViewInit{
   private map:any;
-  constructor(private mapService:MapService) {
+  private fromAddressMarker?:Marker;
+  private toAddressMarker?:Marker;
+  private canSelectFromAddress:boolean = false;
+  private canSelectToAddress:boolean = false;
+  private path?:Control;
+  constructor(private mapService:MapService, private destinationPickerService:DestinationPickerService) {
   }
   private initMap():void{
     this.map = L.map('map', {
@@ -28,10 +38,15 @@ export class MapComponent implements AfterViewInit{
     );
     tiles.addTo(this.map);
   }
-  route(): void {
-    L.Routing.control({
-      waypoints: [L.latLng(57.74, 11.94), L.latLng(57.6792, 11.949)],
+  route(fromLat:number, fromLong:number, toLat:number, toLong:number): void {
+    if(this.path){
+      this.map.removeControl(this.path);
+    }
+    this.path = L.Routing.control({
+      addWaypoints:false,
+      waypoints: [L.latLng(fromLat, fromLong), L.latLng(toLat, toLong)],
     }).addTo(this.map);
+
   }
 
   ngAfterViewInit(): void {

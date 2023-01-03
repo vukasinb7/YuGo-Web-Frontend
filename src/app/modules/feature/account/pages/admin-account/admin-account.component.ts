@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-admin-account',
@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./admin-account.component.css']
 })
 export class AdminAccountComponent {
-
+  @Input()
+  public userId: number = -1;
+  @Input()
+  public role: string = "";
+  constructor() {
+  }
 }

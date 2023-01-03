@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../../../shared/services/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-account-info',
@@ -9,36 +10,44 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./account-info.component.css']
 })
 export class AccountInfoComponent implements OnInit{
-  accountInfoForm : FormGroup;
-  hasError : boolean;
-  editEnabled: boolean
-  constructor(private userService: UserService) {
+  @Input()
+  public userId: number = -1;
+  @Input()
+  public role: string = "";
+  public accountInfoForm : FormGroup;
+  public editEnabled: boolean;
+  constructor(private _userService: UserService) {
     this.accountInfoForm = new FormGroup({
-      firstname: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
-      phone: new FormControl('', [Validators.required]),
+      profilePicture: new FormControl('', [Validators.required]),
+      telephoneNumber: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
     });
     this.accountInfoForm.disable();
     this.editEnabled = false;
-    this.hasError = false;
   }
 
   ngOnInit(): void {
-    this.userService.getPassengerInfo().subscribe({
+    this.loadUserData();
+  }
+
+  loadUserData() : void{
+    this._userService.getUser(this.userId, this.role).pipe(take(1)).subscribe({
       next:(info) => {
         this.accountInfoForm.patchValue({
-        firstname: info.name,
-        surname: info.surname,
-        phone: info.telephoneNumber,
-        address: info.address,
-        email: info.email,
-      })},
+          name: info.name,
+          surname: info.surname,
+          profilePicture: info.profilePicture,
+          telephoneNumber: info.telephoneNumber,
+          address: info.address,
+          email: info.email,
+        })},
       error: (error) => {
-      if (error instanceof HttpErrorResponse) {
-        this.hasError = true;
-      }}})
+        if (error instanceof HttpErrorResponse) {
+
+        }}})
   }
 
   enableEdit() : void{
@@ -49,23 +58,38 @@ export class AccountInfoComponent implements OnInit{
   cancelEdit() : void{
     this.accountInfoForm.disable();
     this.editEnabled = false;
-    this.ngOnInit();
+    this.loadUserData();
   }
 
   submitEdit() : void {
-    this.accountInfoForm.disable();
-    this.editEnabled = false;
-  }
-}
+    if (this.accountInfoForm.valid) {
+      this._userService.updateUser(this.userId, this.role, this.accountInfoForm.value).pipe(take(1)).subscribe({
+        next: (info) => {
+          this.accountInfoForm.patchValue({
+            name: info.name,
+            surname: info.surname,
+            profilePicture: info.profilePicture,
+            telephoneNumber: info.telephoneNumber,
+            address: info.address,
+            email: info.email,
+          })
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
 
-export interface UserInfo {
-  id: number;
-  name: string;
-  surname: string;
-  profilePicture: string;
-  telephoneNumber: string;
-  email: string;
-  address: string;
-  role: string;
-  blocked: boolean;
+          }
+        }
+      });
+
+      this.accountInfoForm.disable();
+      this.editEnabled = false;
+    }
+    else{
+
+    }
+  }
+
+  onProfilePictureError(event : any) {
+    event.target.src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
+  }
 }

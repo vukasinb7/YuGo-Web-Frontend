@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-passenger-account',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./passenger-account.component.css']
 })
 export class PassengerAccountComponent {
+  @Input()
+  public userId: number = -1;
+  @Input()
+  public role: string = "";
+  constructor() {
+  }
 
 }

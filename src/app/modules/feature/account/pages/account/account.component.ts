@@ -1,14 +1,22 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from "../../../../core/services/auth.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent {
-  role: any = "";
+export class AccountComponent implements OnInit{
+  public role: string = "";
+  public userId: number = -1;
 
-  constructor() {
-    this.role = 'ADMIN';
+  constructor(private _route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this._route.params.subscribe(params => {
+      this.userId = Number.parseInt(params['userId'])
+      this.role = params['role'];
+    })
   }
 }

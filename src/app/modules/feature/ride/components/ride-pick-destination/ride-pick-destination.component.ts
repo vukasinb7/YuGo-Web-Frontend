@@ -1,17 +1,20 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MapService} from "../../../home/services/map.service";
+import * as events from "events";
+import {DestinationPickerService} from "../../services/destination-picker.service";
+import {Address} from "../../model/Address";
 
 @Component({
   selector: 'app-ride-pick-destination',
   templateUrl: './ride-pick-destination.component.html',
   styleUrls: ['./ride-pick-destination.component.css']
 })
-export class RidePickDestinationComponent {
+export class RidePickDestinationComponent implements AfterViewInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
   recommendedAddresses:any[] = [];
-  selectedFromAddress:any;
-  selectedToAddress:any;
+  selectedFromAddress?:Address;
+  selectedToAddress?:Address;
   selectedField?:string;
 
   destinationForm = new FormGroup({
@@ -38,17 +41,34 @@ export class RidePickDestinationComponent {
     this.changeFormPageEmitter.emit(1);
   }
 
-  onCurrentLocationChange(searchValue: string): void {
+  enterSubmit(keyPress: KeyboardEvent):void {
+    if(keyPress.code != "Enter"){
+      return;
+    }
     this.recommendedAddresses = [];
+    let searchValue:string = "";
+    if(this.selectedField == "from"){
+      if(this.destinationForm.controls.from.value){
+        searchValue = this.destinationForm.controls.from.value;
+      }
+    }else if(this.selectedField == "to"){
+      if(this.destinationForm.controls.to.value){
+        searchValue = this.destinationForm.controls.to.value;
+      }
+    }
+    if(searchValue == ""){
+      return;
+    }
     this.mapService.search(searchValue).subscribe({
       next: (result) => {
-        for (let address of result.splice(5)){
+        for (let address of result){
           this.recommendedAddresses.push(address);
         }
       },
       error: () => {
       }
     });
+
   }
 
   clearToAddress(){

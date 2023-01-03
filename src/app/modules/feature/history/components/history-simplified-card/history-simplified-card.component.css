@@ -6,10 +6,14 @@
   border-radius: 2px;
 }
 #path-conatiner{
-  width: 55%;
+  width: 50%;
   font-size: 1.2em;
 }
-#time-container,#price-container,#distance-container{
+#distance-container{
+  width:20%;
+  font-size: 1.2em;
+}
+#time-container,#price-container{
   font-size: 1.2em;
   width: 15%;
 }
@@ -18,3 +22,4 @@
   color: #FAD02C;
   font-size: 1.4em;
 }
+

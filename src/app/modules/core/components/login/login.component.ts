@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
+import {MatDialogRef} from "@angular/material/dialog";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -10,14 +12,14 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent {
+export class LoginComponent{
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
-  hasError: boolean = false;
+  errorMessage:string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private dialogRef:MatDialogRef<LoginComponent>) {}
   submitLogin(){
     const loginVal = {
       email: this.loginForm.value.email,
@@ -25,18 +27,25 @@ export class LoginComponent {
     };
 
     if (this.loginForm.valid) {
-      this.authService.login(loginVal).subscribe({
+      this.authService.logIn(loginVal).pipe(take(1)).subscribe({
         next: (result) => {
-          localStorage.setItem('user', JSON.stringify(result));
+          localStorage.setItem('user', result.accessToken);
           this.authService.setUser();
+          this.dialogRef.close(this.authService.getRole());
           this.router.navigate(['/']);
+
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
-            this.hasError = true;
+            this.errorMessage = error.error;
           }
         },
       });
     }
+  }
+
+  navigateToRegister() {
+    this.router.navigate(['home'], {queryParams:{registerDialog:true}});
+    this.dialogRef.close();
   }
 }
