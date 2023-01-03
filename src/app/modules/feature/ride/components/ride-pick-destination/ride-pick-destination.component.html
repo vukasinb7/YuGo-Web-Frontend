@@ -3,8 +3,8 @@
   <form class="vstack" [formGroup]="destinationForm">
     <div class="mt-4 row">
       <mat-form-field class="col pe-0" (focusin)="changeFieldFocus('from')">
-        <input matInput type="text" (ngModelChange)="onCurrentLocationChange($event)" placeholder="Add pickup location" formControlName="from" [ngModel]="destinationForm.value.from"/>
-        <button *ngIf="destinationForm.value.from" (click)="destinationForm.value.from=''" matSuffix mat-icon-button aria-label="Clear">
+        <input matInput type="text" (keydown)="enterSubmit($event)"  placeholder="Add pickup location" formControlName="from" [ngModel]="destinationForm.value.from"/>
+        <button *ngIf="destinationForm.value.from" (click)="clearFromAddress()" type="button" matSuffix mat-icon-button aria-label="Clear">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -14,8 +14,8 @@
     </div>
     <div class="mt-4 row">
       <mat-form-field class="col pe-0" (focusin)="changeFieldFocus('to')">
-        <input matInput type="text" placeholder="Enter destination" formControlName="to" (ngModelChange)="onCurrentLocationChange($event)" [(ngModel)]="destinationForm.value.to"/>
-        <button *ngIf="destinationForm.value.to" (click)="destinationForm.value.to=''" matSuffix mat-icon-button aria-label="Clear">
+        <input matInput type="text" (keydown)="enterSubmit($event)" placeholder="Enter destination" formControlName="to" [ngModel]="destinationForm.value.to"/>
+        <button *ngIf="destinationForm.value.to" (click)="clearToAddress()" type="button" matSuffix mat-icon-button aria-label="Clear">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>

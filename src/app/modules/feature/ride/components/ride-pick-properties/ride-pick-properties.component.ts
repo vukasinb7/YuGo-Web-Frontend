@@ -19,7 +19,7 @@ export class RidePickPropertiesComponent implements OnInit{
   constructor(private vehicleTypeService:VehicleTypeService) {
   }
   ngOnInit():void{
-    this.vehicleTypes = this.vehicleTypeService.getVehicleTypesAsRideProperty();
+    this.vehicleTypeService.getVehicleTypesAsRideProperty(2000.1).then(data => this.vehicleTypes = data);
   }
 
   nextFormPage():void{
