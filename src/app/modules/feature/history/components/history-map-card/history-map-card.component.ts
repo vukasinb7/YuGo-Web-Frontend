@@ -11,7 +11,9 @@ import {RideInfo} from "../../../../shared/models/RideInfo";
 })
 export class HistoryMapCardComponent{
   private map:any;
-  constructor(private mapService:MapService,@Inject(MAT_DIALOG_DATA) public ride: RideInfo) {
+  public ride: RideInfo
+  constructor(private mapService:MapService,@Inject(MAT_DIALOG_DATA) public data: any) {
+    this.ride = data.ride;
   }
   private initMap():void{
     this.map = L.map('map', {

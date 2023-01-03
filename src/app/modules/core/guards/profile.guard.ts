@@ -1,20 +1,13 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree
-} from '@angular/router';
-import {map, Observable, take} from 'rxjs';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {catchError, map, Observable, of} from 'rxjs';
 import {AuthService} from "../services/auth.service";
 import {UserService} from "../../shared/services/user.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountGuard implements CanActivate {
+export class ProfileGuard implements CanActivate {
   paramUserId: number = -1;
   paramUserRole : string = "";
   constructor(private _authService: AuthService, private _userService: UserService, private _router: Router) {
@@ -22,12 +15,15 @@ export class AccountGuard implements CanActivate {
 
   userExists() : Observable<boolean>{
     return this._userService.getUser(this.paramUserId, this.paramUserRole).pipe(map(value => {
-        if (value.role == this.paramUserRole){
-          return true;
-        }
-        this._router.navigate(['/']);
-        return false;
-      }));
+      if (value.role == this.paramUserRole){
+        return true;
+      }
+      this._router.navigate(['/']);
+      return false;
+    }), catchError(() => {
+      this._router.navigate(['/']);
+      return of(false);
+    }));
   }
   canActivate(
     route: ActivatedRouteSnapshot,
