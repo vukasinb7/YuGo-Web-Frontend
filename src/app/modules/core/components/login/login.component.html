@@ -1,30 +1,55 @@
 <div class="card-bg p-2">
-  <h2 class="font-weight-bold text-center">Login</h2>
-  <div mat-dialog-content class="d-flex justify-content-center">
-    <form class="w-100" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+  <div id="carouselExampleControls" class="carousel slide">
+    <div class="carousel-inner">
+      <div class="carousel-item active" id="login-item">
+        <h2 class="font-weight-bold text-center">Login</h2>
+        <div mat-dialog-content class="d-flex justify-content-center">
+          <form class="w-100" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
 
-      <mat-error *ngIf="hasError" class="mb-2">Username or password is not correct!</mat-error>
-      <mat-form-field class="py-2 w-100">
-        <mat-label>Email</mat-label>
-        <input type="email" matInput placeholder="Example@example.com" name="email" formControlName="email">
-      </mat-form-field>
+            <mat-error *ngIf="hasError" class="mb-2">Username or password is not correct!</mat-error>
+            <mat-form-field class="py-2 w-100">
+              <mat-label>Email</mat-label>
+              <input type="email" matInput placeholder="Example@example.com" name="email" formControlName="email">
+            </mat-form-field>
 
-      <mat-form-field class="py-2 w-100">
-        <mat-label>Password</mat-label>
-        <input type="password" matInput placeholder="Enter your password" name="password" formControlName="password">
-      </mat-form-field>
-      <div class="w-100">
-        <a href="" class="font-weight-bold text-decoration-none">Forgot password?</a>
+            <mat-form-field class="py-2 w-100">
+              <mat-label>Password</mat-label>
+              <input type="password" matInput placeholder="Enter your password" name="password" formControlName="password">
+            </mat-form-field>
+            <div class="w-100">
+              <a  class="font-weight-bold text-decoration-none" data-bs-target="#carouselExampleControls" data-bs-slide="next">Forgot password?</a>
+            </div>
+
+            <div mat-dialog-actions class="d-flex justify-content-center mt-2">
+              <button class="w-50" type="submit" mat-flat-button color="accent" [disabled]="!loginForm.value.password || !loginForm.value.email">Login</button>
+            </div>
+
+            <div class="d-flex justify-content-center align-bottom">
+              <p>Don't have an account?&nbsp;</p>
+              <a href="" class="font-weight-bold text-decoration-none">Register now</a>
+            </div>
+          </form>
+        </div>
       </div>
+      <div class="carousel-item p-4" id="forgot-password-item">
+        <h2 class="font-weight-bold text-center">Forgot Password</h2>
+        <div mat-dialog-content class="d-flex justify-content-center">
+          <form class="w-100" [formGroup]="forgotPasswordForm" (ngSubmit)="submitLogin()">
+            <p class="text-center">To reset your password, enter your email and click send mail. A password reset email will be sent to your registered email address</p>
+            <mat-error *ngIf="hasError" class="mb-2">Email Doesn't exist!</mat-error>
+            <mat-form-field class="py-2 w-100">
+              <mat-label>Email</mat-label>
+              <input type="email" matInput placeholder="Example@example.com" name="email" formControlName="email">
+            </mat-form-field>
 
-      <div mat-dialog-actions class="d-flex justify-content-center mt-2">
-        <button class="w-50" type="submit" mat-flat-button color="accent" [disabled]="!loginForm.value.password || !loginForm.value.email">Login</button>
-      </div>
 
-      <div class="d-flex justify-content-center align-bottom">
-        <p>Don't have an account?&nbsp;</p>
-        <a href="" class="font-weight-bold text-decoration-none">Register now</a>
+            <div mat-dialog-actions class="d-flex justify-content-center mt-2">
+              <button class="w-50" type="submit" mat-flat-button color="accent">Send email</button>
+            </div>
+
+          </form>
+        </div>
       </div>
-    </form>
+    </div>
   </div>
 </div>
