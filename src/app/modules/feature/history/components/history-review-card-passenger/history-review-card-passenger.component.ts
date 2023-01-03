@@ -87,7 +87,7 @@ export class HistoryReviewCardPassengerComponent implements DoCheck {
 
 
           } else {
-            if (this.getDayDiff(new Date(), new Date(this.dateToString(this.ride.startTime))) > 3) {
+            if (this.getDayDiff(new Date(), new Date(this.dateToStringConversion(this.ride.startTime))) > 3) {
               this.vehicleForm.patchValue({
                 commentv: "Time for review expired."
               });
@@ -97,7 +97,7 @@ export class HistoryReviewCardPassengerComponent implements DoCheck {
             }
           }
           if (this.foundReview[1]) {
-
+            this.rideRating = this.reviewList[1].rating;
             this.rideForm.patchValue({
               commentr: this.reviewList[1].comment
             });
@@ -106,7 +106,7 @@ export class HistoryReviewCardPassengerComponent implements DoCheck {
             this.enabledReview[1] = false;
 
           } else {
-            if (this.getDayDiff(new Date(), new Date(this.dateToString(this.ride.startTime))) > 3) {
+            if (this.getDayDiff(new Date(), new Date(this.dateToStringConversion(this.ride.startTime))) > 3) {
               this.rideForm.patchValue({
                 commentr: "Time for review expired."
               });
@@ -127,14 +127,17 @@ export class HistoryReviewCardPassengerComponent implements DoCheck {
   }
 
   getDayDiff(startDate: Date, endDate: Date): number {
-    const msInDay = 24 * 60 * 60 * 10000;
-
+    const msInDay = 24 * 60 * 60 * 1000;
     return Math.round(Math.abs(Number(endDate) - Number(startDate)) / msInDay);
   }
 
   dateToString(date: Date): string {
     let dateString = date.toString().split(",");
     return [dateString[2], dateString[1], dateString[0]].join(".") + ". " + [dateString[3], dateString[4]].join(":");
+  }
+  dateToStringConversion(date: Date): string {
+    let dateString = date.toString().split(",");
+    return [dateString[1], dateString[2], dateString[0]].join(".") + ". " + [dateString[3], dateString[4]].join(":");
   }
 
   padTo2Digits(num: number) {

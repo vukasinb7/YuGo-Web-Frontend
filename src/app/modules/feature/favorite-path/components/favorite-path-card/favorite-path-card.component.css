@@ -5,8 +5,13 @@
   background: #FAD02C;
   border-radius: 2px;
 }
+
 #path-conatiner{
-  width: 55%;
+  width: 35%;
+  font-size: 1.2em;
+}
+#name-container{
+  width:20%;
   font-size: 1.2em;
 }
 #time-container,#price-container,#distance-container{

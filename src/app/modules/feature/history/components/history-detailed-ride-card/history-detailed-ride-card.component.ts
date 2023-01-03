@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {HttpErrorResponse} from "@angular/common/http";
 import {DriverService} from "../../../../shared/services/driver.service";
 import {PassengerService} from "../../../../shared/services/passenger.service";
+import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
 
 @Component({
   selector: 'app-history-detailed-ride-card',
@@ -14,7 +15,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   driverName:String="";
   passengerName:String="";
 
-  constructor(private driverService:DriverService, private passengerService: PassengerService) {
+  constructor(private driverService:DriverService, private passengerService: PassengerService, private favoritePathService:FavoritePathService) {
   }
   ngOnInit(){
     this.getDriver();
@@ -27,6 +28,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
     }
     else{
       this.icon='star';
+      this.createFavoritePath();
     }
   }
   dateToString(date:Date):string{
@@ -55,6 +57,19 @@ export class HistoryDetailedRideCardComponent implements OnInit{
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
           }}})
+  }
+
+  createFavoritePath(){
+    let favoritePath={
+      "favoriteName":"HOMEHOME",
+      "locations":this.ride.locations,
+      "passengers":this.ride.passengers,
+      "vehicleType":this.ride.vehicleType,
+      "babyTransport":this.ride.babyTransport,
+      "petTransport":this.ride.petTransport
+    };
+    this.favoritePathService.addFavoritePath(favoritePath).subscribe({next:(result)=>{}});
+
   }
 
 }

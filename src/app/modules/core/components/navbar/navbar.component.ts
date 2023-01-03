@@ -38,7 +38,10 @@ export class NavbarComponent implements OnInit{
   }
 
   openLoginDialog() {
-    this.loginDialog = this._dialog.open(LoginComponent);
+    this.loginDialog = this.dialog.open(LoginComponent,{
+      width: '30%',
+      height:'37%'
+    });
     this.loginDialog.afterClosed().subscribe(result => {
       this._router.navigate(['.'], {relativeTo: this._route});
       this.ngOnInit();

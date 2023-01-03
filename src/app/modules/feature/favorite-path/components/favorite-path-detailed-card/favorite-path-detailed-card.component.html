@@ -1,0 +1,53 @@
+<div class="w-100 h-100" style="background-color: transparent;">
+
+<mat-card class="w-100 h-100" style="border-radius: 25px; background-color: #26272b;" >
+  <div class="w-100 h-100 p-3 justify-content-center" style="border-radius: 25px; background-color: transparent;">
+    <div class="d-flex w-100 align-items-center justify-content-center p-4">
+      <h1 class="mb-0 mx-2">{{path.favoriteName}}</h1>
+    </div>
+    <div class="w-100 row pt-3 justify-content-center">
+      <div id="other-passengers-container" class="d-inline-flex w-100 align-content-center align-items-center justify-content-center">
+        <mat-icon aria-hidden="false" class="pe-2">group</mat-icon>
+        <p class="pe-2"style="margin-bottom:0;">{{path.passengers.length}}</p>
+        <img  src="assets/img/map.png" class=" profile-pic rounded-circle" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
+        <img  src="assets/img/map.png" class=" profile-pic rounded-circle" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
+      </div>
+    </div>
+
+    <div id="pet-baby-container" class=" pt-3">
+      <div class="d-flex py-2 h-100 justify-content-center align-items-center ">
+        <mat-icon class="mx-1" aria-hidden="false" *ngIf="path.petTransport" style="color: #fad02c">pets</mat-icon>
+        <mat-icon class="mx-1" aria-hidden="false" *ngIf="!path.petTransport" style="color: #1d1f2f">pets</mat-icon>
+        <mat-icon class="mx-1" aria-hidden="false" *ngIf="path.babyTransport" style="color: #fad02c">child_friendly</mat-icon>
+        <mat-icon class="mx-1" aria-hidden="false" *ngIf="!path.babyTransport" style="color: #1d1f2f">child_friendly</mat-icon>
+      </div>
+    </div>
+
+    <div id="path-conatiner" class=" pt-2">
+      <div class="row h-50">
+        <div class="d-flex h-100 justify-content-center align-items-center py-2">
+          <mat-icon aria-hidden="false">location_on</mat-icon>
+          <p class="m-0 p-1">{{path.locations[0].departure.address}}</p>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="delimiter col-4 "></div>
+      </div>
+      <div class="row h-50">
+        <div class="d-flex h-100 justify-content-center align-items-center py-2">
+          <mat-icon aria-hidden="false">location_on</mat-icon>
+          <p class="m-0 p-1">{{path.locations[0].destination.address}}</p>
+        </div>
+      </div>
+
+    </div>
+    <div id="button-container"class="w-100 d-flex pt-4 justify-content-between">
+      <button mat-flat-button class="mx-2 rounded-pill fw-bold float-end" color="warn" (click)="deletePath()">Delete Ride</button>
+      <button mat-flat-button class="mx-2 rounded-pill fw-bold float-end" color="accent">Create Ride</button>
+
+    </div>
+
+  </div>
+
+</mat-card>
+</div>

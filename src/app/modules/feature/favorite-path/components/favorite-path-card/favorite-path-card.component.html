@@ -1,24 +1,32 @@
-<mat-card class="w-100 px-2 py-2" style="border-radius: 25px; background-color: #26272b;">
+<mat-card class="w-100 px-2 py-2 my-2" style="border-radius: 25px; background-color: #26272b;" *ngFor="let path of obs | async" (click)="viewDetails(path,$event)">
   <div class="w-100 d-inline-flex">
+    <div id="name-container">
+      <div class="d-flex h-100 justify-content-center align-items-center ">
+        <p class="m-0 mx-1">{{path.favoriteName}}</p>
+      </div>
+    </div>
+    <div class="delimiter"></div>
     <div id="path-conatiner">
-      <div class="row h-50">
+      <div class="row h-50 mx-2">
         <div class="d-flex h-100 justify-content-start align-items-center py-2 ">
           <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">Bulevar Oslobodjenja 30</p>
+          <p class="m-0 p-1">{{path.locations[0].departure.address}}</p>
         </div>
       </div>
-      <div class="row h-50">
+      <div class="row h-50 mx-2">
         <div class="d-flex h-100 justify-content-start align-items-center ">
           <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">Majke Jevrosime 112</p>
+          <p class="m-0 p-1">{{path.locations[0].destination.address}}</p>
         </div>
       </div>
     </div>
     <div class="delimiter"></div>
     <div id="time-container">
       <div class="d-flex h-100 justify-content-center align-items-center ">
-        <mat-icon aria-hidden="false">schedule</mat-icon>
-        <p class="m-0 mx-1">16min</p>
+        <mat-icon class="mx-1" aria-hidden="false" *ngIf="path.petTransport" style="color: #fad02c">pets</mat-icon>
+        <mat-icon class="mx-1" aria-hidden="false" *ngIf="!path.petTransport" style="color: #1d1f2f">pets</mat-icon>
+        <mat-icon class="mx-1" aria-hidden="false" *ngIf="path.babyTransport" style="color: #fad02c">child_friendly</mat-icon>
+        <mat-icon class="mx-1" aria-hidden="false" *ngIf="!path.babyTransport" style="color: #1d1f2f">child_friendly</mat-icon>
       </div>
     </div>
     <div class="delimiter"></div>
@@ -38,7 +46,7 @@
       </div>
       <div class="row h-50 align-items-center">
         <div class="button-container text-center">
-          <button mat-fab color="warn" style="width: 40px;height: 40px;">
+          <button class="delete-btn" mat-fab color="warn" style="width: 40px;height: 40px;" (click)="deletePath(path.id,$event)">
             <mat-icon>delete</mat-icon>
           </button>
 

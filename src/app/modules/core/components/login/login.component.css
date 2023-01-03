@@ -2,6 +2,13 @@
   background-color: #26272b;
   overflow-x:auto;
 }
+.carousel-item{
+  width: 100%;
+  height: 100%;
+}
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface{
+  background-color: #26272b;
+}
 
 .errorMessage{
   color: #f44336

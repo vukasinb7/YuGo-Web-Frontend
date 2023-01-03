@@ -19,6 +19,11 @@ export class LoginComponent{
   });
   errorMessage:string = '';
 
+  forgotPasswordForm = new FormGroup({
+    email: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+  });
+
   constructor(private authService: AuthService, private router: Router, private dialogRef:MatDialogRef<LoginComponent>) {}
   submitLogin(){
     const loginVal = {
@@ -42,6 +47,10 @@ export class LoginComponent{
         },
       });
     }
+  }
+  changeToForgotPassword() {
+    document.getElementById("login-item")?.classList.remove("active");
+    document.getElementById("forgot-password-item")?.classList.add("active");
   }
 
   navigateToRegister() {
