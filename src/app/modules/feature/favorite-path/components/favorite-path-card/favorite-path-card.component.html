@@ -1,4 +1,4 @@
-<mat-card class="w-100 px-2 py-2 my-2" style="border-radius: 25px; background-color: #26272b;" *ngFor="let path of obs | async" (click)="viewDetails(path)">
+<mat-card class="w-100 px-2 py-2 my-2" style="border-radius: 25px; background-color: #26272b;" *ngFor="let path of obs | async" (click)="viewDetails(path,$event)">
   <div class="w-100 d-inline-flex">
     <div id="name-container">
       <div class="d-flex h-100 justify-content-center align-items-center ">
@@ -46,7 +46,7 @@
       </div>
       <div class="row h-50 align-items-center">
         <div class="button-container text-center">
-          <button mat-fab color="warn" style="width: 40px;height: 40px;">
+          <button class="delete-btn" mat-fab color="warn" style="width: 40px;height: 40px;" (click)="deletePath(path.id,$event)">
             <mat-icon>delete</mat-icon>
           </button>
 

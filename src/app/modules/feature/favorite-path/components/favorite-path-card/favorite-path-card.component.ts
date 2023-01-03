@@ -27,16 +27,23 @@ export class FavoritePathCardComponent implements OnInit{
     this.loadData();
   }
   loadData(){
-    this.favoritePathService.getFavoritePaths(this.authService.getId()).subscribe({next:(paths)=>{
+    this.favoritePathService.getFavoritePaths().subscribe({next:(paths)=>{
       this.dataSource.data=paths;
       }})
+    document.getElementsByClassName("delete-btn")
   }
-  viewDetails(path: any) {
+  viewDetails(path: any, event:Event) {
     this.dialog.open(FavoritePathDetailedCardComponent,{
       data:path,
-      width: '60%',
-      backdropClass: 'backdropBackground'
+      width: '25%',
+      backdropClass: 'backdropBackground',
     })
 
+  }
+  deletePath(id:number,event:Event){
+    event.stopPropagation();
+    this.favoritePathService.deleteFavoritePath(id).subscribe({next:(result)=>{
+      this.loadData();
+      }})
   }
 }

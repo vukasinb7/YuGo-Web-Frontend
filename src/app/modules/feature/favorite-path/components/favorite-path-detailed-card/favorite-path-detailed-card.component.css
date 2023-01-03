@@ -1,1 +1,13 @@
-
+.delimiter{
+  padding: 0;
+  width: 2px;
+  height: 80px;
+  background: #FAD02C;
+  border-radius: 2px;
+}
+#pet-baby-container mat-icon{
+  transform: scale(120%);
+}
+::ng-deep .mat-mdc-dialog-container{
+  --mdc-dialog-container-color: transparent !important;
+}

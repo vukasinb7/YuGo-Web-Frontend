@@ -2,6 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {FavoritePathInfo} from "../../models/FavoritePathInfo";
+import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
 
 @Component({
   selector: 'app-favorite-path-detailed-card',
@@ -10,7 +11,7 @@ import {FavoritePathInfo} from "../../models/FavoritePathInfo";
 })
 export class FavoritePathDetailedCardComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public path: FavoritePathInfo) {
+  constructor(@Inject(MAT_DIALOG_DATA) public path: FavoritePathInfo,private favoritePathService:FavoritePathService) {
   }
 
   dateToString(date:Date):string{
@@ -19,5 +20,11 @@ export class FavoritePathDetailedCardComponent {
   }
   padTo2Digits(num:number) {
     return num.toString().padStart(2, '0');
+  }
+  deletePath(){
+    this.favoritePathService.deleteFavoritePath(this.path.id).subscribe({next:(result)=>{
+        window.location.reload();
+      }})
+
   }
 }

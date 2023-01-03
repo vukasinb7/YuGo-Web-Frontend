@@ -12,7 +12,14 @@ export class FavoritePathService {
 
   constructor(private http: HttpClient) { }
 
-  getFavoritePaths(userId:number):Observable<FavoritePathInfo[]>{
-    return this.http.get<FavoritePathInfo[]>(environment.apiHost + `ride/favorites/${userId}`);
+  getFavoritePaths():Observable<FavoritePathInfo[]>{
+    return this.http.get<FavoritePathInfo[]>(environment.apiHost + `ride/favorites`);
+  }
+
+  deleteFavoritePath(id:number):Observable<any>{
+    return this.http.delete<any>(environment.apiHost+`ride/favorites/${id}`);
+  }
+  addFavoritePath(values:any):Observable<any>{
+    return this.http.post(environment.apiHost + `ride/favorites`, values);
   }
 }
