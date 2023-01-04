@@ -8,24 +8,24 @@ import {DomSanitizer} from "@angular/platform-browser";
 })
 export class VehicleTypeCardComponent implements OnInit{
   @Input() vehicleType?:VehicleTypeCardData;
+  @Input() distanceChangedEvent?: Observable<number>;
   @Input() index?:number;
   @Input() selectionChangedEvent?: Observable<number>;
   image:any;
-  selectionChangedEventSubscription?:Subscription;
   isChecked:boolean = false;
-
+  totalPrice?:number;
   onClick():void{
     this.isChecked = !this.isChecked;
   }
 
   constructor(private sanitizer: DomSanitizer) {}
   ngOnInit():void{
-    this.selectionChangedEventSubscription = this.selectionChangedEvent?.subscribe((n:number) => {
+    this.selectionChangedEvent?.subscribe((n:number) => {
       this.isChecked = this.index == n;
     });
-  }
-  ngOnDestroy(){
-    this.selectionChangedEventSubscription?.unsubscribe();
+    this.distanceChangedEvent?.subscribe((distance:number) => {
+      this.totalPrice = Math.round(this.vehicleType!.pricePerKm * distance * 100) / 100;
+    });
   }
 
   ngAfterContentInit(): void {
@@ -37,7 +37,7 @@ export interface VehicleTypeCardData {
   id:number;
   vehicleTypeName:string;
   image:any;
-  totalPrice:number;
+  pricePerKm:number;
 }
 export interface VehicleType{
   id:number;

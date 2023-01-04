@@ -5,3 +5,7 @@ h1{
 p{
   color: white;
 }
+ngx-mat-timepicker-toggle{
+  display: none;
+  tab-index: -1;
+}

@@ -2,19 +2,21 @@
   <h1>When do you want to leave for Bulevar Mihajla Pupina 21</h1>
   <p>From: Bulevar oslobodjenja 30</p>
   <mat-form-field class="w-100" appearance="outline">
-    <input matInput [matDatepicker]="releasedAtPicker">
-    <mat-datepicker-toggle matSuffix [for]="releasedAtPicker"></mat-datepicker-toggle>
-    <mat-datepicker #releasedAtPicker startView="year"></mat-datepicker>
+    <input matInput readonly [matDatepicker]="datePicker" [ngModel]="selectedDate" (ngModelChange)="selectedDateChanged($event)" [min]="currentDateTime">
+    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+    <mat-datepicker #datePicker startView="year"></mat-datepicker>
   </mat-form-field>
-  <div>
-    <input [ngxMatTimepicker]="timePicker">
-    <ngx-mat-timepicker-toggle [for]="timePicker"></ngx-mat-timepicker-toggle>
-    <ngx-mat-timepicker #timePicker></ngx-mat-timepicker>
-  </div>
+  <mat-form-field class="w-100" appearance="outline">
+    <input matInput readonly [ngModel]="selectedTime" [min]="dateToString(minTime)" [ngxMatTimepicker]="timePicker" [format]="24" [disableClick]="true">
+    <button matSuffix mat-icon-button (click)="timePicker.open()">
+      <mat-icon>access_time</mat-icon>
+    </button>
+    <ngx-mat-timepicker #timePicker (timeSet)="this.selectedTime = $event" ></ngx-mat-timepicker>
+  </mat-form-field>
   <div class="row ps-3 pe-3 mt-4">
     <button mat-flat-button color="accent" class="col-1 me-2" (click)="previousFormPage()">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
-    <button mat-flat-button color="accent" class="col" (click)="nextFormPage()">Confirm</button>
+    <button mat-flat-button color="accent" class="col" [disabled]="!selectedDate || !selectedTime" (click)="nextFormPage()">Confirm</button>
   </div>
 </div>

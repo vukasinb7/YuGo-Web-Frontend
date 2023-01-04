@@ -1,5 +1,6 @@
 img{
   max-width: 85px;
+  min-width: 85px;
 }
 h2{
   font-size: 20px;

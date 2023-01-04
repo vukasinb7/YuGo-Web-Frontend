@@ -14,7 +14,7 @@
     <div class="mt-4">
       <ul>
         <li *ngFor="let vehicleType of vehicleTypes; let i = index">
-          <app-vehicle-type-card [selectionChangedEvent]="changeCarTypeEvent.asObservable()" [index]="i" [vehicleType]="vehicleType" (click)="changeVehicleType(i)"></app-vehicle-type-card>
+          <app-vehicle-type-card [distanceChangedEvent]="distanceChangedEvent" [selectionChangedEvent]="changeCarTypeEvent.asObservable()" [index]="i" [vehicleType]="vehicleType" (click)="changeVehicleType(i)"></app-vehicle-type-card>
         </li>
       </ul>
     </div>
