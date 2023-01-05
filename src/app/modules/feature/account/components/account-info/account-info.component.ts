@@ -16,12 +16,13 @@ export class AccountInfoComponent implements OnInit{
   public role: string = "";
   public accountInfoForm : FormGroup;
   public editEnabled: boolean;
+  TEL_REGEX:string = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
   constructor(private _userService: UserService) {
     this.accountInfoForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
       profilePicture: new FormControl('', [Validators.required]),
-      telephoneNumber: new FormControl('', [Validators.required]),
+      telephoneNumber: new FormControl('', [Validators.required, Validators.pattern(this.TEL_REGEX)]),
       address: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
     });

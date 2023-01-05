@@ -41,7 +41,8 @@ export class NavbarComponent implements OnInit{
     this.loginDialog = this._dialog.open(LoginComponent,{
       width: '20%',
       minWidth: '400px',
-      height:'45%'
+      minHeight: '420px',
+      height:'50%'
     });
     this.loginDialog.afterClosed().subscribe(result => {
       this._router.navigate(['.'], {relativeTo: this._route});
@@ -53,6 +54,7 @@ export class NavbarComponent implements OnInit{
     this.registerDialog = this._dialog.open(RegisterComponent, {
       width: '40%',
       minWidth: '400px',
+      minHeight: '500px',
       data: 'PASSENGER'
     });
     this.registerDialog.afterClosed().subscribe(result => {

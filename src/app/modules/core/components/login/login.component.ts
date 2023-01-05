@@ -38,21 +38,15 @@ export class LoginComponent{
           this.authService.setUser();
           this.dialogRef.close(this.authService.getRole());
           this.router.navigate(['/']);
-
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
-            this.errorMessage = error.error;
+            this.errorMessage = error.error.message;
           }
         },
       });
     }
   }
-  changeToForgotPassword() {
-    document.getElementById("login-item")?.classList.remove("active");
-    document.getElementById("forgot-password-item")?.classList.add("active");
-  }
-
   navigateToRegister() {
     this.router.navigate(['home'], {queryParams:{registerDialog:true}});
     this.dialogRef.close();
