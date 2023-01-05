@@ -10,6 +10,7 @@ import {
 } from "../app/modules/feature/account/pages/admin-users-accounts/admin-users-accounts.component";
 import {AdminGuard} from "../app/modules/core/guards/admin.guard";
 import {ProfileGuard} from "../app/modules/core/guards/profile.guard";
+import {ForgotPasswordComponent} from "../app/modules/core/components/forgot-password/forgot-password.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'account/:role/:userId', component: AccountComponent, canActivate: [LoginGuard, ProfileGuard]},
   {path: 'users-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},
+  {path: 'reset', component: ForgotPasswordComponent },
   {path: '**',  redirectTo: '/home'}
 ];
 

@@ -10,13 +10,15 @@ import {HomeModule} from "../feature/home/home.module";
 import {AccountModule} from "../feature/account/account.module";
 import {RideModule} from "../feature/ride/ride.module";
 import {FavoritePathModule} from "../feature/favorite-path/favorite-path.module";
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     NavbarComponent,
     RegisterComponent,
-    FooterComponent],
+    FooterComponent,
+    ForgotPasswordComponent],
   exports: [
     NavbarComponent,
     FooterComponent
