@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'account/:role/:userId', component: AccountComponent, canActivate: [LoginGuard, ProfileGuard]},
   {path: 'users-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},
-  {path: 'reset', component: ForgotPasswordComponent },
+  {path: 'reset/:code/:userId', component: ForgotPasswordComponent },
   {path: '**',  redirectTo: '/home'}
 ];
 

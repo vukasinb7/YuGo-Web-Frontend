@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -10,25 +10,34 @@ import {
 } from "@angular/forms";
 import {UserService} from "../../../shared/services/user.service";
 import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Observable, of, take} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
+import {UserInfo} from "../../../shared/models/UserInfo";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent {
-  userId: number = -1;
+export class ForgotPasswordComponent implements OnInit{
+  userId:number=-1;
+  code:string=""
   passwordForm : FormGroup;
 
   errorMessage:string = '';
-  constructor(private _userService : UserService, private _authService: AuthService, private _router: Router) {
+  constructor(private _route: ActivatedRoute,private _snackBar:MatSnackBar,private _userService : UserService, private _authService: AuthService, private _router: Router) {
     this.passwordForm = new FormGroup({
       newPassword: new FormControl('', [Validators.required, this.passwordValidator()]),
       confirmPassword: new FormControl('', [Validators.required], [this.confirmPasswordValidator()]),
     });
+  }
+  ngOnInit() {
+    this._route.params.subscribe(params => {
+      this.code = (params['code']);
+      this.userId=(params['userId']);
+    })
   }
 
   private passwordValidator(): ValidatorFn {
@@ -66,24 +75,10 @@ export class ForgotPasswordComponent {
 
     }
     else {
-      this._userService.changePassword(this.userId, {
-        "oldPassword": this.passwordForm.controls['currentPassword'].value,
-        "newPassword": this.passwordForm.controls['newPassword'].value
-      }).pipe(take(1)).subscribe({
+      this._userService.resetPasswordWithCode(this.userId,this.code,this.passwordForm.value.newPassword).pipe(take(1)).subscribe({
         next: (info) => {
-          if (this.userId == this._authService.getId()){
-            localStorage.removeItem('user');
-            this._authService.setUser();
-            this._router.navigate(['/']);
-            this._authService.logOut().subscribe({
-              next: (result) => {
-
-              },
-              error: (error) => {
-                console.log(error);
-              },
-            });
-          }
+          this._snackBar.open("Password Changed Successfully", "OK");
+          this._router.navigate(['/']);
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {

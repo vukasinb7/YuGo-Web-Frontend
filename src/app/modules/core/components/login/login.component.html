@@ -31,11 +31,11 @@
       <div class="carousel-item" id="forgot-password-item">
         <h2 class="font-weight-bold text-center">Forgot Password</h2>
         <div mat-dialog-content class="d-flex justify-content-center">
-          <form class="w-100" [formGroup]="forgotPasswordForm" (ngSubmit)="submitLogin()">
+          <form class="w-100" [formGroup]="forgotPasswordForm" (ngSubmit)="submitForgot()">
             <p class="text-center">To reset your password, enter your email and click send mail. A password reset email will be sent to your registered email address</p>
             <mat-form-field class="py-2 w-100">
               <mat-label>Email</mat-label>
-              <input type="email" matInput placeholder="Example@example.com" name="email" formControlName="email">
+              <input type="email" matInput placeholder="Example@example.com" name="email" formControlName="emailForgot">
             </mat-form-field>
             <div mat-dialog-actions class="d-flex justify-content-center mt-2">
               <button class="w-50" type="submit" mat-flat-button color="accent">Send email</button>
