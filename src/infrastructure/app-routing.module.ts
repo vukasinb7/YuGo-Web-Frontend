@@ -10,12 +10,14 @@ import {
 } from "../app/modules/feature/account/pages/admin-users-accounts/admin-users-accounts.component";
 import {AdminGuard} from "../app/modules/core/guards/admin.guard";
 import {ProfileGuard} from "../app/modules/core/guards/profile.guard";
+import {VehicleChangeRequestsComponent} from "../app/modules/feature/vehicle/pages/vehicle-change-requests.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'history/:role/:userId', component: HistoryComponent, canActivate: [LoginGuard, ProfileGuard]},
   {path: 'account/:role/:userId', component: AccountComponent, canActivate: [LoginGuard, ProfileGuard]},
   {path: 'users-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
+  {path: 'vehicle-requests', component: VehicleChangeRequestsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},
   {path: '**',  redirectTo: '/home'}
 ];

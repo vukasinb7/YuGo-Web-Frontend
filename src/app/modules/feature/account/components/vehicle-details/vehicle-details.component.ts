@@ -1,6 +1,9 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {VehicleService} from "../../services/vehicle.service";
+import {UserService} from "../../../../shared/services/user.service";
+import {AuthService} from "../../../../core/services/auth.service";
+import {Vehicle} from "../../../../shared/models/Vehicle";
+import {VehicleService} from "../../../../shared/services/vehicle.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {take} from "rxjs";
 
