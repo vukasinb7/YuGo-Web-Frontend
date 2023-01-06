@@ -9,6 +9,8 @@ import {interval, Observable} from "rxjs";
 
 export class RidePickTimeComponent implements OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
+  @Output() rideDateTimeChangedEvent = new EventEmitter<Date>();
+  @Output() bookRideEvent = new EventEmitter<void>();
   selectedTime?:string;
   currentDateTime:Date;
   minTime:Date;
@@ -20,9 +22,20 @@ export class RidePickTimeComponent implements OnInit{
     this.selectedTime = this.dateToString(this.currentDateTime);
     this.selectedDate = this.currentDateTime;
   }
+  private getSelectedDateTime():Date{
+    let tokens:string[] = this.selectedTime!.split(':');
+    let hours:number = Number(tokens[0]);
+    let minutes:number = Number(tokens[1]);
+    let output:Date = new Date(this.selectedDate!);
+    output.setHours(hours);
+    output.setMinutes(minutes);
+    return output;
+  }
 
   nextFormPage():void{
+    this.rideDateTimeChangedEvent.emit(this.getSelectedDateTime());
     this.changeFormPageEmitter.emit(1);
+    this.bookRideEvent.emit();
   }
   previousFormPage():void{
     this.changeFormPageEmitter.emit(-1);
@@ -43,6 +56,9 @@ export class RidePickTimeComponent implements OnInit{
   selectedDateChanged(event:any){
     this.selectedDate = event;
     this.checkMinTime();
+  }
+  selectedTimeChanged(event:any){
+    this.selectedTime = event;
   }
   checkMinTime(){
     if(this.selectedDate){

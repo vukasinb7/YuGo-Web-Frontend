@@ -4,7 +4,7 @@ import {Control, LatLng, latLng, LeafletMouseEvent, Marker} from 'leaflet';
 import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
 import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
-import {Address} from "../../../ride/model/Address";
+import {LocationInfo} from "../../../../shared/models/LocationInfo";
 
 @Component({
   selector: 'app-map',
@@ -57,27 +57,27 @@ export class MapComponent implements AfterViewInit{
     this.initMap();
 
     this.destinationPickerService.currentFromAddress.subscribe({
-      next:(address?:Address) => {
+      next:(address?:LocationInfo) => {
         if(this.fromAddressMarker){
           this.map.removeControl(this.fromAddressMarker);
         }
         if(!address){
           this.fromAddressMarker = undefined;
         }else{
-          this.fromAddressMarker = L.marker([address.lat, address.long]).addTo(this.map);
+          this.fromAddressMarker = L.marker([address.latitude, address.longitude]).addTo(this.map);
         }
         this.checkForPath();
       }
     });
     this.destinationPickerService.currentToAddress.subscribe({
-      next:(address?:Address) => {
+      next:(address?:LocationInfo) => {
         if(this.toAddressMarker){
           this.map.removeControl(this.toAddressMarker);
         }
         if(!address){
           this.toAddressMarker = undefined;
         }else {
-          this.toAddressMarker = L.marker([address.lat, address.long]).addTo(this.map);
+          this.toAddressMarker = L.marker([address.latitude, address.longitude]).addTo(this.map);
         }
         this.checkForPath();
       }
@@ -98,7 +98,7 @@ export class MapComponent implements AfterViewInit{
           this.map.removeControl(this.toAddressMarker);
         }
         this.toAddressMarker = L.marker(e.latlng).addTo(this.map);
-        this.reverseAddressSearch(e.latlng.lat, e.latlng.lng).then((address:Address) => {
+        this.reverseAddressSearch(e.latlng.lat, e.latlng.lng).then((address:LocationInfo) => {
           this.destinationPickerService.manuallySelectedToAddress.next(address);
           this.canSelectToAddress = false;
           this.checkForPath();
@@ -109,7 +109,7 @@ export class MapComponent implements AfterViewInit{
           this.map.removeControl(this.fromAddressMarker);
         }
         this.fromAddressMarker = L.marker(e.latlng).addTo(this.map);
-        this.reverseAddressSearch(e.latlng.lat, e.latlng.lng).then((address:Address)=>{
+        this.reverseAddressSearch(e.latlng.lat, e.latlng.lng).then((address:LocationInfo)=>{
           this.destinationPickerService.manuallySelectedFromAddress.next(address);
           this.canSelectFromAddress = false;
           this.checkForPath();
@@ -130,13 +130,13 @@ export class MapComponent implements AfterViewInit{
       this.destinationPickerService.path.next(undefined);
     }
   }
-  private reverseAddressSearch(lat:number, lng:number): Promise<Address>{
-    return new Promise<Address>( resolve => {
-        let address:Address = {lat: 0, long: 0, name: ""};
+  private reverseAddressSearch(lat:number, lng:number): Promise<LocationInfo>{
+    return new Promise<LocationInfo>( resolve => {
+        let address:LocationInfo = {latitude: 0, longitude: 0, address: ""};
         this.mapService.reverseSearch(lat, lng).subscribe((val:any) => {
-          address.name = val.display_name;
-          address.lat = lat;
-          address.long = lng;
+          address.address = val.display_name;
+          address.latitude = lat;
+          address.longitude = lng;
           resolve(address);
         });
       })

@@ -15,18 +15,6 @@ export class VehicleTypeService {
       this.http.get<VehicleType[]>(environment.apiHost + 'vehicleType').subscribe(
         (vehicleTypes:VehicleType[]) =>{
           resolve(vehicleTypes);
-          // for(let vehicleType of vehicleTypes){
-          //   this.imageService.getImage(vehicleType.imgPath).then(resp => {
-          //     let totalPrice:number = Math.round(distance * vehicleType.pricePerKm * 100) / 100;
-          //     let vehicleTypeCardData:VehicleTypeCardData = {
-          //       id: vehicleType.id,
-          //       image: resp,
-          //       totalPrice: totalPrice,
-          //       vehicleTypeName: vehicleType.vehicleType
-          //     }
-          //     output.push(vehicleTypeCardData);
-          //   });
-          // }
         }
       );
     });

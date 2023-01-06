@@ -11,7 +11,7 @@
     <button matSuffix mat-icon-button (click)="timePicker.open()">
       <mat-icon>access_time</mat-icon>
     </button>
-    <ngx-mat-timepicker #timePicker (timeSet)="this.selectedTime = $event" ></ngx-mat-timepicker>
+    <ngx-mat-timepicker #timePicker (timeSet)="selectedTimeChanged($event)" ></ngx-mat-timepicker>
   </mat-form-field>
   <div class="row ps-3 pe-3 mt-4">
     <button mat-flat-button color="accent" class="col-1 me-2" (click)="previousFormPage()">

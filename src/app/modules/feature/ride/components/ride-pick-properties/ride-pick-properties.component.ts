@@ -7,6 +7,7 @@ import {Observable, Subject} from "rxjs";
 import {VehicleTypeService} from "../../services/vehicle-type.service";
 import {DestinationPickerService} from "../../services/destination-picker.service";
 import {ImageService} from "../../../../core/services/image.service";
+import {RideProperties} from "../../model/RideProperties";
 
 @Component({
   selector: 'app-ride-pick-properties',
@@ -15,7 +16,10 @@ import {ImageService} from "../../../../core/services/image.service";
 })
 export class RidePickPropertiesComponent implements OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
+  @Output() ridePropertiesChangedEvent = new EventEmitter<RideProperties>();
   distanceChangedEvent:Subject<number> = new Subject<number>();
+  includeBabies:boolean = false;
+  includePets:boolean = false;
   vehicleTypes:VehicleTypeCardData[] = [];
   selectedVehicleType?:VehicleTypeCardData;
   changeCarTypeEvent:Subject<number> = new Subject<number>();
@@ -52,8 +56,13 @@ export class RidePickPropertiesComponent implements OnInit{
     });
 
   }
-
   nextFormPage():void{
+    this.ridePropertiesChangedEvent.emit({
+      includeBabies:this.includeBabies,
+      includePets:this.includePets,
+      vehicleTypeId:this.selectedVehicleType!.id,
+      vehicleTypeName:this.selectedVehicleType!.vehicleTypeName
+    });
     this.changeFormPageEmitter.emit(1);
   }
   previousFormPage():void{
