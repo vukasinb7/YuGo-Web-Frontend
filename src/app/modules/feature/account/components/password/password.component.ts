@@ -98,7 +98,7 @@ export class PasswordComponent{
 
               },
               error: (error) => {
-                console.log(error);
+
               },
             });
           }

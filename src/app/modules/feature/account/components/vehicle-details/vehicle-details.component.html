@@ -7,7 +7,7 @@
         <input type="text" matInput placeholder="Enter vehicle model name" name="model" formControlName="model">
       </mat-form-field>
 
-      <mat-button-toggle-group name="vehicleType" aria-label="Vehicle Type" formControlName="type">
+      <mat-button-toggle-group name="vehicleType" aria-label="Vehicle Type" formControlName="vehicleType">
         <mat-button-toggle value="STANDARD" [checked]="true">Standard</mat-button-toggle>
         <mat-button-toggle value="LUX">Luxury</mat-button-toggle>
         <mat-button-toggle value="VAN">Van</mat-button-toggle>
@@ -18,9 +18,9 @@
         <input type="text" matInput placeholder="Enter vehicle licence plate" name="licenseNumber" formControlName="licenseNumber">
       </mat-form-field>
 
-      <p><mat-checkbox formControlName="babies">Include babies</mat-checkbox></p>
+      <p><mat-checkbox formControlName="babyTransport">Include babies</mat-checkbox></p>
 
-      <p><mat-checkbox formControlName="pets">Include pats</mat-checkbox></p>
+      <p><mat-checkbox formControlName="petTransport">Include pats</mat-checkbox></p>
 
       <div class="my-3">
         <mat-label>Number of passenger seats:</mat-label>
@@ -34,14 +34,16 @@
           <mat-icon>edit</mat-icon>Edit info
         </button>
 
-        <button mat-button class="w-25" (click)="cancelEdit()" style="background-color: #790000" *ngIf="editEnabled">
+        <button mat-button class="w-100 me-3" (click)="cancelEdit()" style="background-color: #790000" *ngIf="editEnabled">
           <mat-icon>cancel</mat-icon>Cancel
         </button>
 
-        <button mat-button class="w-25" (click)="submitEdit()" style="background-color: #006400" *ngIf="editEnabled">
+        <button mat-button class="w-100 ms-3" (click)="submitEdit()" style="background-color: #006400" *ngIf="editEnabled">
           <mat-icon>check</mat-icon>Submit
         </button>
       </div>
+
+      <p class="response-message mt-3 mb-2 text-center" *ngIf="this.responseMessage != ''" style="color: #006400">{{responseMessage}}</p>
     </form>
   </div>
 </mat-card>

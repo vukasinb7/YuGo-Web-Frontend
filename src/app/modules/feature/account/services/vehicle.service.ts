@@ -14,4 +14,8 @@ export class VehicleService {
   getVehicle(userId : number) : Observable<Vehicle>{
     return this.http.get<Vehicle>(environment.apiHost + `driver/${userId}/vehicle`);
   }
+
+  makeVehicleChangeRequest(userId : number, vehicle : any) : Observable<any>{
+    return this.http.post<any>(environment.apiHost + `vehicle/${userId}/changeVehicle`, vehicle)
+  }
 }
