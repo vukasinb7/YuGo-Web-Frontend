@@ -1,8 +1,5 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../../../shared/services/user.service";
-import {AuthService} from "../../../../core/services/auth.service";
-import {Vehicle} from "../../../../shared/models/Vehicle";
 import {VehicleService} from "../../services/vehicle.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {take} from "rxjs";
@@ -17,13 +14,14 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   public userId: number = -1;
   vehicleDetailsForm : FormGroup;
   editEnabled: boolean = false;
+  responseMessage: string = "";
   constructor(private _vehicleService: VehicleService) {
     this.vehicleDetailsForm = new FormGroup({
       model: new FormControl('', [Validators.required]),
-      type: new FormControl('', [Validators.required]),
+      vehicleType: new FormControl('', [Validators.required]),
       licenseNumber: new FormControl('', [Validators.required]),
-      babies: new FormControl('', [Validators.required]),
-      pets: new FormControl('', [Validators.required]),
+      babyTransport: new FormControl('', [Validators.required]),
+      petTransport: new FormControl('', [Validators.required]),
       passengerSeats: new FormControl('', [Validators.required]),
     });
   }
@@ -41,10 +39,10 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
       next: (vehicle) => {
         this.vehicleDetailsForm.patchValue({
           model: vehicle.model,
-          type: vehicle.vehicleType,
+          vehicleType: vehicle.vehicleType,
           licenseNumber: vehicle.licenseNumber,
-          babies: vehicle.babyTransport,
-          pets: vehicle.petTransport,
+          babyTransport: vehicle.babyTransport,
+          petTransport: vehicle.petTransport,
           passengerSeats: vehicle.passengerSeats,
         })
       },
@@ -68,7 +66,30 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
 
   submitEdit() : void {
     if (this.vehicleDetailsForm.valid) {
+      let vehicleDetails = {
+        "model": this.vehicleDetailsForm.controls['model'].value,
+        "vehicleType": this.vehicleDetailsForm.controls['vehicleType'].value,
+        "licenseNumber": this.vehicleDetailsForm.controls['licenseNumber'].value,
+        "babyTransport": this.vehicleDetailsForm.controls['babyTransport'].value,
+        "petTransport": this.vehicleDetailsForm.controls['petTransport'].value,
+        "passengerSeats": this.vehicleDetailsForm.controls['passengerSeats'].value,
+        "currentLocation": {
+          "address": "Null Island",
+          "longitude": 0,
+          "latitude": 0
+        }
+      }
+      this._vehicleService.makeVehicleChangeRequest(this.userId, vehicleDetails).pipe(take(1)).subscribe({
+        next: (response) => {
+          this.responseMessage = response.message;
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
 
+          }
+        }
+      });
+      this.loadVehicleData();
       this.vehicleDetailsForm.disable();
       this.editEnabled = false;
     }
