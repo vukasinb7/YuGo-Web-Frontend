@@ -42,7 +42,7 @@
     <div id="distance-container" >
       <div class="d-flex h-100 justify-content-center align-items-center ">
         <mat-icon aria-hidden="false">calendar_month</mat-icon>
-        <p class="m-0 mx-1">{{ride.startTime.toString().split(",")[2]}}.{{ride.startTime.toString().split(",")[1]}}.{{ride.startTime.toString().split(",")[0]}}.</p>
+        <p class="m-0 mx-1">{{ride.startTime | date: 'dd-MMM-yyyy'}}.</p>
       </div>
     </div>
     <div class="delimiter"></div>
@@ -50,13 +50,13 @@
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-center align-items-center">
           <mat-icon aria-hidden="false" >schedule</mat-icon>
-          <p class="m-0 p-1">{{ride.startTime.toString().split(",")[3]}}.{{ride.startTime.toString().split(",")[4]}}</p>
+          <p class="m-0 p-1">{{ride.startTime | date: 'HH:mm'}}</p>
         </div>
       </div>
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-center align-items-center">
           <mat-icon aria-hidden="false">schedule</mat-icon>
-          <p class="m-0 p-1">{{ride.endTime.toString().split(",")[3]}}.{{ride.endTime.toString().split(",")[4]}}</p>
+          <p class="m-0 p-1">{{ride.endTime | date: 'HH:mm'}}</p>
         </div>
       </div>
     </div>

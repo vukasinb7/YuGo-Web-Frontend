@@ -56,12 +56,6 @@ export class ViewNotesDialogComponent implements OnInit, AfterViewInit{
     this.currentPage = event.pageIndex;
     this.getNotes();
   }
-
-  dateToString(date:Date):string{
-    let dateString=date.toString().split(",");
-    return [dateString[2], dateString[1], dateString[0]].join(".")+". "+[dateString[3],dateString[4]].join(":");
-  }
-
   createNote() {
     this._dialog.open(CreateNoteDialogComponent, {
       width: '40%',

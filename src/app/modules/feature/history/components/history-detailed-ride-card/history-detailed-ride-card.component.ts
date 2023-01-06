@@ -3,7 +3,6 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {DriverService} from "../../../../shared/services/driver.service";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
-import {HistoryDetailedDialogComponent} from "../history-detailed-dialog/history-detailed-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {FavoritePathInputComponent} from "../favorite-path-input/favorite-path-input.component";
 
@@ -37,10 +36,6 @@ export class HistoryDetailedRideCardComponent implements OnInit{
           backdropClass: 'backdropBackground'
         });
     }
-  }
-  dateToString(date:Date):string{
-    let dateString=date.toString().split(",");
-    return [dateString[2], dateString[1], dateString[0]].join(".")+". "+[dateString[3],dateString[4]].join(":");
   }
   padTo2Digits(num:number) {
     return num.toString().padStart(2, '0');

@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  LOCALE_ID,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {MatTableDataSource} from "@angular/material/table";
 import {Observable} from "rxjs";
@@ -9,8 +19,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PassengerService} from "../../../../shared/services/passenger.service";
-import {AuthService} from "../../../../core/services/auth.service";
 import {DriverService} from "../../../../shared/services/driver.service";
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-history-simplified-card',
@@ -34,7 +44,7 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
   @Output()
   dateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
 
-  constructor(private passengerService:PassengerService, public dialog: MatDialog,
+  constructor(@Inject(LOCALE_ID) private _locale: string, private passengerService:PassengerService, public dialog: MatDialog,
               private driverService: DriverService) {
     this.accountInfoForm = new FormGroup({
       startDate: new FormControl(new Date(2022,0,1), [Validators.required]),
@@ -54,7 +64,7 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
 
   loadData(){
     if (this.role=="PASSENGER") {
-      this.passengerService.getPassengerRides(this.userId, this.currentPage, this.pageSize, this.selected, this.dateToString(this.accountInfoForm.get('startDate')?.value), this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
+      this.passengerService.getPassengerRides(this.userId, this.currentPage, this.pageSize, this.selected, formatDate(this.accountInfoForm.get('startDate')?.value, "yyyy-MM-dd", this._locale), formatDate(this.accountInfoForm.get('endDate')?.value, "yyyy-MM-dd", this._locale)).subscribe({
         next: (results) => {
           this.dataSource.data = results.results;
           setTimeout(() => {
@@ -70,7 +80,7 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
         }
       })
     }else if (this.role=="DRIVER"){
-      this.driverService.getDriverRides(this.userId, this.currentPage, this.pageSize, this.selected, this.dateToString(this.accountInfoForm.get('startDate')?.value), this.dateToString(this.accountInfoForm.get('endDate')?.value)).subscribe({
+      this.driverService.getDriverRides(this.userId, this.currentPage, this.pageSize, this.selected, this.accountInfoForm.get('startDate')?.value, this.accountInfoForm.get('endDate')?.value).subscribe({
         next: (results) => {
           this.dataSource.data = results.results;
           setTimeout(() => {
@@ -98,17 +108,6 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
   onDateChange(): void{
     this.dateChange.emit();
     this.loadData();
-  }
-
-  dateToString(date:Date):string{
-    return [
-      date.getFullYear(),
-      this.padTo2Digits(date.getMonth()+1),
-      this.padTo2Digits(date.getDate())
-    ].join('-')
-  }
-  padTo2Digits(num:number) {
-    return num.toString().padStart(2, '0');
   }
 
   viewDetails(ride: any) {
