@@ -1,10 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialogRef} from "@angular/material/dialog";
 import {take} from "rxjs";
+import {UserService} from "../../../shared/services/user.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -20,11 +22,12 @@ export class LoginComponent{
   errorMessage:string = '';
 
   forgotPasswordForm = new FormGroup({
-    email: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
+    emailForgot: new FormControl('', [Validators.required])
   });
 
-  constructor(private authService: AuthService, private router: Router, private dialogRef:MatDialogRef<LoginComponent>) {}
+  constructor(private authService: AuthService,private userService:UserService,private _snackBar:MatSnackBar, private router: Router, private dialogRef:MatDialogRef<LoginComponent>) {}
+
+
   submitLogin(){
     const loginVal = {
       email: this.loginForm.value.email,
@@ -46,6 +49,20 @@ export class LoginComponent{
         },
       });
     }
+  }
+  submitForgot(){
+    const loginVal = {
+      email: this.forgotPasswordForm.value.emailForgot
+    };
+    if (this.forgotPasswordForm.valid){
+        this.userService.getUserByEmail(loginVal.email!).subscribe({next:(result)=>{
+          this.userService.sendPasswordCode(result.id).subscribe({next:(returnCode)=>{
+              this._snackBar.open("Email sent to "+ result.email, "OK");
+              this.dialogRef.close();
+            }})
+          }})
+    }
+
   }
   navigateToRegister() {
     this.router.navigate(['home'], {queryParams:{registerDialog:true}});

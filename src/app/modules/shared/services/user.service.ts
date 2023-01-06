@@ -7,6 +7,7 @@ import {RidesPaged} from "../../feature/history/models/RidesPaged";
 import {UserInfo} from "../models/UserInfo";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {ReviewsPerRideInfo} from "../../feature/history/models/ReviewPerPassengerInfo";
+import {UserSimpleInfo} from "../models/UserSimpleInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,17 @@ export class UserService {
   getUser(userId : number, role: string) : Observable<UserInfo>{
     role = role.toLowerCase();
     return this.http.get<UserInfo>(environment.apiHost + `${role}/${userId}`);
+  }
+
+  getUserByEmail(email : string) : Observable<UserSimpleInfo>{
+    return this.http.get<UserSimpleInfo>(environment.apiHost + `user/${email}/email` );
+  }
+
+  resetPasswordWithCode(id:number,code:string,password:string):Observable<any>{
+    return  this.http.put(environment.apiHost+`user/${id}/resetPassword`,{"code":code,"newPassword":password})
+  }
+  sendPasswordCode(id:number):Observable<any>{
+    return this.http.get<any>(environment.apiHost+`user/${id}/resetPassword`)
   }
 
   updateUser(userId : number, role: string, values: any) : Observable<UserInfo>{
