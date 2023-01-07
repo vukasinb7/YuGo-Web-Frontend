@@ -15,3 +15,6 @@ h2{
   border: 3px solid #F9CB56;
   border-radius: 10px;
 }
+div:hover{
+  cursor: pointer;
+}

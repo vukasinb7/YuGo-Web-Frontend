@@ -12,7 +12,6 @@ export class RideService {
 
   constructor(private http:HttpClient) { }
   createRide(ride:RideBooking):Promise<RideInfo>{
-    console.log("asfasfasfasfafasfasfasfasfsafsaasfasf");
     return new Promise<RideInfo>(resolve => {
       this.http.post<RideInfo>(environment.apiHost + 'ride', ride).subscribe(response => {
         resolve(response);

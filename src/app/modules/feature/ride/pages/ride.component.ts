@@ -4,6 +4,7 @@ import {LocationInfo} from "../../../shared/models/LocationInfo";
 import {RideService} from "../services/ride.service";
 import {RideBooking} from "../model/RideBooking";
 import {AuthService} from "../../../core/services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-ride',
@@ -18,11 +19,15 @@ export class RideComponent {
   fromAddress?:LocationInfo;
   toAddress?:LocationInfo;
 
-  constructor(private rideService:RideService, private authService:AuthService) {
+  constructor(private rideService:RideService, private authService:AuthService, private router: Router) {
   }
 
   switchFormPage(switchDirection:number){
-    this.formPageIndex += switchDirection;
+    if(this.formPageIndex + switchDirection >= 2 && this.authService.getRole() == "UNREGISTERED"){
+      this.router.navigate(['home'], {queryParams:{loginDialog:true}})
+    }else{
+      this.formPageIndex += switchDirection;
+    }
   }
   routeChanged(route:[LocationInfo, LocationInfo]){
     [this.fromAddress, this.toAddress] = route;

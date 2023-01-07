@@ -51,6 +51,7 @@ export class MapComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     let DefaultIcon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
+      iconAnchor:[12.5, 41]
     });
 
     L.Marker.prototype.options.icon = DefaultIcon;
