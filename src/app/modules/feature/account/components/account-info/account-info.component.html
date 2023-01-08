@@ -38,6 +38,9 @@
       <mat-form-field class="my-1 w-100">
         <mat-label>Email</mat-label>
         <input type="email" matInput placeholder="Enter your email" name="email" formControlName="email">
+        <mat-error *ngIf="accountInfoForm.controls['email'].hasError('email')">
+          Not a valid email address
+        </mat-error>
       </mat-form-field>
 
       <div class="d-flex justify-content-evenly mt-2">

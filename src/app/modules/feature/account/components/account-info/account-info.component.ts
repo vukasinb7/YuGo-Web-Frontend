@@ -24,7 +24,7 @@ export class AccountInfoComponent implements OnInit{
       profilePicture: new FormControl('', [Validators.required]),
       telephoneNumber: new FormControl('', [Validators.required, Validators.pattern(this.TEL_REGEX)]),
       address: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
     });
     this.accountInfoForm.disable();
     this.editEnabled = false;
