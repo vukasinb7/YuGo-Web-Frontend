@@ -31,4 +31,7 @@ export class PassengerService {
           to: to
         }});
   }
+  activatePassenger(code:number): Observable<any>{
+    return this.http.get(environment.apiHost+`passenger/activate/${code}`);
+  }
 }

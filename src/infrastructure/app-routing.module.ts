@@ -23,8 +23,8 @@ const routes: Routes = [
   {path: 'users-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'vehicle-requests', component: VehicleChangeRequestsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},
-  {path: 'reset/:code/:userId', component: ForgotPasswordComponent },
-  {path: 'home?activationDialog=true', component: AccountActivationComponent },
+  {path: 'reset/:code', component: ForgotPasswordComponent },
+  {path: 'home?activationDialog=true&code=:code', component: AccountActivationComponent },
   {path: '**',  redirectTo: '/home'}
 ];
 

@@ -55,11 +55,9 @@ export class LoginComponent{
       email: this.forgotPasswordForm.value.emailForgot
     };
     if (this.forgotPasswordForm.valid){
-        this.userService.getUserByEmail(loginVal.email!).subscribe({next:(result)=>{
-          this.userService.sendPasswordCode(result.id).subscribe({next:(returnCode)=>{
-              this._snackBar.open("Email sent to "+ result.email, "OK");
-              this.dialogRef.close();
-            }})
+        this.userService.sendPasswordCodeEfficient(loginVal.email!).subscribe({next:(returnCode)=>{
+            this._snackBar.open("Email sent to "+ loginVal.email, "OK");
+            this.dialogRef.close();
           }})
     }
 
