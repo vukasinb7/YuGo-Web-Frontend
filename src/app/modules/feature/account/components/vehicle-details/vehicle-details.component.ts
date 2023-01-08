@@ -69,7 +69,9 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
 
   submitEdit() : void {
     if (this.vehicleDetailsForm.valid) {
-      let vehicleDetails = {
+      let vehicleDetails : Vehicle = {
+        "id":0,
+        "driverId":0,
         "model": this.vehicleDetailsForm.controls['model'].value,
         "vehicleType": this.vehicleDetailsForm.controls['vehicleType'].value,
         "licenseNumber": this.vehicleDetailsForm.controls['licenseNumber'].value,

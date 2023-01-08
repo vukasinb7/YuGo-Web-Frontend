@@ -19,7 +19,6 @@ import {Router} from "@angular/router";
   styleUrls: ['./users-table.component.css']
 })
 export class UsersTableComponent implements AfterViewInit {
-  hasError: boolean = false;
   searchText: string = "";
   dataSource = new MatTableDataSource<UserInfo>();
   selection = new SelectionModel<UserInfo>(false, []);
@@ -68,7 +67,6 @@ export class UsersTableComponent implements AfterViewInit {
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.hasError = true;
         }
       }
     })
@@ -88,7 +86,7 @@ export class UsersTableComponent implements AfterViewInit {
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.hasError = true;
+
         }
       }
     });
@@ -102,7 +100,7 @@ export class UsersTableComponent implements AfterViewInit {
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.hasError = true;
+
         }
       }
     });
