@@ -12,6 +12,7 @@ import {RideModule} from "../feature/ride/ride.module";
 import {FavoritePathModule} from "../feature/favorite-path/favorite-path.module";
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import {VehicleModule} from "../feature/vehicle/vehicle.module";
+import { AccountActivationComponent } from './components/account-activation/account-activation.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {VehicleModule} from "../feature/vehicle/vehicle.module";
     NavbarComponent,
     RegisterComponent,
     FooterComponent,
-    ForgotPasswordComponent],
+    ForgotPasswordComponent,
+    AccountActivationComponent],
   exports: [
     NavbarComponent,
     FooterComponent

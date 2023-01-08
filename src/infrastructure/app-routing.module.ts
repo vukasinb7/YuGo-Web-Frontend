@@ -12,6 +12,9 @@ import {AdminGuard} from "../app/modules/core/guards/admin.guard";
 import {ProfileGuard} from "../app/modules/core/guards/profile.guard";
 import {VehicleChangeRequestsComponent} from "../app/modules/feature/vehicle/pages/vehicle-change-requests.component";
 import {ForgotPasswordComponent} from "../app/modules/core/components/forgot-password/forgot-password.component";
+import {
+  AccountActivationComponent
+} from "../app/modules/core/components/account-activation/account-activation.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -21,6 +24,7 @@ const routes: Routes = [
   {path: 'vehicle-requests', component: VehicleChangeRequestsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},
   {path: 'reset/:code/:userId', component: ForgotPasswordComponent },
+  {path: 'home?activationDialog=true', component: AccountActivationComponent },
   {path: '**',  redirectTo: '/home'}
 ];
 
