@@ -11,6 +11,7 @@ import {AccountModule} from "../feature/account/account.module";
 import {RideModule} from "../feature/ride/ride.module";
 import {FavoritePathModule} from "../feature/favorite-path/favorite-path.module";
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import {VehicleModule} from "../feature/vehicle/vehicle.module";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     HomeModule,
     AccountModule,
     FavoritePathModule,
-    RideModule
+    RideModule,
+    VehicleModule
   ]
 })
 export class CoreModule {

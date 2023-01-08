@@ -49,7 +49,7 @@ export class UserService {
   }
 
   blockUser(userId : number) : Observable<any>{
-    return this.http.put(environment.apiHost + `user/${userId}/block`, {});
+    return this.http.put<any>(environment.apiHost + `user/${userId}/block`, {});
   }
 
   unblockUser(userId : number) : Observable<any>{

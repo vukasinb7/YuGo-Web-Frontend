@@ -71,7 +71,7 @@ export class NavbarComponent implements OnInit{
 
       },
       error: (error) => {
-        console.log(error);
+
       },
     });
   }

@@ -1,0 +1,141 @@
+<div class="container-xxl pt-lg-4 pt-3">
+<div class="cards-wrapper">
+  <mat-card class="request-card" *ngFor="let request of dataSourceObservable | async">
+    <p class="text-end me-3">{{request.dateCreated | date:"dd-MMM-yyyy HH:mm"}}</p>
+    <h3 class="pt-3 pb-1 text-center">{{request.driver.name}} {{request.driver.surname}} (ID : {{request.driver.id}})</h3>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4">
+          <p class="text-uppercase fw-bold left-colum">Old vehicle</p>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-4">
+          <p class="text-uppercase fw-bold right-colum">New vehicle</p>
+        </div>
+      </div>
+    </div>
+    <mat-divider class="divider mb-2"></mat-divider>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">directions_car</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="left-colum">{{request.oldVehicle.model}}</p>
+        </div>
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">arrow_right_alt</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="right-colum">{{request.newVehicle.model}}</p>
+        </div>
+      </div>
+    </div>
+    <mat-divider style="margin: 0 20px 0 20px"></mat-divider>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">directions_bus</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="left-colum">{{request.oldVehicle.vehicleType}}</p>
+        </div>
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">arrow_right_alt</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="right-colum">{{request.newVehicle.vehicleType}}</p>
+        </div>
+      </div>
+    </div>
+    <mat-divider style="margin: 0 20px 0 20px"></mat-divider>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">format_list_numbered</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="left-colum">{{request.oldVehicle.licenseNumber}}</p>
+        </div>
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">arrow_right_alt</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="right-colum">{{request.newVehicle.licenseNumber}}</p>
+        </div>
+      </div>
+    </div>
+    <mat-divider style="margin: 0 20px 0 20px"></mat-divider>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">airline_seat_recline_normal</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="left-colum">{{request.oldVehicle.passengerSeats}}</p>
+        </div>
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">arrow_right_alt</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="right-colum">{{request.newVehicle.passengerSeats}}</p>
+        </div>
+      </div>
+    </div>
+    <mat-divider style="margin: 0 20px 0 20px"></mat-divider>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">child_friendly</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="left-colum">{{request.oldVehicle.babyTransport}}</p>
+        </div>
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">arrow_right_alt</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="right-colum">{{request.newVehicle.babyTransport}}</p>
+        </div>
+      </div>
+    </div>
+    <mat-divider style="margin: 0 20px 0 20px"></mat-divider>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">pets</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="left-colum">{{request.oldVehicle.petTransport}}</p>
+        </div>
+        <div class="col-2 d-flex">
+          <mat-icon class="align-self-center">arrow_right_alt</mat-icon>
+        </div>
+        <div class="col-4">
+          <p class="right-colum">{{request.newVehicle.petTransport}}</p>
+        </div>
+      </div>
+    </div>
+    <mat-divider style="margin: 0 20px 0 20px"></mat-divider>
+    <div class="container-fluid">
+      <div class="row my-3">
+        <div class="col-2"></div>
+        <div class="col-4">
+          <button class="w-100" mat-raised-button color="warn"
+                  (click)="reject(request)">Reject</button>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-4">
+          <button class="w-100" mat-raised-button style="background-color:#006400"
+                  (click)="accept(request)">Accept</button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+</div>
+<mat-paginator #requestsPaginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page"
+               class="" style="background-color: transparent;">
+</mat-paginator>
