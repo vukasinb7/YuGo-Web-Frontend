@@ -24,11 +24,14 @@ export class UserService {
     return this.http.get<UserSimpleInfo>(environment.apiHost + `user/${email}/email` );
   }
 
-  resetPasswordWithCode(id:number,code:string,password:string):Observable<any>{
-    return  this.http.put(environment.apiHost+`user/${id}/resetPassword`,{"code":code,"newPassword":password})
+  resetPasswordWithCode(code:number,password:string):Observable<any>{
+    return  this.http.put(environment.apiHost+`user/resetPassword`,{"code":code,"newPassword":password})
   }
   sendPasswordCode(id:number):Observable<any>{
     return this.http.get<any>(environment.apiHost+`user/${id}/resetPassword`)
+  }
+  sendPasswordCodeEfficient(email:string):Observable<any>{
+    return this.http.post<any>(environment.apiHost+`user/${email}/resetPassword`,{})
   }
 
   updateUser(userId : number, role: string, values: any) : Observable<UserInfo>{

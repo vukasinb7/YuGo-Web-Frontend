@@ -5,6 +5,7 @@ import { RegisterComponent } from '../register/register.component';
 import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {AccountActivationComponent} from "../account-activation/account-activation.component";
 
 @Component({
   selector: 'app-navbar',
@@ -17,6 +18,7 @@ export class NavbarComponent implements OnInit{
   routeQueryParams: Subscription;
   loginDialog?: MatDialogRef<LoginComponent>;
   registerDialog?: MatDialogRef<RegisterComponent>;
+  accountActivationDialog?: MatDialogRef<AccountActivationComponent>;
 
   constructor(private _dialog: MatDialog, private _authService: AuthService, private _router: Router, private _route:ActivatedRoute) {
     this.routeQueryParams = _route.queryParams.subscribe(params => {
@@ -29,6 +31,12 @@ export class NavbarComponent implements OnInit{
       if(params['registerDialog']){
         this.loginDialog?.close();
         this.openRegisterDialog();
+      }
+    });
+    this.routeQueryParams = _route.queryParams.subscribe(params => {
+      if(params['accountActivationDialog']){
+        this.loginDialog?.close();
+        this.openAccountDialog();
       }
     });
   }
@@ -62,6 +70,19 @@ export class NavbarComponent implements OnInit{
     });
   }
 
+  openAccountDialog() {
+    this.accountActivationDialog = this._dialog.open(AccountActivationComponent,{
+      width: '20%',
+      minWidth: '400px',
+      minHeight: '500px',
+      height:'60%'
+    });
+    this.accountActivationDialog.afterClosed().subscribe(result => {
+      this._router.navigate(['.'], {relativeTo: this._route});
+      this.ngOnInit();
+    });
+  }
+
   logOut(){
     localStorage.removeItem('user');
     this._authService.setUser();
@@ -74,5 +95,7 @@ export class NavbarComponent implements OnInit{
 
       },
     });
+
   }
+
 }
