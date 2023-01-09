@@ -73,9 +73,13 @@ export class PasswordComponent{
   }
 
   cancelEdit() : void{
+    this.passwordForm.patchValue({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
     this.passwordForm.disable();
     this.editEnabled = false;
-    this.passwordForm.reset();
     this.errorMessage = "";
   }
 
