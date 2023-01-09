@@ -44,8 +44,8 @@ export class UserService {
       }});
   }
 
-  changePassword(userId :number, passwordForm: any){
-    return this.http.put(environment.apiHost + `user/${userId}/changePassword`,passwordForm)
+  changePassword(userId :number, passwordForm: any): Observable<any>{
+    return this.http.put<any>(environment.apiHost + `user/${userId}/changePassword`,passwordForm)
   }
 
   blockUser(userId : number) : Observable<any>{

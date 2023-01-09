@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserRegistration} from "../models/userRegistration";
 import {Observable} from "rxjs";
 import {environment} from "../../../../enviroments/environment";
+import {UserInfo} from "../../shared/models/UserInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,11 @@ export class RegistrationService {
 
   constructor(private http:HttpClient) { }
 
-  register(user:UserRegistration, userType : string):Observable<any>{
-    if (userType == "PASSENGER"){
-      return this.http.post(environment.apiHost + "passenger", user);
-    }
-    else{
-      return this.http.post(environment.apiHost + "driver", user);
-    }
+  registerPassenger(user:UserRegistration):Observable<UserInfo>{
+    return this.http.post<UserInfo>(environment.apiHost + "passenger", user);
+  }
+
+  registerDriver(user:UserRegistration):Observable<UserInfo>{
+    return this.http.post<UserInfo>(environment.apiHost + "driver", user);
   }
 }

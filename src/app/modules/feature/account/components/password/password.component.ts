@@ -13,6 +13,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Observable, of, take} from "rxjs";
 import {AuthService} from "../../../../core/services/auth.service";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-password',
@@ -26,7 +27,7 @@ export class PasswordComponent{
   editEnabled: boolean;
 
   errorMessage:string = '';
-  constructor(private _userService : UserService, private _authService: AuthService, private _router: Router) {
+  constructor(private _snackBar: MatSnackBar, private _userService : UserService, private _authService: AuthService, private _router: Router) {
     this.passwordForm = new FormGroup({
       currentPassword: new FormControl('', [Validators.required]),
       newPassword: new FormControl('', [Validators.required, this.passwordValidator()]),
@@ -79,36 +80,31 @@ export class PasswordComponent{
   }
 
   submitEdit() : void {
-    if (this.passwordForm.invalid){
+    this._userService.changePassword(this.userId, {
+      "oldPassword": this.passwordForm.controls['currentPassword'].value,
+      "newPassword": this.passwordForm.controls['newPassword'].value
+    }).pipe(take(1)).subscribe({
+      next: (response) => {
+        this.cancelEdit();
+        this._snackBar.open("Password successfully changed!", "OK");
+        if (this.userId == this._authService.getId()){
+          this._authService.logOut().subscribe({
+            next: (result) => {
+              localStorage.removeItem('user');
+              this._authService.setUser();
+              this._router.navigate(['/']);
+            },
+            error: (error) => {
 
-    }
-    else {
-      this._userService.changePassword(this.userId, {
-        "oldPassword": this.passwordForm.controls['currentPassword'].value,
-        "newPassword": this.passwordForm.controls['newPassword'].value
-      }).pipe(take(1)).subscribe({
-        next: (info) => {
-          this.cancelEdit();
-          if (this.userId == this._authService.getId()){
-            localStorage.removeItem('user');
-            this._authService.setUser();
-            this._router.navigate(['/']);
-            this._authService.logOut().subscribe({
-              next: (result) => {
-
-              },
-              error: (error) => {
-
-              },
-            });
-          }
-        },
-        error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-            this.errorMessage = error.error.message;
-          }
+            },
+          });
         }
-      })
-    }
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.errorMessage = error.error.message;
+        }
+      }
+    })
   }
 }

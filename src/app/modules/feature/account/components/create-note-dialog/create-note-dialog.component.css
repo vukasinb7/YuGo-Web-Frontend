@@ -2,3 +2,8 @@
   background-color: #26272b;
   overflow-x:auto;
 }
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #26272b inset;
+  -webkit-text-fill-color: white;
+}

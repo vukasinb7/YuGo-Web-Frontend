@@ -7,11 +7,12 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {UserInfo} from "../../../../shared/models/UserInfo";
 import {ViewNotesDialogComponent} from "../view-notes-dialog/view-notes-dialog.component";
-import {RegisterComponent} from "../../../../core/components/register/register.component";
+import {PassengerRegisterComponent} from "../../../../core/components/register/passenger-register/passenger-register.component";
 import {take} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
+import {DriverRegisterComponent} from "../../../../core/components/register/driver-register/driver-register.component";
 
 @Component({
   selector: 'app-users-table',
@@ -122,17 +123,22 @@ export class UsersTableComponent implements AfterViewInit {
   }
 
   createDriver(){
-    this._dialog.open(RegisterComponent,{
+    this._dialog.open(DriverRegisterComponent,{
       width:'40%',
-      data: 'DRIVER'
-    });
+    }).afterClosed().subscribe({
+      next: () => {
+        this.loadData();
+    }});
   }
 
   createPassenger(){
-    this._dialog.open(RegisterComponent,{
+    this._dialog.open(PassengerRegisterComponent,{
       width:'40%',
-      data: 'PASSENGER'
-    });
+      data: false
+    }).afterClosed().subscribe({
+      next: () => {
+        this.loadData();
+      }});
   }
 
   filterUsers(){

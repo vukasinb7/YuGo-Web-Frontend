@@ -2,7 +2,7 @@
 <div class="cards-wrapper">
   <mat-card class="request-card" *ngFor="let request of dataSourceObservable | async">
     <p class="text-end me-3">{{request.dateCreated | date:"dd-MMM-yyyy HH:mm"}}</p>
-    <h3 class="pt-3 pb-1 text-center">{{request.driver.name}} {{request.driver.surname}} (ID : {{request.driver.id}})</h3>
+    <h3 class="pt-1 pb-2 text-center">{{request.driver.name}} {{request.driver.surname}} (ID : {{request.driver.id}})</h3>
     <div class="container-fluid">
       <div class="row">
         <div class="col-2"></div>
