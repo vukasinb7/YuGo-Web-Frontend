@@ -35,7 +35,7 @@ export class AuthService {
 
   getRole(): string {
     if (this.isLoggedIn()) {
-      const accessToken: any = localStorage.getItem('user');
+      const accessToken: any = localStorage.getItem('token');
       const helper = new JwtHelperService();
       return helper.decodeToken(accessToken).role;
     }
@@ -44,7 +44,7 @@ export class AuthService {
 
   getId(): number {
     if (this.isLoggedIn()) {
-      const accessToken: any = localStorage.getItem('user');
+      const accessToken: any = localStorage.getItem('token');
       const helper = new JwtHelperService();
       return helper.decodeToken(accessToken).id;
     }
@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('user') != null;
+    return localStorage.getItem('token') != null;
   }
 
   setUser(): void {

@@ -6,6 +6,7 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
@@ -13,12 +14,15 @@ export class Interceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const accessToken: any = localStorage.getItem('user');
+    const accessToken: any = localStorage.getItem('token');
+
     if (req.headers.get('skip')) return next.handle(req);
 
     if (accessToken) {
+      const helper = new JwtHelperService();
+      const tokenType = helper.decodeToken(accessToken).type;
       const cloned = req.clone({
-        headers: req.headers.set('authorization', "Bearer "+accessToken),
+        headers: req.headers.set('authorization', tokenType + " " + accessToken),
       });
 
       return next.handle(cloned);

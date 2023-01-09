@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../../enviroments/environment";
+import {Observable} from "rxjs";
+import {DocumentInfo} from "../../shared/models/DocumentInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +16,9 @@ export class ImageService {
         resolve(resp.body);
       });
     });
+  }
+
+  createProfilePicture(userId: number, file: FormData):Observable<any>{
+    return this.http.post<any>(environment.apiHost+`image/${userId}/profilePicture`,file);
   }
 }

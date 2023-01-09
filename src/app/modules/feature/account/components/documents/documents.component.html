@@ -3,10 +3,10 @@
     <h2 class="font-weight-bold text-center mb-4">Documents</h2>
     <form class="d-block" [formGroup]="documentsForm">
 
-      <p class="m-0">Driving licensce</p>
+      <p class="m-0">Driving license</p>
       <div class="d-flex w-100 px-2 justify-content-between align-items-center mb-5">
         <p *ngIf="!editEnabled">{{driverLicence}}</p>
-        <input class="ng-hide" id="input-file-driving" *ngIf="editEnabled"  multiple type="file" accept="image/png, image/jpeg" (change)="onImageUploadDriver($event)"/>
+        <input class="ng-hide" id="input-file-driving" *ngIf="editEnabled" multiple type="file" accept="image/png, image/jpeg" (change)="onImageUploadDriver($event)"/>
         <button *ngIf="!editEnabled" class="preview-button d-flex align-items-center" (click)="openDialog(driverLicence)"><mat-icon aria-hidden="false" >image</mat-icon></button>
       </div>
       <p class="m-0">Vehicle Identification</p>
@@ -15,6 +15,8 @@
         <input class="ng-hide" id="input-file-id-vehicle" *ngIf="editEnabled" multiple type="file" accept="image/png, image/jpeg" (change)="onImageUploadVehicle($event)"/>
         <button *ngIf="!editEnabled" class="preview-button d-flex align-items-center" (click)="openDialog(vehicleLicence)"><mat-icon aria-hidden="false" >image</mat-icon></button>
       </div>
+
+      <p class="errorMessage text-center" *ngIf="errorMessage !=''">{{errorMessage}}</p>
 
       <div class="d-flex justify-content-evenly mt-4">
         <button mat-button class="w-50" (click)="enableEdit()" style="background-color: #8f6700" *ngIf="!editEnabled">

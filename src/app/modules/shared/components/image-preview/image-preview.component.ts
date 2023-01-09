@@ -11,11 +11,10 @@ import {
   templateUrl: './image-preview.component.html',
   styleUrls: ['./image-preview.component.css']
 })
-export class ImagePreviewComponent implements OnInit{
+export class ImagePreviewComponent{
   image: any;
-  constructor(private sanitizer: DomSanitizer,private imageService:ImageService,@Inject(MAT_DIALOG_DATA) private url: string) {
-  }
-  ngOnInit() {
+  constructor(private sanitizer: DomSanitizer,private imageService:ImageService,
+              @Inject(MAT_DIALOG_DATA) private url: string) {
   }
 
   ngAfterContentInit(): void {

@@ -37,7 +37,7 @@ export class LoginComponent{
     if (this.loginForm.valid) {
       this.authService.logIn(loginVal).pipe(take(1)).subscribe({
         next: (result) => {
-          localStorage.setItem('user', result.accessToken);
+          localStorage.setItem('token', result.accessToken);
           this.authService.setUser();
           this.dialogRef.close(this.authService.getRole());
           this.router.navigate(['/']);

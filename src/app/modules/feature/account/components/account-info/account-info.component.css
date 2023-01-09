@@ -7,3 +7,10 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #26272b inset;
   -webkit-text-fill-color: white;
 }
+
+#input-file-picture::file-selector-button,.preview-button{
+  background-color: #fad02c;
+  color:black;
+  border-radius: 5px;
+  border: 0;
+}
