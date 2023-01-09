@@ -1,18 +1,22 @@
-<mat-card class="card-bg p-3 p-md-4 p-lg-5 w-100 h-100 justify-content-center">
+<mat-card class="card-bg p-2 p-md-4 w-100 h-100 justify-content-center">
   <div class="d-flex flex-column w-100">
     <h2 class="font-weight-bold text-center mb-4">Documents</h2>
     <form class="d-block" [formGroup]="documentsForm">
-      <mat-form-field class="mb-1 w-100">
-        <mat-label>Driver licence</mat-label>
-        <input type="password" matInput placeholder="Enter driver licence" name="driverLicence" formControlName="driverLicence">
-      </mat-form-field>
 
-      <mat-form-field class="my-1 w-100">
-        <mat-label>Vehicle identification</mat-label>
-        <input type="password" matInput placeholder="Enter driver identification" name="vehicleIdentification" formControlName="vehicleIdentification">
-      </mat-form-field>
+      <p class="m-0">Driving licensce</p>
+      <div class="d-flex w-100 px-2 justify-content-between align-items-center mb-5">
+        <p *ngIf="!editEnabled">{{driverLicence}}</p>
+        <input class="ng-hide" id="input-file-driving" *ngIf="editEnabled"  multiple type="file" accept="image/png, image/jpeg" (change)="onImageUploadDriver($event)"/>
+        <button *ngIf="!editEnabled" class="preview-button d-flex align-items-center" (click)="openDialog(driverLicence)"><mat-icon aria-hidden="false" >image</mat-icon></button>
+      </div>
+      <p class="m-0">Vehicle Identification</p>
+      <div class="d-flex w-100 px-2 justify-content-between align-items-center mb-5">
+        <p *ngIf="!editEnabled">{{vehicleLicence}}</p>
+        <input class="ng-hide" id="input-file-id-vehicle" *ngIf="editEnabled" multiple type="file" accept="image/png, image/jpeg" (change)="onImageUploadVehicle($event)"/>
+        <button *ngIf="!editEnabled" class="preview-button d-flex align-items-center" (click)="openDialog(vehicleLicence)"><mat-icon aria-hidden="false" >image</mat-icon></button>
+      </div>
 
-      <div class="d-flex justify-content-evenly mt-2">
+      <div class="d-flex justify-content-evenly mt-4">
         <button mat-button class="w-50" (click)="enableEdit()" style="background-color: #8f6700" *ngIf="!editEnabled">
           <mat-icon>edit</mat-icon>Edit info
         </button>
@@ -25,6 +29,8 @@
           <mat-icon>check</mat-icon>Submit
         </button>
       </div>
+
     </form>
+
   </div>
 </mat-card>

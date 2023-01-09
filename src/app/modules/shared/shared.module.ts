@@ -6,9 +6,12 @@ import {MaterialModule} from "../../../infrastructure/material.module";
 import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from "../../../infrastructure/app-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
+import { ImagePreviewComponent } from './components/image-preview/image-preview.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ImagePreviewComponent
+  ],
   imports: [
     CommonModule,
     BrowserAnimationsModule,

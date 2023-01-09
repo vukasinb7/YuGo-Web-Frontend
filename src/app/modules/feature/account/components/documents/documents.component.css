@@ -2,3 +2,14 @@
   border-radius: 25px;
   background-color: #26272b;
 }
+
+#input-file-driving::file-selector-button,#input-file-id-vehicle::file-selector-button,.preview-button{
+  background-color: #fad02c;
+  color:black;
+  border-radius: 5px;
+  border: 0;
+}
+p{
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
