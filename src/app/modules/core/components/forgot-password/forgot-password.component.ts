@@ -22,8 +22,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./forgot-password.component.css']
 })
 export class ForgotPasswordComponent implements OnInit{
-  userId:number=-1;
-  code:string=""
+  code:number=-1;
   passwordForm : FormGroup;
 
   errorMessage:string = '';
@@ -36,7 +35,6 @@ export class ForgotPasswordComponent implements OnInit{
   ngOnInit() {
     this._route.params.subscribe(params => {
       this.code = (params['code']);
-      this.userId=(params['userId']);
     })
   }
 
@@ -75,7 +73,7 @@ export class ForgotPasswordComponent implements OnInit{
 
     }
     else {
-      this._userService.resetPasswordWithCode(this.userId,this.code,this.passwordForm.value.newPassword).pipe(take(1)).subscribe({
+      this._userService.resetPasswordWithCode(this.code,this.passwordForm.value.newPassword).pipe(take(1)).subscribe({
         next: (info) => {
           this._snackBar.open("Password Changed Successfully", "OK");
           this._router.navigate(['/']);

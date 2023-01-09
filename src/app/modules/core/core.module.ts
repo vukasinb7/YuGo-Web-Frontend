@@ -13,6 +13,7 @@ import {FavoritePathModule} from "../feature/favorite-path/favorite-path.module"
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import {VehicleModule} from "../feature/vehicle/vehicle.module";
 import { DriverRegisterComponent } from './components/register/driver-register/driver-register.component';
+import { AccountActivationComponent } from './components/account-activation/account-activation.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DriverRegisterComponent } from './components/register/driver-register/d
     PassengerRegisterComponent,
     FooterComponent,
     ForgotPasswordComponent,
-    DriverRegisterComponent],
+    DriverRegisterComponent,
+    AccountActivationComponent],
   exports: [
     NavbarComponent,
     FooterComponent
