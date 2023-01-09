@@ -5,16 +5,16 @@
   <div class="vstack mt-4">
     <div class="d-flex justify-content-between">
       <p class="align-self-center">Include pets</p>
-      <mat-checkbox labelPosition="before"></mat-checkbox>
+      <mat-checkbox (change)="includePets = !includePets" labelPosition="before"></mat-checkbox>
     </div>
     <div class="d-flex justify-content-between">
       <p class="align-self-center">Include babies</p>
-      <mat-checkbox labelPosition="before"></mat-checkbox>
+      <mat-checkbox (change)="includeBabies = !includeBabies" labelPosition="before"></mat-checkbox>
     </div>
     <div class="mt-4">
       <ul>
         <li *ngFor="let vehicleType of vehicleTypes; let i = index">
-          <app-vehicle-type-card [selectionChangedEvent]="changeCarTypeEvent.asObservable()" [index]="i" [vehicleType]="vehicleType" (click)="changeVehicleType(i)"></app-vehicle-type-card>
+          <app-vehicle-type-card [distanceChangedEvent]="distanceChangedEvent" [selectionChangedEvent]="changeCarTypeEvent.asObservable()" [index]="i" [vehicleType]="vehicleType" (click)="changeVehicleType(i)"></app-vehicle-type-card>
         </li>
       </ul>
     </div>

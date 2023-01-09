@@ -3,9 +3,11 @@ import {
   VehicleTypeCardComponent,
   VehicleTypeCardData,
 } from "../vehicle-type-card/vehicle-type-card.component";
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {VehicleTypeService} from "../../services/vehicle-type.service";
 import {DestinationPickerService} from "../../services/destination-picker.service";
+import {ImageService} from "../../../../core/services/image.service";
+import {RideProperties} from "../../model/RideProperties";
 
 @Component({
   selector: 'app-ride-pick-properties',
@@ -14,14 +16,33 @@ import {DestinationPickerService} from "../../services/destination-picker.servic
 })
 export class RidePickPropertiesComponent implements OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
+  @Output() ridePropertiesChangedEvent = new EventEmitter<RideProperties>();
+  distanceChangedEvent:Subject<number> = new Subject<number>();
+  includeBabies:boolean = false;
+  includePets:boolean = false;
   vehicleTypes:VehicleTypeCardData[] = [];
   selectedVehicleType?:VehicleTypeCardData;
   changeCarTypeEvent:Subject<number> = new Subject<number>();
   estMinutes:number = 0;
   rideLength:number = 0;
-  constructor(private vehicleTypeService:VehicleTypeService, private destinationPickerService:DestinationPickerService) {
+  constructor(private vehicleTypeService:VehicleTypeService, private destinationPickerService:DestinationPickerService, private imageService:ImageService) {
   }
   ngOnInit():void{
+    let data:VehicleTypeCardData[] = [];
+    this.vehicleTypeService.getVehicleTypes().then(vehicleTypes => {
+      for(let vehicleType of vehicleTypes){
+        this.imageService.getImage(vehicleType.imgPath).then(resp => {
+          let vehicleTypeCardData:VehicleTypeCardData = {
+            id: vehicleType.id,
+            image: resp,
+            pricePerKm: vehicleType.pricePerKm,
+            vehicleTypeName: vehicleType.vehicleType
+          }
+          data.push(vehicleTypeCardData);
+        });
+      }
+    });
+    this.vehicleTypes = data;
     this.destinationPickerService.path.subscribe((path) => {
       if(path){
         path.on('routesfound', (e:any) => {
@@ -29,17 +50,19 @@ export class RidePickPropertiesComponent implements OnInit{
           let summary = routes[0].summary;
           this.rideLength = Math.round(summary.totalDistance * 100 / 1000) / 100;
           this.estMinutes = Math.round(summary.totalTime % 3600 * 100 / 60) / 100;
-          this.vehicleTypeService.getVehicleTypesAsRideProperty(this.rideLength).then(data => {
-            this.vehicleTypes = data;
-          });
-
+          this.distanceChangedEvent.next(this.rideLength);
         });
       }
     });
 
   }
-
   nextFormPage():void{
+    this.ridePropertiesChangedEvent.emit({
+      includeBabies:this.includeBabies,
+      includePets:this.includePets,
+      vehicleTypeId:this.selectedVehicleType!.id,
+      vehicleTypeName:this.selectedVehicleType!.vehicleTypeName
+    });
     this.changeFormPageEmitter.emit(1);
   }
   previousFormPage():void{

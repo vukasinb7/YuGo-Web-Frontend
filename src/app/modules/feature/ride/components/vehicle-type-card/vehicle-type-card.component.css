@@ -1,5 +1,6 @@
 img{
   max-width: 85px;
+  min-width: 85px;
 }
 h2{
   font-size: 20px;
@@ -13,4 +14,7 @@ h2{
 .checkedCard{
   border: 3px solid #F9CB56;
   border-radius: 10px;
+}
+div:hover{
+  cursor: pointer;
 }
