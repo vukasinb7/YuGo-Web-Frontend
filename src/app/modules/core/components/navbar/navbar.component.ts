@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
-import { RegisterComponent } from '../register/register.component';
+import { PassengerRegisterComponent } from '../register/passenger-register/passenger-register.component';
 import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit{
   userId: number = -1;
   routeQueryParams: Subscription;
   loginDialog?: MatDialogRef<LoginComponent>;
-  registerDialog?: MatDialogRef<RegisterComponent>;
+  registerDialog?: MatDialogRef<PassengerRegisterComponent>;
   accountActivationDialog?: MatDialogRef<AccountActivationComponent>;
 
   constructor(private _dialog: MatDialog, private _authService: AuthService, private _router: Router, private _route:ActivatedRoute) {
@@ -59,11 +59,11 @@ export class NavbarComponent implements OnInit{
   }
 
   openRegisterDialog(){
-    this.registerDialog = this._dialog.open(RegisterComponent, {
+    this.registerDialog = this._dialog.open(PassengerRegisterComponent, {
       width: '40%',
       minWidth: '400px',
       minHeight: '500px',
-      data: 'PASSENGER'
+      data: true
     });
     this.registerDialog.afterClosed().subscribe(result => {
       this._router.navigate(['.'], {relativeTo: this._route});
@@ -84,15 +84,16 @@ export class NavbarComponent implements OnInit{
   }
 
   logOut(){
-    localStorage.removeItem('user');
-    this._authService.setUser();
-    this._router.navigate(['/']);
     this._authService.logOut().subscribe({
       next: (result) => {
-
+        localStorage.removeItem('user');
+        this._authService.setUser();
+        this._router.navigate(['/']);
       },
       error: (error) => {
-
+        localStorage.removeItem('user');
+        this._authService.setUser();
+        this._router.navigate(['/']);
       },
     });
 

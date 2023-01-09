@@ -9,19 +9,22 @@ import {
   Validators
 } from "@angular/forms";
 import {Observable, of} from "rxjs";
-import {RegistrationService} from "../../services/registration.service";
-import {UserRegistration} from "../../models/userRegistration";
+import {RegistrationService} from "../../../services/registration.service";
+import {UserRegistration} from "../../../models/userRegistration";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  templateUrl: './passenger-register.component.html',
+  styleUrls: ['./passenger-register.component.css']
 })
-export class RegisterComponent implements AfterViewInit{
-  constructor(private registrationService:RegistrationService, private dialogRef:MatDialogRef<RegisterComponent>, private router: Router, @Inject(MAT_DIALOG_DATA) public userType: string) {
+export class PassengerRegisterComponent implements AfterViewInit{
+  constructor(private _snackBar: MatSnackBar, private registrationService:RegistrationService,
+              private dialogRef:MatDialogRef<PassengerRegisterComponent>, private router: Router,
+              @Inject(MAT_DIALOG_DATA) public unregistered: boolean) {
   }
   ngAfterViewInit(): void {
     this.registrationForm.controls.password.valueChanges.subscribe(()=>{
@@ -78,12 +81,22 @@ export class RegisterComponent implements AfterViewInit{
       password:this.registrationForm.controls.password.value!,
       email:this.registrationForm.controls.email.value!
     };
-    this.registrationService.register(user, this.userType).subscribe({
+    this.registrationService.registerPassenger(user).subscribe({
       next:()=>{
         this.isFinished = true;
-        this.dialogRef.updateSize("35%");
+        if (this.unregistered){
+          this.dialogRef.updateSize("35%");
+        }
+        else{
+          this.dialogRef.close();
+          this._snackBar.open("Passenger registered successfully", "OK");
+        }
       },
-      error:(err:HttpErrorResponse)=>{this.errorMessage = err.error}
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.errorMessage = error.error.message;
+        }
+      }
     });
   }
 

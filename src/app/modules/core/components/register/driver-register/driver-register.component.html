@@ -1,0 +1,149 @@
+<div class="p-3 w-100 card-bg">
+  <div mat-dialog-content id="driverCarousel" class="carousel slide">
+    <div class="carousel-inner">
+
+      <div #registerItem id="register-item" class="carousel-item active">
+        <mat-card class="card-bg w-100 h-100 overflow-hidden">
+            <h2 class="font-weight-bold d-flex justify-content-center mb-4">Sign Up</h2>
+            <div class="flex-column justify-content-center px-1">
+              <form class="w-100" (ngSubmit)="onSubmit()" [formGroup] = "registrationForm">
+                <div class="row">
+                  <mat-form-field class="mb-2">
+                    <mat-icon matPrefix>email</mat-icon>
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput placeholder="Example@example.com" formControlName="email" name="email">
+                    <mat-error *ngIf="registrationForm.controls['email'].hasError('email')">
+                      Not a valid email address
+                    </mat-error>
+                  </mat-form-field>
+                  <div class="mb-2">
+                    <mat-form-field class="col-6 pe-2">
+                      <mat-icon matPrefix>account_circle</mat-icon>
+                      <mat-label>First name</mat-label>
+                      <input type="text" matInput placeholder="John" formControlName="firstName" name="firstName">
+                    </mat-form-field>
+                    <mat-form-field class="col-6 ps-2">
+                      <mat-icon matPrefix>account_circle</mat-icon>
+                      <mat-label>Last name</mat-label>
+                      <input type="text" matInput placeholder="Doe" formControlName="lastName" name="lastName">
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field class="mb-2">
+                    <mat-icon matPrefix>phone</mat-icon>
+                    <mat-label>Phone number</mat-label>
+                    <input type="tel" matInput placeholder="+381645023454" formControlName="phoneNumber" name="phoneNumber">
+                    <mat-error *ngIf="registrationForm.controls['phoneNumber'].hasError('pattern')">
+                      Not a valid phone number
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="mb-2">
+                    <mat-icon matPrefix>home</mat-icon>
+                    <mat-label>Address</mat-label>
+                    <input type="address" matInput placeholder="10 Downing Street" formControlName="address" name="address">
+                  </mat-form-field>
+                  <mat-form-field class="mb-2">
+                    <mat-icon matPrefix>fingerprint</mat-icon>
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput placeholder="Enter your password" formControlName="password" name="password">
+                    <mat-error *ngIf="registrationForm.controls['password'].hasError('minLength')">
+                      Password must be at least 6 characters long
+                    </mat-error>
+                    <mat-error *ngIf="registrationForm.controls['password'].hasError('maxLength')">
+                      Password can not be longer than 20 characters
+                    </mat-error>
+                    <mat-error *ngIf="registrationForm.controls['password'].hasError('whitespace')">
+                      Password can not contain whitespace characters
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="mb-2">
+                    <mat-icon matPrefix>fingerprint</mat-icon>
+                    <mat-label>Confirm password</mat-label>
+                    <input type="password" matInput placeholder="Confirm password" formControlName="confirmPassword" name="confirmPassword">
+                    <mat-error *ngIf="registrationForm.controls['confirmPassword'].hasError('passwordsNotMatching')">
+                      Passwords are not matching
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <p class="errorMessage" *ngIf="this.accountErrorMessage != ''">{{accountErrorMessage}}</p>
+                <div class="d-flex justify-content-center">
+                  <button [disabled]="!registrationForm.valid" class="w-50" mat-raised-button color="accent"
+                          data-bs-target="#driverCarousel" data-bs-slide="next">Next</button>
+                </div>
+              </form>
+          </div>
+        </mat-card>
+      </div>
+
+      <div #vehicleCreateItem id="vehicle-create-item" class="carousel-item">
+        <mat-card class="card-bg w-100 h-100 overflow-hidden">
+          <div class="d-flex flex-column w-100 my-auto">
+            <h2 class="font-weight-bold text-center mb-4">Vehicle registration</h2>
+            <form class="d-block px-1" [formGroup]="vehicleDetailsForm">
+              <mat-form-field class="my-1 w-100">
+                <mat-icon matSuffix>directions_car</mat-icon>
+                <mat-label>Model name</mat-label>
+                <input type="text" matInput placeholder="Enter vehicle model name" name="model" formControlName="model">
+              </mat-form-field>
+
+              <mat-label class="me-2">Type:</mat-label>
+              <mat-button-toggle-group name="vehicleType" aria-label="Vehicle Type" formControlName="vehicleType">
+                <mat-button-toggle value="STANDARD" [checked]="true">Standard</mat-button-toggle>
+                <mat-button-toggle value="LUX">Luxury</mat-button-toggle>
+                <mat-button-toggle value="VAN">Van</mat-button-toggle>
+              </mat-button-toggle-group>
+
+              <mat-form-field class="mt-4 w-100">
+                <mat-icon matSuffix>format_list_numbered</mat-icon>
+                <mat-label>Vehicle licence plate</mat-label>
+                <input type="text" matInput placeholder="Enter vehicle licence plate" name="licenseNumber"
+                       formControlName="licenseNumber">
+                <mat-error *ngIf="vehicleDetailsForm.controls['licenseNumber'].hasError('pattern')">
+                  Not a valid phone license plate
+                </mat-error>
+              </mat-form-field>
+
+              <mat-checkbox class="w-100 my-2" formControlName="babyTransport">
+                <div class="d-inline-flex w-100">
+                  <mat-icon class="align-self-center me-1">child_friendly</mat-icon>
+                  <div class="align-self-center">Include babies</div>
+                </div>
+              </mat-checkbox>
+
+              <mat-checkbox class="w-100 my-2" formControlName="petTransport">
+                <div class="d-inline-flex w-100">
+                  <mat-icon class="align-self-center me-1">pets</mat-icon>
+                  <div class="align-self-center">Include pats</div>
+                </div>
+              </mat-checkbox>
+
+              <div class="my-3 mx-4">
+                <div class="d-inline-flex">
+                  <mat-icon class="align-self-center">airline_seat_recline_normal</mat-icon>
+                  <mat-label>Number of passenger seats:</mat-label>
+                </div>
+                <mat-slider class="w-100 mx-auto" min="1" max="8" step="1" showTickMarks discrete>
+                  <input matSliderThumb name="passengerSeats" formControlName="passengerSeats">
+                </mat-slider>
+              </div>
+
+              <p class="errorMessage" *ngIf="this.vehicleErrorMessage != ''">{{accountErrorMessage}}</p>
+              <div class="d-inline-flex w-100">
+                <div class="w-50 pe-3">
+                  <button mat-raised-button color="warn" class="w-100"
+                          data-bs-target="#driverCarousel" data-bs-slide="previous">Back
+                  </button>
+                </div>
+                <div class="w-50 ps-3">
+                  <button [disabled]="!vehicleDetailsForm.valid" mat-raised-button color="accent" class="w-100"
+                          (click)="onSubmit()" >Create driver
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

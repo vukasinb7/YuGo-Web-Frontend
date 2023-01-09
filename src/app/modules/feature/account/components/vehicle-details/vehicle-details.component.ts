@@ -1,11 +1,10 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../../../shared/services/user.service";
-import {AuthService} from "../../../../core/services/auth.service";
 import {Vehicle} from "../../../../shared/models/Vehicle";
 import {VehicleService} from "../../../../shared/services/vehicle.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {take} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-vehicle-details',
@@ -15,17 +14,20 @@ import {take} from "rxjs";
 export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   @Input()
   public userId: number = -1;
+
+  LICENSE_NUMBER_REGEX:string= "[A-Z][A-Z][0-9]*[A-Z][A-Z]";
   vehicleDetailsForm : FormGroup;
   editEnabled: boolean = false;
   responseMessage: string = "";
-  constructor(private _vehicleService: VehicleService) {
+  constructor(private _snackBar: MatSnackBar, private _vehicleService: VehicleService) {
     this.vehicleDetailsForm = new FormGroup({
       model: new FormControl('', [Validators.required]),
-      vehicleType: new FormControl('', [Validators.required]),
-      licenseNumber: new FormControl('', [Validators.required]),
-      babyTransport: new FormControl('', [Validators.required]),
-      petTransport: new FormControl('', [Validators.required]),
-      passengerSeats: new FormControl('', [Validators.required]),
+      vehicleType: new FormControl('STANDARD', [Validators.required]),
+      licenseNumber: new FormControl('', [Validators.required,
+        Validators.pattern(this.LICENSE_NUMBER_REGEX)]),
+      babyTransport: new FormControl(false),
+      petTransport: new FormControl(false),
+      passengerSeats: new FormControl(1, [Validators.required]),
     });
   }
 
@@ -65,41 +67,37 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   cancelEdit() : void{
     this.vehicleDetailsForm.disable();
     this.editEnabled = false;
+    this.loadVehicleData();
   }
 
   submitEdit() : void {
-    if (this.vehicleDetailsForm.valid) {
-      let vehicleDetails : Vehicle = {
-        "id":0,
-        "driverId":0,
-        "model": this.vehicleDetailsForm.controls['model'].value,
-        "vehicleType": this.vehicleDetailsForm.controls['vehicleType'].value,
-        "licenseNumber": this.vehicleDetailsForm.controls['licenseNumber'].value,
-        "babyTransport": this.vehicleDetailsForm.controls['babyTransport'].value,
-        "petTransport": this.vehicleDetailsForm.controls['petTransport'].value,
-        "passengerSeats": this.vehicleDetailsForm.controls['passengerSeats'].value,
-        "currentLocation": {
-          "address": "Null Island",
-          "longitude": 0,
-          "latitude": 0
+    let vehicleDetails : Vehicle = {
+      "id":0,
+      "driverId":0,
+      "model": this.vehicleDetailsForm.controls['model'].value,
+      "vehicleType": this.vehicleDetailsForm.controls['vehicleType'].value,
+      "licenseNumber": this.vehicleDetailsForm.controls['licenseNumber'].value,
+      "babyTransport": this.vehicleDetailsForm.controls['babyTransport'].value,
+      "petTransport": this.vehicleDetailsForm.controls['petTransport'].value,
+      "passengerSeats": this.vehicleDetailsForm.controls['passengerSeats'].value,
+      "currentLocation": {
+        "address": "Null Island",
+        "longitude": 0,
+        "latitude": 0
+      }
+    }
+    this._vehicleService.makeVehicleChangeRequest(this.userId, vehicleDetails).pipe(take(1)).subscribe({
+      next: (response) => {
+        this._snackBar.open(response.message,"OK");
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+
         }
       }
-      this._vehicleService.makeVehicleChangeRequest(this.userId, vehicleDetails).pipe(take(1)).subscribe({
-        next: (response) => {
-          this.responseMessage = response.message;
-        },
-        error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-
-          }
-        }
-      });
-      this.loadVehicleData();
-      this.vehicleDetailsForm.disable();
-      this.editEnabled = false;
-    }
-    else{
-
-    }
+    });
+    this.loadVehicleData();
+    this.vehicleDetailsForm.disable();
+    this.editEnabled = false;
   }
 }

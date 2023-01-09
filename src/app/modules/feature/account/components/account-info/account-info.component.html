@@ -13,16 +13,19 @@
       </div>
 
       <mat-form-field class="my-1 w-100">
+        <mat-icon matPrefix>account_circle</mat-icon>
         <mat-label>Firstname</mat-label>
         <input type="text" matInput placeholder="Enter your firstname" name="name" formControlName="name">
       </mat-form-field>
 
       <mat-form-field class="my-1 w-100">
+        <mat-icon matPrefix>account_circle</mat-icon>
         <mat-label>Surname</mat-label>
         <input type="text" matInput placeholder="Enter your surname" name="surname" formControlName="surname">
       </mat-form-field>
 
       <mat-form-field class="my-1 w-100">
+        <mat-icon matPrefix>phone</mat-icon>
         <mat-label>Phone</mat-label>
         <input type="text" matInput placeholder="Enter your phone number" name="phone" formControlName="telephoneNumber">
         <mat-error *ngIf="accountInfoForm.controls['telephoneNumber'].hasError('pattern')">
@@ -31,11 +34,13 @@
       </mat-form-field>
 
       <mat-form-field class="my-1 w-100">
+        <mat-icon matPrefix>home</mat-icon>
         <mat-label>Address</mat-label>
         <input type="text" matInput placeholder="Enter your address" name="address" formControlName="address">
       </mat-form-field>
 
       <mat-form-field class="my-1 w-100">
+        <mat-icon matPrefix>email</mat-icon>
         <mat-label>Email</mat-label>
         <input type="email" matInput placeholder="Enter your email" name="email" formControlName="email">
         <mat-error *ngIf="accountInfoForm.controls['email'].hasError('email')">
@@ -52,7 +57,7 @@
           <mat-icon>cancel</mat-icon>Cancel
         </button>
 
-        <button mat-button class="w-100 ms-3" (click)="submitEdit()" style="background-color: #006400" *ngIf="editEnabled">
+        <button [disabled]="!accountInfoForm.valid" mat-button class="w-100 ms-3" (click)="submitEdit()" style="background-color: #006400" *ngIf="editEnabled">
           <mat-icon>check</mat-icon>Submit
         </button>
       </div>

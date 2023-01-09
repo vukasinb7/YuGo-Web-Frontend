@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RegisterComponent} from "../../../core/components/register/register.component";
+import {PassengerRegisterComponent} from "../../../core/components/register/passenger-register/passenger-register.component";
 import {MatDialog} from '@angular/material/dialog';
 import {HistoryDetailedDialogComponent} from "../components/history-detailed-dialog/history-detailed-dialog.component";
 import {ActivatedRoute} from "@angular/router";
