@@ -4,6 +4,7 @@ import {RideBooking} from "../model/RideBooking";
 import {RideInfo} from "../../../shared/models/RideInfo";
 import * as http from "http";
 import {environment} from "../../../../../enviroments/environment";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,7 @@ import {environment} from "../../../../../enviroments/environment";
 export class RideService {
 
   constructor(private http:HttpClient) { }
-  createRide(ride:RideBooking):Promise<RideInfo>{
-    return new Promise<RideInfo>(resolve => {
-      this.http.post<RideInfo>(environment.apiHost + 'ride', ride).subscribe(response => {
-        resolve(response);
-      });
-    });
+  createRide(ride:RideBooking):Observable<RideInfo>{
+    return this.http.post<RideInfo>(environment.apiHost + 'ride', ride);
   }
 }

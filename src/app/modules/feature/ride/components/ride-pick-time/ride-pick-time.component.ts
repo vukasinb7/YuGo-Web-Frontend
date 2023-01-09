@@ -10,12 +10,10 @@ import {interval, Observable} from "rxjs";
 export class RidePickTimeComponent implements OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
   @Output() rideDateTimeChangedEvent = new EventEmitter<Date>();
-  @Output() bookRideEvent = new EventEmitter<void>();
   selectedTime?:string;
   currentDateTime:Date;
   minTime:Date;
   selectedDate?:Date;
-  timeChangedEvent?:Observable<any>;
   constructor() {
     this.currentDateTime = new Date();
     this.minTime = this.currentDateTime;
@@ -35,16 +33,12 @@ export class RidePickTimeComponent implements OnInit{
   nextFormPage():void{
     this.rideDateTimeChangedEvent.emit(this.getSelectedDateTime());
     this.changeFormPageEmitter.emit(1);
-    this.bookRideEvent.emit();
   }
   previousFormPage():void{
     this.changeFormPageEmitter.emit(-1);
   }
 
   ngOnInit(): void {
-    this.timeChangedEvent?.subscribe((val:any)=>{
-      console.log(val);
-    });
     interval(2000).subscribe(()=>{
       this.currentDateTime = new Date();
       this.checkMinTime();
