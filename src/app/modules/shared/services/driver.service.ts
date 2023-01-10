@@ -39,4 +39,8 @@ export class DriverService {
     return this.http.get<DocumentInfo[]>(environment.apiHost+`driver/${driverId}/documents`);
   }
 
+  deleteDocuments(documentId:number):Observable<any>{
+    return this.http.delete<any>(environment.apiHost+`driver/document/${documentId}`);
+  }
+
 }

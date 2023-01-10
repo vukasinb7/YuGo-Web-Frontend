@@ -7,6 +7,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {ImagePreviewComponent} from "../../../../shared/components/image-preview/image-preview.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DocumentInfo} from "../../../../shared/models/DocumentInfo";
 
 @Component({
   selector: 'app-documents',
@@ -22,6 +23,9 @@ export class DocumentsComponent implements OnInit{
   uploadedImageDriver: File | undefined;
   uploadedImageVehicle: File | undefined;
   image: any;
+
+  driverDocument:DocumentInfo={} as DocumentInfo;
+  vehicleDocument:DocumentInfo={} as DocumentInfo;
   driverLicence: string="No file";
   vehicleLicence: string="No file";
   driverLicenceMessage: string="No driver license found";
@@ -47,13 +51,17 @@ export class DocumentsComponent implements OnInit{
         if (documents.length == 1) {
           if (documents[0].documentType == "DRIVING_LICENCE") {
             this.driverLicence = documents[0].name;
-            this.driverLicenceMessage = "Click image for preview"
-            this.vehicleIdentificationMessage = "No vehicle identification found"
+            this.driverLicenceMessage = "Click image for preview";
+            this.vehicleIdentificationMessage = "No vehicle identification found";
+            this.driverDocument=documents[0];
+            this.vehicleDocument=documents[1];
           }
           else {
             this.vehicleLicence = documents[0].name;
-            this.driverLicenceMessage = "No driver licence found"
-            this.vehicleIdentificationMessage = "Click image for preview"
+            this.driverLicenceMessage = "No driver licence found";
+            this.vehicleIdentificationMessage = "Click image for preview";
+            this.driverDocument=documents[1];
+            this.vehicleDocument=documents[0];
           }
         }
         else if (documents.length == 2){
@@ -62,10 +70,14 @@ export class DocumentsComponent implements OnInit{
           if (documents[0].documentType == "DRIVING_LICENCE") {
             this.driverLicence = documents[0].name;
             this.vehicleLicence = documents[1].name;
+            this.driverDocument=documents[0];
+            this.vehicleDocument=documents[1];
           }
           else{
             this.driverLicence = documents[1].name;
             this.vehicleLicence = documents[0].name;
+            this.driverDocument=documents[1];
+            this.vehicleDocument=documents[0];
           }
         }
         else{
@@ -97,10 +109,21 @@ export class DocumentsComponent implements OnInit{
       driverFormData.append('image', this.uploadedImageDriver!, this.uploadedImageDriver!.name);
       this.driverService.createDocument(this.userId,driverFormData,"DRIVING_LICENCE").subscribe(
         {next:(result)=>{
-          this.driverLicence=result.name;
-          this.uploadedImageDriver = undefined;
-          this._snackBar.open("Driver licence added successfully","OK");
-          this.loadDocumentsData();
+          if (this.driverDocument!=undefined)
+          {
+          this.driverService.deleteDocuments(this.driverDocument.id).subscribe({next:(respond)=>{
+              this.driverLicence=result.name;
+              this.uploadedImageDriver = undefined;
+              this._snackBar.open("Driver licence added successfully","OK");
+              this.loadDocumentsData();
+            }})
+          }else {
+            this.driverLicence=result.name;
+            this.uploadedImageDriver = undefined;
+            this._snackBar.open("Driver licence added successfully","OK");
+            this.loadDocumentsData();
+            this.driverDocument=result;
+          }
         }})
     }
     if(this.uploadedImageVehicle!=undefined){
@@ -109,10 +132,23 @@ export class DocumentsComponent implements OnInit{
 
       this.driverService.createDocument(this.userId,vehicleFormData,"VEHICLE_REGISTRATION").subscribe(
         {next:(result)=>{
-          this.vehicleLicence=result.name;
-          this.uploadedImageVehicle = undefined;
-          this._snackBar.open("Vehicle identification added successfully","OK");
-          this.loadDocumentsData();
+          if (this.vehicleDocument!=undefined) {
+            this.driverService.deleteDocuments(this.vehicleDocument.id).subscribe({
+              next: (respond) => {
+                this.vehicleLicence = result.name;
+                this.uploadedImageVehicle = undefined;
+                this._snackBar.open("Vehicle identification added successfully", "OK");
+                this.loadDocumentsData();
+              }
+            })
+          }
+          else {
+            this.vehicleLicence = result.name;
+            this.uploadedImageVehicle = undefined;
+            this._snackBar.open("Vehicle identification added successfully", "OK");
+            this.loadDocumentsData();
+            this.vehicleDocument=result;
+          }
         }})
     }
   }
