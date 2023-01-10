@@ -1,0 +1,18 @@
+
+.map-frame {
+  height: 100%;
+}
+
+#map-ride-offer {
+  height: 100%;
+}
+::ng-deep .leaflet-top.leaflet-right{
+  display:none
+}
+p{
+  font-size: 1.2rem;
+}
+
+::ng-deep .mat-mdc-dialog-surface{
+  background-color: transparent !important;
+}

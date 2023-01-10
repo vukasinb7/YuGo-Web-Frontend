@@ -10,6 +10,7 @@ import {NgxMatTimepickerModule} from "ngx-mat-timepicker";
 import { RecommendedLocationComponent } from './components/recommended-location/recommended-location.component';
 import { SearchingDriverScreenComponent } from './components/searching-driver-screen/searching-driver-screen.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { RideOfferCardComponent } from './components/ride-offer-card/ride-offer-card.component';
 
 @NgModule({
   declarations: [
@@ -19,10 +20,12 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     VehicleTypeCardComponent,
     RidePickTimeComponent,
     RecommendedLocationComponent,
-    SearchingDriverScreenComponent],
-  exports: [
-    RideComponent,
-  ],
+    SearchingDriverScreenComponent,
+    RideOfferCardComponent],
+    exports: [
+        RideComponent,
+        RideOfferCardComponent,
+    ],
     imports: [
         SharedModule,
         MatCheckboxModule,
