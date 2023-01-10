@@ -6,6 +6,7 @@ import {AuthService} from "../../../../core/services/auth.service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {ImagePreviewComponent} from "../../../../shared/components/image-preview/image-preview.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-documents',
@@ -13,12 +14,8 @@ import {ImagePreviewComponent} from "../../../../shared/components/image-preview
   styleUrls: ['./documents.component.css']
 })
 export class DocumentsComponent implements OnInit{
-  public errorMessage: string = "";
   public documentsForm : FormGroup;
   public editEnabled: boolean;
-  public driverDocumentInput:HTMLInputElement;
-  public vehicleDocumentInput:HTMLInputElement;
-
   @Input()
   public userId=-1;
 
@@ -27,17 +24,17 @@ export class DocumentsComponent implements OnInit{
   image: any;
   driverLicence: string="No file";
   vehicleLicence: string="No file";
+  driverLicenceMessage: string="No driver license found";
+  vehicleIdentificationMessage: string="No vehicle identification found";
 
-  constructor(public dialog: MatDialog,private http: HttpClient,private _documentService : DocumentService,
-              private driverService:DriverService){
+  constructor(private _snackBar: MatSnackBar, public dialog: MatDialog,private http: HttpClient,
+              private _documentService : DocumentService, private driverService:DriverService){
     this.documentsForm = new FormGroup({
       driverLicence: new FormControl('', [Validators.required]),
       vehicleIdentification: new FormControl('', [Validators.required]),
     });
     this.documentsForm.disable();
-    this.editEnabled = false;
-    this.driverDocumentInput=document.getElementById("input-file-driving")! as HTMLInputElement;
-    this.vehicleDocumentInput=document.getElementById("input-file-id-vehicle")! as HTMLInputElement;
+    this.editEnabled = false
   }
 
   ngOnInit() {
@@ -50,14 +47,18 @@ export class DocumentsComponent implements OnInit{
         if (documents.length == 1) {
           if (documents[0].documentType == "DRIVING_LICENCE") {
             this.driverLicence = documents[0].name;
-            this.errorMessage = "Please insert vehicle identification picture!";
+            this.driverLicenceMessage = "Click image for preview"
+            this.vehicleIdentificationMessage = "No vehicle identification found"
           }
           else {
             this.vehicleLicence = documents[0].name;
-            this.errorMessage = "Please insert driver licence picture!";
+            this.driverLicenceMessage = "No driver licence found"
+            this.vehicleIdentificationMessage = "Click image for preview"
           }
         }
         else if (documents.length == 2){
+          this.driverLicenceMessage = "Click image for preview"
+          this.vehicleIdentificationMessage = "Click image for preview"
           if (documents[0].documentType == "DRIVING_LICENCE") {
             this.driverLicence = documents[0].name;
             this.vehicleLicence = documents[1].name;
@@ -68,11 +69,13 @@ export class DocumentsComponent implements OnInit{
           }
         }
         else{
-          this.errorMessage = "Please insert documents pictures!";
+          this.driverLicenceMessage = "No driver licence found"
+          this.vehicleIdentificationMessage = "No vehicle identification found"
         }},
       error: (error) =>{
         if (error instanceof HttpErrorResponse) {
-          this.errorMessage = "Please insert documents pictures!";
+          this.driverLicenceMessage = "No driver licence found"
+          this.vehicleIdentificationMessage = "No vehicle identification found"
         }
       }});
   }
@@ -83,35 +86,41 @@ export class DocumentsComponent implements OnInit{
 
   cancelEdit() : void{
     this.editEnabled = false;
+    this.uploadedImageDriver = undefined;
+    this.uploadedImageVehicle = undefined;
   }
 
   submitEdit() : void {
     this.editEnabled = false;
-    this.driverDocumentInput=document.getElementById("input-file-driving")! as HTMLInputElement;
-    this.vehicleDocumentInput=document.getElementById("input-file-id-vehicle")! as HTMLInputElement;
     if (this.uploadedImageDriver!=undefined){
       const driverFormData = new FormData();
       driverFormData.append('image', this.uploadedImageDriver!, this.uploadedImageDriver!.name);
-      this.driverService.createDocument(this.userId,driverFormData,"DRIVING_LICENCE").subscribe({next:(result)=>{
+      this.driverService.createDocument(this.userId,driverFormData,"DRIVING_LICENCE").subscribe(
+        {next:(result)=>{
           this.driverLicence=result.name;
+          this.uploadedImageDriver = undefined;
+          this._snackBar.open("Driver licence added successfully","OK");
+          this.loadDocumentsData();
         }})
     }
     if(this.uploadedImageVehicle!=undefined){
       const vehicleFormData = new FormData();
       vehicleFormData.append('image', this.uploadedImageVehicle!, this.uploadedImageVehicle!.name);
 
-      this.driverService.createDocument(this.userId,vehicleFormData,"VEHICLE_REGISTRATION").subscribe({next:(result)=>{
+      this.driverService.createDocument(this.userId,vehicleFormData,"VEHICLE_REGISTRATION").subscribe(
+        {next:(result)=>{
           this.vehicleLicence=result.name;
+          this.uploadedImageVehicle = undefined;
+          this._snackBar.open("Vehicle identification added successfully","OK");
+          this.loadDocumentsData();
         }})
     }
   }
   public onImageUploadDriver(event:Event) {
-    this.driverDocumentInput=document.getElementById("input-file-driving")! as HTMLInputElement;
     // @ts-ignore
     this.uploadedImageDriver = event.target.files[0];
   }
   public onImageUploadVehicle(event:Event) {
-    this.vehicleDocumentInput=document.getElementById("input-file-id-vehicle")! as HTMLInputElement;
     // @ts-ignore
     this.uploadedImageVehicle = event.target.files[0];
   }
