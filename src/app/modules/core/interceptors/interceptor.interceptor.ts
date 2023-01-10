@@ -8,10 +8,11 @@ import {
 import {catchError, Observable, throwError} from 'rxjs';
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {AuthService} from "../services/auth.service";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
-  constructor(private _authService: AuthService) {
+  constructor(private _router: Router, private _authService: AuthService) {
   }
 
   intercept(
@@ -34,20 +35,40 @@ export class Interceptor implements HttpInterceptor {
           if (error instanceof HttpErrorResponse &&
             !cloned.url.includes('user/login') &&
             error.status == 401) {
-
-            this._authService.refreshToken().subscribe({
-              next: (result) => {
-                localStorage.setItem("token",result.accessToken);
-                localStorage.setItem("refreshToken",result.refreshToken);
-                window.location.reload();
-              }
-            })
+              this.handle401Error();
           }
           return throwError(() => error);
         })
       );
     } else {
       return next.handle(req);
+    }
+  }
+
+  private isRefreshing: boolean = false;
+  private handle401Error() {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      if (this._authService.isLoggedIn()) {
+        this._authService.refreshToken().subscribe({
+          next: (result) => {
+            this.isRefreshing = false;
+            localStorage.setItem("token", result.accessToken);
+            localStorage.setItem("refreshToken", result.refreshToken);
+            window.location.reload();
+          },
+          error: (error) => {
+            this.isRefreshing = false;
+            if (error instanceof HttpErrorResponse) {
+              if (error.status == 403) {
+                localStorage.clear();
+                this._authService.setUser();
+                this._router.navigate(['/']);
+              }
+            }
+          }
+        });
+      }
     }
   }
 }

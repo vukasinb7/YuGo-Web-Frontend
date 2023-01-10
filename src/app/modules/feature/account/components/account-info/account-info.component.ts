@@ -75,7 +75,6 @@ export class AccountInfoComponent implements OnInit{
 
   submitEdit() : void {
     if (this.uploadedImage != null) {
-      console.log("PRVO");
       const driverFormData = new FormData();
       driverFormData.append('image', this.uploadedImage, this.uploadedImage.name);
       this._imageService.createProfilePicture(this.userId, driverFormData).subscribe({
@@ -99,7 +98,6 @@ export class AccountInfoComponent implements OnInit{
       })
     }
     else{
-      console.log("DRUGO");
       this._userService.updateUser(this.userId, this.role, this.accountInfoForm.value).pipe(take(1)).subscribe(
         {
           next: (info) => {
