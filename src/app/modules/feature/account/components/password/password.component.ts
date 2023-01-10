@@ -94,7 +94,7 @@ export class PasswordComponent{
         if (this.userId == this._authService.getId()){
           this._authService.logOut().subscribe({
             next: (result) => {
-              localStorage.removeItem('token');
+              localStorage.clear()
               this._authService.setUser();
               this._router.navigate(['/']);
             },

@@ -11,7 +11,7 @@ import {
   Validators
 } from "@angular/forms";
 import {Observable, of, take} from "rxjs";
-import {UserRegistration} from "../../../models/userRegistration";
+import {UserRegistration} from "../../../models/UserRegistration";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Vehicle} from "../../../../shared/models/Vehicle";
 import {VehicleService} from "../../../../shared/services/vehicle.service";

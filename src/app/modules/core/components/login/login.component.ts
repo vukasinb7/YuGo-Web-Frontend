@@ -38,6 +38,7 @@ export class LoginComponent{
       this.authService.logIn(loginVal).pipe(take(1)).subscribe({
         next: (result) => {
           localStorage.setItem('token', result.accessToken);
+          localStorage.setItem('refreshToken', result.refreshToken);
           this.authService.setUser();
           this.dialogRef.close(this.authService.getRole());
           this.router.navigate(['/']);

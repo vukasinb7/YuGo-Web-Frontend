@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MapService} from "../../../home/services/map.service";
 import * as L from "leaflet";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";

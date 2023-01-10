@@ -86,12 +86,12 @@ export class NavbarComponent implements OnInit{
   logOut(){
     this._authService.logOut().subscribe({
       next: (result) => {
-        localStorage.removeItem('token');
+        localStorage.clear();
         this._authService.setUser();
         this._router.navigate(['/']);
       },
       error: (error) => {
-        localStorage.removeItem('token');
+        localStorage.clear();
         this._authService.setUser();
         this._router.navigate(['/']);
       },
