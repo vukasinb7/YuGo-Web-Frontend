@@ -3,13 +3,17 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor, HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {AuthService} from "../services/auth.service";
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
+  constructor(private _authService: AuthService) {
+  }
+
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
@@ -25,7 +29,23 @@ export class Interceptor implements HttpInterceptor {
         headers: req.headers.set('authorization', tokenType + " " + accessToken),
       });
 
-      return next.handle(cloned);
+      return next.handle(cloned).pipe(
+        catchError((error) => {
+          if (error instanceof HttpErrorResponse &&
+            !cloned.url.includes('user/login') &&
+            error.status == 401) {
+
+            this._authService.refreshToken().subscribe({
+              next: (result) => {
+                localStorage.setItem("token",result.accessToken);
+                localStorage.setItem("refreshToken",result.refreshToken);
+                window.location.reload();
+              }
+            })
+          }
+          return throwError(() => error);
+        })
+      );
     } else {
       return next.handle(req);
     }

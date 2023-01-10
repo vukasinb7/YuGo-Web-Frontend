@@ -10,7 +10,7 @@ import {
 } from "@angular/forms";
 import {Observable, of} from "rxjs";
 import {RegistrationService} from "../../../services/registration.service";
-import {UserRegistration} from "../../../models/userRegistration";
+import {UserRegistration} from "../../../models/UserRegistration";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";

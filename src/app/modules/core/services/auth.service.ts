@@ -58,4 +58,9 @@ export class AuthService {
   setUser(): void {
     this.user$.next(this.getRole());
   }
+
+  refreshToken() : Observable<Token>{
+    const refreshToken: any = localStorage.getItem('refreshToken');
+    return this.http.post<any>(environment.apiHost + 'user/refreshToken', {"refreshToken": refreshToken});
+  }
 }
