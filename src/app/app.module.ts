@@ -6,6 +6,7 @@ import {CoreModule} from "./modules/core/core.module";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {SharedModule} from "./modules/shared/shared.module";
 import {Interceptor} from "./modules/core/interceptors/interceptor.interceptor";
+import {RideModule} from "./modules/feature/ride/ride.module";
 
 
 @NgModule({
@@ -13,8 +14,9 @@ import {Interceptor} from "./modules/core/interceptors/interceptor.interceptor";
     AppComponent,
   ],
     imports: [
-      CoreModule,
-      SharedModule
+        CoreModule,
+        SharedModule,
+        RideModule
     ],
   providers: [
     {
