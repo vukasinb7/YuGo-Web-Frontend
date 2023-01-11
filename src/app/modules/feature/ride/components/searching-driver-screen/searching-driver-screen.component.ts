@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {RideInfo} from "../../../../shared/models/RideInfo";
+import {RideService} from "../../services/ride.service";
 
 @Component({
   selector: 'app-searching-driver-screen',
@@ -12,20 +13,29 @@ export class SearchingDriverScreenComponent implements OnInit{
   @Input() errorMessageEvent?:Observable<string>;
   text:string = "We are searching a driver for your ride, please wait."
   loading:boolean = true;
+  constructor(private rideService:RideService) {
+  }
   ngOnInit(){
     this.rideFoundEvent?.subscribe({
       next: ride => {
-        if(ride.driver){
-          this.text = "Driver is on his way."
-        }else{
+      if(ride.status == "SCHEDULED"){
           this.text = "The ride has been scheduled. You will get a confirmation notification, 30 minutes before ride."
+          this.loading = false;
         }
-        this.loading = false;
       },
       error: err => {
-        this.text = err.error.message;
+        this.text = err.error;
         this.loading = false;
       }
+    });
+    this.rideService.rideSearchCompleted.subscribe(ride => {
+      if(ride.status == "ACCEPTED"){
+        this.text = "Driver is on his way. \n Estimated time of arrival: " + ride.startTime.getHours() + ":" + ride.startTime.getMinutes();
+      }
+      else if(ride.status == "REJECTED"){
+        this.text = "We couldn't find available driver, please try later."
+      }
+      this.loading = false;
     });
   }
 }

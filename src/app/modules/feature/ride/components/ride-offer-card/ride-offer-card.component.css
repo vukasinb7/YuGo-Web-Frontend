@@ -2,8 +2,13 @@
 .map-frame {
   height: 100%;
 }
-
+.address{
+  font-size: 16px;
+}
 #map-ride-offer {
+  height: 100%;
+}
+#ride-request-map{
   height: 100%;
 }
 ::ng-deep .leaflet-top.leaflet-right{
@@ -12,7 +17,12 @@
 p{
   font-size: 1.2rem;
 }
-
+#path-container{
+  margin: 0!important;
+}
+#path-container > div{
+  margin: 0!important;
+}
 ::ng-deep .mat-mdc-dialog-surface{
   background-color: transparent !important;
 }

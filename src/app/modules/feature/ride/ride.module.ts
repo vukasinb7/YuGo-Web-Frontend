@@ -33,4 +33,4 @@ import { RideOfferCardComponent } from './components/ride-offer-card/ride-offer-
         MatProgressSpinnerModule,
     ]
 })
-export class RideModule { }
+export class RideModule {}

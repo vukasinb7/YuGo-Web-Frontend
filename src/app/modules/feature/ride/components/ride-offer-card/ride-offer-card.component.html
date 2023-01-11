@@ -1,5 +1,15 @@
 <mat-card class="w-100 h-100" style="border-radius:25px; background-color: #26272b">
-  <div class="d-flex justify-content-between m-3">
+  <div *ngIf="rejectionFormEnabled" class="w-100 ps-4 pe-4 mt-4">
+    <mat-form-field class="w-100">
+      <mat-label>Rejection reason</mat-label>
+      <input type="text" matInput name="rejection"  [(ngModel)]="rejectionText">
+      <mat-error *ngIf="!rejectionText">
+        Rejection reason can not be empty
+      </mat-error>
+    </mat-form-field>
+    <button [disabled]="!rejectionText" (click)="rejectRide()" class="w-100 ps-2 pe-2" type="submit" mat-flat-button color="accent">Send</button>
+  </div>
+  <div *ngIf="!rejectionFormEnabled" class="d-flex justify-content-between m-3">
     <div class="d-flex align-items-center">
       <img  src="assets/img/map.png" class=" profile-pic rounded-circle" alt="Profile Picture" width="40px" height="40px" style="outline: 4px solid  #fad02c;">
       <h5 class="mb-0 mx-2">{{passengerName}}</h5>
@@ -10,31 +20,32 @@
       <img  src="assets/img/map.png" class=" profile-pic rounded-circle" alt="Profile Picture" width="30px" height="30px" style="outline: 2px solid  #fad02c;">
     </div>
   </div>
-  <div class="map-frame">
-    <img src="assets/img/map.png" style="width: 100%;height: 200px;">
+  <div *ngIf="!rejectionFormEnabled" class="map-frame">
+    <div id="ride-request-map"></div>
   </div>
-  <div id="title-container" class="text-center pt-2">
+  <div *ngIf="!rejectionFormEnabled" id="title-container" class="text-center pt-2">
     <h2>Ride request</h2>
   </div>
-  <div id="path-conatiner" class="w-75 ms-2">
+  <div *ngIf="!rejectionFormEnabled" id="path-container" class="w-100 ms-2">
     <div class="row h-50">
       <div class="d-flex h-100 justify-content-start align-items-center py-2 ">
         <mat-icon aria-hidden="false">location_on</mat-icon>
-        <p class="m-0 p-1">{{startLocation}}</p>
+        <p class="m-0 p-1 ms-1 address">{{startLocation}}</p>
       </div>
     </div>
     <div class="row h-50">
       <div class="d-flex h-100 justify-content-start align-items-center ">
         <mat-icon aria-hidden="false">location_on</mat-icon>
-        <p class="m-0 p-1">{{endLocation}}</p>
+        <p class="m-0 p-1 ms-1 address">{{endLocation}}</p>
       </div>
     </div>
   </div>
-  <div class="w-100 d-flex justify-content-center my-2">
-  <div id="button-container"class="w-75 d-flex  justify-content-center">
-    <button mat-flat-button class="mx-2 rounded-pill fw-bold float-end" style="background-color: #26272b; border: 2px solid #fad02c">Cancel</button>
-    <button mat-flat-button class="mx-2 rounded-pill fw-bold float-end" color="accent" style="border: 2px solid #fad02c;">Accept</button>
+  <div *ngIf="!rejectionFormEnabled" class="w-100 d-flex justify-content-center my-2">
+    <div id="button-container"class="w-75 d-flex  justify-content-center">
+      <button mat-flat-button class="mx-2 rounded-pill fw-bold float-end" (click)="rejectionFormEnabled = true" style="background-color: #26272b; border: 2px solid #fad02c">Cancel</button>
+      <button mat-flat-button class="mx-2 rounded-pill fw-bold float-end" (click)="acceptRide()" color="accent" style="border: 2px solid #fad02c;">Accept</button>
+    </div>
   </div>
-  </div>
+
 </mat-card>
 

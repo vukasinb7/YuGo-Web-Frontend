@@ -6,6 +6,7 @@ import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {AccountActivationComponent} from "../account-activation/account-activation.component";
+import {RideOfferCardComponent} from "../../../feature/ride/components/ride-offer-card/ride-offer-card.component";
 
 @Component({
   selector: 'app-navbar',
@@ -57,7 +58,6 @@ export class NavbarComponent implements OnInit{
       this.ngOnInit();
     });
   }
-
   openRegisterDialog(){
     this.registerDialog = this._dialog.open(PassengerRegisterComponent, {
       width: '40%',
