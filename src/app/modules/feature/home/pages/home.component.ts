@@ -41,10 +41,7 @@ export class HomeComponent implements OnInit{
         });
       }
       if(this.role == "PASSENGER"){
-        console.log(this.role);
-        console.log(this.userID);
         this.stompClient.subscribe("/ride-topic/notify-passenger/" + this.userID, (frame:Frame) => {
-          console.log(frame);
           this.notifyPassengerAboutRide(frame);
         });
       }
@@ -52,7 +49,6 @@ export class HomeComponent implements OnInit{
   }
   notifyPassengerAboutRide(frame:Frame){
     let message:{rideID:number} = JSON.parse(frame.body);
-    console.log(message);
     this.rideService.getRide(message.rideID).subscribe(ride => {
       this.rideService.rideSearchCompleted.next(ride);
     });

@@ -30,7 +30,9 @@ export class SearchingDriverScreenComponent implements OnInit{
     });
     this.rideService.rideSearchCompleted.subscribe(ride => {
       if(ride.status == "ACCEPTED"){
-        this.text = "Driver is on his way. \n Estimated time of arrival: " + ride.startTime.getHours() + ":" + ride.startTime.getMinutes();
+        console.log(ride);
+        let date:Date = new Date(ride.startTime);
+        this.text = "Driver is on his way.\nEstimated time of arrival: " + date.getHours() + ":" + date.getMinutes() + "h";
       }
       else if(ride.status == "REJECTED"){
         this.text = "We couldn't find available driver, please try later."

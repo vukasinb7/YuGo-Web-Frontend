@@ -70,15 +70,13 @@ export class RideOfferCardComponent implements OnInit{
 
   rejectRide(){
     if(this.rejectionText){
-      this.rideService.rejectRide(this.data.id, this.rejectionText);
+      this.rideService.rejectRide(this.data.id, this.rejectionText).subscribe();
       this.dialogRef.close();
     }
   }
 
   acceptRide(){
-    console.log("accept ride button pressed");
-    console.log(this.data.id);
-    this.rideService.acceptRide(this.data.id);
+    this.rideService.acceptRide(this.data.id).subscribe();
     this.dialogRef.close();
   }
 
