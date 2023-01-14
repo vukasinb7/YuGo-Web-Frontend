@@ -30,10 +30,10 @@ export class HomeComponent implements OnInit{
     this.authService.userState$.subscribe(value => {
       this.role = value;
       this.userID = this.authService.getId();
-      this.checkIfDriver();
+      this.subscribeToSocket();
     });
   }
-  private checkIfDriver(){
+  private subscribeToSocket(){
     if(this.isLoaded){
       if(this.role == "DRIVER"){
         this.stompClient.subscribe("/ride-topic/driver-request/" + this.userID, (frame:Frame) => {
