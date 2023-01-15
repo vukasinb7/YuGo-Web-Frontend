@@ -35,7 +35,7 @@ export class SearchingDriverScreenComponent implements OnInit{
         this.text = "Driver is on his way.\nEstimated time of arrival: " + date.getHours() + ":" + date.getMinutes() + "h";
       }
       else if(ride.status == "REJECTED"){
-        this.text = "We couldn't find available driver, please try later."
+        this.text = "We couldn't find available driver, please try again later."
       }
       this.loading = false;
     });

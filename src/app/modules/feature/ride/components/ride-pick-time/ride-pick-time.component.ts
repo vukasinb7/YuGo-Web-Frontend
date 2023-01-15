@@ -39,10 +39,7 @@ export class RidePickTimeComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    interval(2000).subscribe(()=>{
-      this.currentDateTime = new Date();
-      this.checkMinTime();
-    });
+
   }
   dateToString(date:Date):string{
     return date.getHours() + ":" + date.getMinutes();
