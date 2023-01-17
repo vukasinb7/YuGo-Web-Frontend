@@ -31,7 +31,7 @@ export class PassengerRegisterComponent implements AfterViewInit{
       this.registrationForm.controls.confirmPassword.updateValueAndValidity();
     });
   }
-  TEL_REGEX:string = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+  TEL_REGEX:string = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]{0,10}$";
   errorMessage:string = '';
   isFinished:boolean = false;
   registrationForm = new FormGroup({

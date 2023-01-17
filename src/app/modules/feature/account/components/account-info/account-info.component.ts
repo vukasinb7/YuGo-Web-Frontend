@@ -21,7 +21,7 @@ export class AccountInfoComponent implements OnInit{
   public editEnabled: boolean;
   public profilePicture: any;
   public uploadedImage: any
-  TEL_REGEX:string = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+  TEL_REGEX:string = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]{0,10}$";
   constructor(private _sanitizer: DomSanitizer, private _snackBar: MatSnackBar, private _imageService: ImageService, private _userService: UserService) {
     this.accountInfoForm = new FormGroup({
       name: new FormControl('', [Validators.required]),

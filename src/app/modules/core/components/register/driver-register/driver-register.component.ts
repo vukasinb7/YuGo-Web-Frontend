@@ -24,7 +24,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./driver-register.component.css']
 })
 export class DriverRegisterComponent {
-  TEL_REGEX:string = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+  TEL_REGEX:string = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]{0,10}$";
   LICENSE_NUMBER_REGEX:string= "[A-Z][A-Z][0-9]*[A-Z][A-Z]";
   accountErrorMessage:string = '';
   vehicleErrorMessage:string = '';
