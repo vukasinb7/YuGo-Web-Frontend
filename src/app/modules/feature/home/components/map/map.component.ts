@@ -5,6 +5,10 @@ import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
 import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
+import {RideService} from "../../../ride/services/ride.service";
+import {Subscription, take} from "rxjs";
+import {PassengerRideNotificationsService} from "../../../ride/services/passenger-ride-notifications.service";
+import {DriverRideNotificationService} from "../../../ride/services/driver-ride-notification.service";
 
 @Component({
   selector: 'app-map',
@@ -14,11 +18,17 @@ import {LocationInfo} from "../../../../shared/models/LocationInfo";
 export class MapComponent implements AfterViewInit{
   private map:any;
   private fromAddressMarker?:Marker;
+  private driverLocationMarker?:Marker;
   private toAddressMarker?:Marker;
   private canSelectFromAddress:boolean = false;
   private canSelectToAddress:boolean = false;
   private path?:Control;
-  constructor(private mapService:MapService, private destinationPickerService:DestinationPickerService) {
+  private driverLocationSubscription?:Subscription;
+  constructor(private mapService:MapService,
+              private destinationPickerService:DestinationPickerService,
+              private rideService:RideService,
+              private passengerRideService:PassengerRideNotificationsService,
+              private driverRideService:DriverRideNotificationService) {
   }
   private initMap():void{
     this.map = L.map('map', {
@@ -56,6 +66,21 @@ export class MapComponent implements AfterViewInit{
 
     L.Marker.prototype.options.icon = DefaultIcon;
     this.initMap();
+
+    this.passengerRideService.rideAcceptedEvent.subscribe(ride => {
+      this.driverLocationSubscription = this.passengerRideService.driverLocationSubscriber.subscribe(coordinates => {
+        if(this.driverLocationMarker){
+          this.driverLocationMarker.setLatLng([coordinates.latitude, coordinates.longitude]);
+        }else{
+          this.driverLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map);
+        }
+      });
+    })
+    this.passengerRideService.endRideEvent.subscribe(ride => {
+      this.driverLocationSubscription?.unsubscribe();
+      this.map.removeControl(this.driverLocationMarker);
+      this.driverLocationMarker = undefined;
+    });
 
     this.destinationPickerService.currentFromAddress.subscribe({
       next:(address?:LocationInfo) => {

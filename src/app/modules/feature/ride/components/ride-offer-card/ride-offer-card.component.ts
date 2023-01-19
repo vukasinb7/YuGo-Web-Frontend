@@ -6,6 +6,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {RideService} from "../../services/ride.service";
+import {DriverRideNotificationService} from "../../services/driver-ride-notification.service";
+import {Coordinates} from "../../model/Coordinates";
 
 @Component({
   selector: 'app-ride-offer-card',
@@ -22,7 +24,11 @@ export class RideOfferCardComponent implements OnInit{
   rejectionText?:string = "";
   rejectionFormEnabled:boolean = false;
 
-  constructor(private mapService:MapService,private dialogRef: MatDialogRef<RideOfferCardComponent>, @Inject(MAT_DIALOG_DATA) private data:RideInfo, private passengerService:PassengerService, private rideService:RideService) {
+  constructor(private mapService:MapService,private dialogRef: MatDialogRef<RideOfferCardComponent>,
+              @Inject(MAT_DIALOG_DATA) private data:RideInfo,
+              private passengerService:PassengerService,
+              private driverRideService:DriverRideNotificationService,
+              private rideService:RideService) {
     this.ride = {} as RideInfo;
   }
 
@@ -78,6 +84,12 @@ export class RideOfferCardComponent implements OnInit{
   acceptRide(){
     this.rideService.acceptRide(this.data.id).subscribe();
     this.dialogRef.close();
+    let rideStartLocation:LocationInfo = this.ride.locations[0].departure;
+    let departureCoordinates:Coordinates = {
+      latitude:rideStartLocation.latitude,
+      longitude:rideStartLocation.longitude
+    };
+    this.driverRideService.startRideSimulation(departureCoordinates);
   }
 
   ngOnInit(): void {
