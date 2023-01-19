@@ -1,6 +1,5 @@
 <div class="vstack">
-  <h1>When do you want to leave for Bulevar Mihajla Pupina 21</h1>
-  <p>From: Bulevar oslobodjenja 30</p>
+  <h1 class="mb-4">When do you want to leave?</h1>
   <mat-form-field class="w-100" appearance="outline">
     <input matInput readonly [matDatepicker]="datePicker" [ngModel]="selectedDate" (ngModelChange)="selectedDateChanged($event)" [min]="currentDateTime">
     <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
