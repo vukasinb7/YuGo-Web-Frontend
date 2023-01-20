@@ -6,6 +6,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {RideService} from "../../services/ride.service";
+import {DriverRideNotificationService} from "../../services/driver-ride-notification.service";
+import {Coordinates} from "../../model/Coordinates";
 
 @Component({
   selector: 'app-ride-offer-card',
@@ -14,7 +16,6 @@ import {RideService} from "../../services/ride.service";
 })
 export class RideOfferCardComponent implements OnInit{
   private map:any;
-  public ride: RideInfo;
   passengerName: string="John Doe";
   startLocation: string="Bulevar Oslobodjenja 30";
   endLocation: string="Majke Jevrosime 112";
@@ -22,8 +23,11 @@ export class RideOfferCardComponent implements OnInit{
   rejectionText?:string = "";
   rejectionFormEnabled:boolean = false;
 
-  constructor(private mapService:MapService,private dialogRef: MatDialogRef<RideOfferCardComponent>, @Inject(MAT_DIALOG_DATA) private data:RideInfo, private passengerService:PassengerService, private rideService:RideService) {
-    this.ride = {} as RideInfo;
+  constructor(private mapService:MapService,private dialogRef: MatDialogRef<RideOfferCardComponent>,
+              @Inject(MAT_DIALOG_DATA) private data:RideInfo,
+              private passengerService:PassengerService,
+              private driverRideService:DriverRideNotificationService,
+              private rideService:RideService) {
   }
 
   private initMap():void{
@@ -78,6 +82,7 @@ export class RideOfferCardComponent implements OnInit{
   acceptRide(){
     this.rideService.acceptRide(this.data.id).subscribe();
     this.dialogRef.close();
+    this.driverRideService.queueRide(this.data);
   }
 
   ngOnInit(): void {

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {UserInfo} from "../models/UserInfo";
 import {environment} from "../../../../enviroments/environment";
 import {HttpClient} from "@angular/common/http";
 import {RidesPaged} from "../../feature/history/models/RidesPaged";
 import {DocumentInfo} from "../models/DocumentInfo";
+import {LocationInfo} from "../models/LocationInfo";
+import {Vehicle} from "../models/Vehicle";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,10 @@ import {DocumentInfo} from "../models/DocumentInfo";
 export class DriverService {
   constructor(private http: HttpClient) {
 
+  }
+
+  getLocation(userId: number):Observable<LocationInfo>{
+    return this.http.get<Vehicle>(environment.apiHost + `driver/${userId}/vehicle`).pipe(map(vehicle => vehicle.currentLocation));
   }
 
   getDriver(userId: number): Observable<UserInfo> {

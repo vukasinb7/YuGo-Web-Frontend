@@ -5,6 +5,7 @@ import {environment} from "../../../../enviroments/environment";
 import {Vehicle} from "../models/Vehicle";
 import {VehicleChangeRequest} from "../../feature/vehicle/model/VehicleChangeRequest";
 import {VehicleChangeRequestsPaged} from "../../feature/vehicle/model/VehicleChangeRequestsPaged";
+import {LocationInfo} from "../models/LocationInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,9 @@ export class VehicleService {
 
   getVehicle(driverId : number) : Observable<Vehicle>{
     return this.http.get<Vehicle>(environment.apiHost + `driver/${driverId}/vehicle`);
+  }
+  updateVehicleLocation(vehicleID:number, location:LocationInfo) : Observable<void>{
+    return this.http.put<void>(environment.apiHost + `vehicle/${vehicleID}/location`, location);
   }
   createVehicle(driverId : number, vehicle : Vehicle): Observable<Vehicle>{
     return this.http.post<Vehicle>(environment.apiHost + `driver/${driverId}/vehicle`, vehicle);
