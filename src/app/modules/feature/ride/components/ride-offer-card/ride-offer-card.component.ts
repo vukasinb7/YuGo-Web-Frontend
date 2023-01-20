@@ -82,14 +82,7 @@ export class RideOfferCardComponent implements OnInit{
   acceptRide(){
     this.rideService.acceptRide(this.data.id).subscribe();
     this.dialogRef.close();
-    let rideStartLocation:LocationInfo = this.data.locations[0].departure;
-    let departureCoordinates:Coordinates = {
-      latitude:rideStartLocation.latitude,
-      longitude:rideStartLocation.longitude
-    };
-    // TODO premestiti pokretanje simulacije na dugme 'start next ride',
-    //  trenutno aplikacija ne radi ispravno kada vozac dobije zahtev za voznju a vec je u voznji
-    this.driverRideService.startRideSimulation(departureCoordinates);
+    this.driverRideService.queueRide(this.data);
   }
 
   ngOnInit(): void {

@@ -17,6 +17,8 @@ export class DriverMapComponent implements AfterViewInit{
   private destination?:Coordinates;
   private path?:L.Routing.Control;
 
+  rideStatus?:number;   // 0 - no active ride | 1 - there is an active ride, but it is not started yet | 2 - there is an active ride, and it is started
+
   constructor(private driverRideService:DriverRideNotificationService) {
   }
 
@@ -50,12 +52,32 @@ export class DriverMapComponent implements AfterViewInit{
         }).addTo(this.map);
       }
     }
+    else {
+      this.map.removeControl(this.path);
+    }
+  }
+
+  startRide(){
+    this.rideStatus = 2;
+    this.driverRideService.startCurrentRide();
+  }
+  endRide(){
+    this.driverRideService.endCurrentRide();
+    this.destination = undefined;
+    this.checkForRoute();
   }
 
   ngAfterViewInit(): void {
     L.Marker.prototype.options.icon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
       iconAnchor: [12.5, 41]
+    });
+    this.driverRideService.currentRideChangedEvent.subscribe(ride => {
+      if(!ride){
+        this.rideStatus = 0;
+      }else{
+        this.rideStatus = 1;
+      }
     });
     this.driverRideService.currentDriverLocation.pipe(take(1)).subscribe(coordinates => {
       this.driverLocation = coordinates;
