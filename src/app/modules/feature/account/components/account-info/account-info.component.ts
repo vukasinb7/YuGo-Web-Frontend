@@ -50,11 +50,10 @@ export class AccountInfoComponent implements OnInit{
           address: info.address,
           email: info.email,
         });
-        this._imageService.getImage(this.accountInfoForm.controls['profilePicture'].value).then(resp => {
+        this._imageService.getProfilePicture(this.accountInfoForm.controls['profilePicture'].value).then(resp => {
             let objectURL = URL.createObjectURL(resp);
             this.profilePicture = this._sanitizer.bypassSecurityTrustUrl(objectURL);
-        });
-        },
+        });},
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
 

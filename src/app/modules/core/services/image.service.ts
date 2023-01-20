@@ -21,4 +21,12 @@ export class ImageService {
   createProfilePicture(userId: number, file: FormData):Observable<any>{
     return this.http.post<any>(environment.apiHost+`image/${userId}/profilePicture`,file);
   }
+
+  getProfilePicture(pictureName: number) :Promise<any>{
+    return new Promise<any>(resolve => {
+      this.http.get(environment.apiHost+`image/profilePicture/${pictureName}`, {observe:'response', responseType: 'blob'}).subscribe(resp => {
+        resolve(resp.body);
+      });
+    });
+  }
 }

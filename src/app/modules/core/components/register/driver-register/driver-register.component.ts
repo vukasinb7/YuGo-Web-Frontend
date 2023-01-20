@@ -124,7 +124,7 @@ export class DriverRegisterComponent {
           this._vehicleService.createVehicle(driver.id, vehicleDetails).pipe(take(1)).subscribe({
             next: () => {
               this.dialogRef.close();
-              this._snackBar.open("Driver registered successfully", "OK");
+              this._snackBar.open("Driver registered successfully!", "OK");
             },
             error: (error) => {
               if (error instanceof HttpErrorResponse) {
