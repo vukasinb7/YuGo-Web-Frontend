@@ -16,7 +16,6 @@ import {Coordinates} from "../../model/Coordinates";
 })
 export class RideOfferCardComponent implements OnInit{
   private map:any;
-  public ride: RideInfo;
   passengerName: string="John Doe";
   startLocation: string="Bulevar Oslobodjenja 30";
   endLocation: string="Majke Jevrosime 112";
@@ -29,7 +28,6 @@ export class RideOfferCardComponent implements OnInit{
               private passengerService:PassengerService,
               private driverRideService:DriverRideNotificationService,
               private rideService:RideService) {
-    this.ride = {} as RideInfo;
   }
 
   private initMap():void{
@@ -84,11 +82,13 @@ export class RideOfferCardComponent implements OnInit{
   acceptRide(){
     this.rideService.acceptRide(this.data.id).subscribe();
     this.dialogRef.close();
-    let rideStartLocation:LocationInfo = this.ride.locations[0].departure;
+    let rideStartLocation:LocationInfo = this.data.locations[0].departure;
     let departureCoordinates:Coordinates = {
       latitude:rideStartLocation.latitude,
       longitude:rideStartLocation.longitude
     };
+    // TODO premestiti pokretanje simulacije na dugme 'start next ride',
+    //  trenutno aplikacija ne radi ispravno kada vozac dobije zahtev za voznju a vec je u voznji
     this.driverRideService.startRideSimulation(departureCoordinates);
   }
 

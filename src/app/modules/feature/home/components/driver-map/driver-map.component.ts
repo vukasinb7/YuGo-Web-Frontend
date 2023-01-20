@@ -3,7 +3,7 @@ import * as L from "leaflet";
 import {DriverRideNotificationService} from "../../../ride/services/driver-ride-notification.service";
 import {Coordinates} from "../../../ride/model/Coordinates";
 import {take} from "rxjs";
-import {Marker} from "leaflet";
+import {Control, Marker} from "leaflet";
 
 @Component({
   selector: 'app-driver-map',
@@ -14,6 +14,8 @@ export class DriverMapComponent implements AfterViewInit{
   private map:any;
   private driverLocation?:Coordinates;
   private driverLocationMarker?:Marker;
+  private destination?:Coordinates;
+  private path?:L.Routing.Control;
 
   constructor(private driverRideService:DriverRideNotificationService) {
   }
@@ -36,6 +38,20 @@ export class DriverMapComponent implements AfterViewInit{
     tiles.addTo(this.map);
   }
 
+  private checkForRoute(){
+    if(this.driverLocation && this.destination){
+      if(this.path){
+        this.path.setWaypoints([L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)]);
+      }else{
+        this.path = L.Routing.control({
+          autoRoute:true,
+          addWaypoints:false,
+          waypoints: [L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)],
+        }).addTo(this.map);
+      }
+    }
+  }
+
   ngAfterViewInit(): void {
     L.Marker.prototype.options.icon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
@@ -52,6 +68,11 @@ export class DriverMapComponent implements AfterViewInit{
       }else {
         this.driverLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map);
       }
+      this.checkForRoute();
+    });
+    this.driverRideService.driverDestination.subscribe(coordinates => {
+      this.destination = coordinates;
+      this.checkForRoute();
     });
   }
 }

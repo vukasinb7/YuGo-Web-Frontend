@@ -31,7 +31,9 @@
               "./node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"]
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
           },
           "configurations": {
             "production": {
@@ -93,7 +95,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
           }
         }
       }

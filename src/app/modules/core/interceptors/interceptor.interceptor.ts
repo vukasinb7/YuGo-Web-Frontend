@@ -21,7 +21,10 @@ export class Interceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const accessToken: any = localStorage.getItem('token');
 
-    if (req.headers.get('skip')) return next.handle(req);
+    if (req.headers.get('skip')){
+      const cloned = req.clone({headers: req.headers.delete('skip')})
+      return next.handle(cloned);
+    }
 
     if (accessToken) {
       const helper = new JwtHelperService();
