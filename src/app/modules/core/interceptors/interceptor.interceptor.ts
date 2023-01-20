@@ -60,7 +60,7 @@ export class Interceptor implements HttpInterceptor {
           error: (error) => {
             this.isRefreshing = false;
             if (error instanceof HttpErrorResponse) {
-              if (error.status == 403) {
+              if (error.status == 403 || error.status == 404) {
                 localStorage.clear();
                 this._authService.setUser();
                 this._router.navigate(['/']);

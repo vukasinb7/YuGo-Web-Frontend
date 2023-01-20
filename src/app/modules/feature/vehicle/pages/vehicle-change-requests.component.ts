@@ -13,6 +13,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './vehicle-change-requests.component.html',
   styleUrls: ['./vehicle-change-requests.component.css']
 })
+
 export class VehicleChangeRequestsComponent implements OnInit, AfterViewInit{
   dataSource= new MatTableDataSource<VehicleChangeRequest>();
   totalRows = 0;
