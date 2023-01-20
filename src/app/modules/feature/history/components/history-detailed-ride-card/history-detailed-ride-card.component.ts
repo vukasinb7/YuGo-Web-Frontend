@@ -1,10 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, SecurityContext} from '@angular/core';
 import {HttpErrorResponse} from "@angular/common/http";
 import {DriverService} from "../../../../shared/services/driver.service";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
 import {MatDialog} from "@angular/material/dialog";
 import {FavoritePathInputComponent} from "../favorite-path-input/favorite-path-input.component";
+import {DomSanitizer} from "@angular/platform-browser";
+import {ImageService} from "../../../../core/services/image.service";
 
 @Component({
   selector: 'app-history-detailed-ride-card',
@@ -14,14 +16,20 @@ import {FavoritePathInputComponent} from "../favorite-path-input/favorite-path-i
 export class HistoryDetailedRideCardComponent implements OnInit{
   public icon = 'star_outlined';
   @Input() ride:any;
+  public profilePicture: any;
+  public driverProfilePicture: any;
+
+  public passengersProfilePics:Array<any>;
   driverName:String="";
   passengerName:String="";
 
-  constructor(private driverService:DriverService, public dialog: MatDialog, private passengerService: PassengerService, private favoritePathService:FavoritePathService) {
+  constructor(private _sanitizer: DomSanitizer,private _imageService: ImageService,private driverService:DriverService, public dialog: MatDialog, private passengerService: PassengerService, private favoritePathService:FavoritePathService) {
+    this.passengersProfilePics=[];
   }
   ngOnInit(){
     this.getDriver();
     this.getPassenger();
+    this.getPassengers();
   }
 
   public changeIcon(){
@@ -45,6 +53,10 @@ export class HistoryDetailedRideCardComponent implements OnInit{
     this.driverService.getDriver(this.ride.driver.id).subscribe(
       {next:(driver) => {
           this.driverName= driver.name+" "+driver.surname;
+          this._imageService.getImage(driver.profilePicture).then(resp => {
+            let objectURL = URL.createObjectURL(resp);
+            this.driverProfilePicture = this._sanitizer.bypassSecurityTrustUrl(objectURL);
+          });
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
@@ -55,10 +67,42 @@ export class HistoryDetailedRideCardComponent implements OnInit{
     this.passengerService.getPassenger(this.ride.passengers[0].id).subscribe(
       {next:(passenger) => {
           this.passengerName= passenger.name+" "+passenger.surname;
+          this._imageService.getImage(passenger.profilePicture).then(resp => {
+            let objectURL = URL.createObjectURL(resp);
+            this.profilePicture = this._sanitizer.bypassSecurityTrustUrl(objectURL);
+          });
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
           }}})
+  }
+  getPassengers(){
+    for (let i = 0; i < this.ride.passengers.length; i++) {
+      this.passengerService.getPassenger(this.ride.passengers[i].id).subscribe(
+        {
+          next: (passenger) => {
+            this.passengerName = passenger.name + " " + passenger.surname;
+            this._imageService.getImage(passenger.profilePicture).then(resp => {
+              let objectURL = URL.createObjectURL(resp);
+              this.passengersProfilePics.push(objectURL);
+              //this.passengersProfilePics.push(this._sanitizer.sanitize(SecurityContext.HTML,this._sanitizer.bypassSecurityTrustHtml(objectURL)));
+
+            });
+          },
+          error: (error) => {
+            if (error instanceof HttpErrorResponse) {
+            }
+          }
+        })
+    }
+  }
+
+  sanitize(profilePic:any):any{
+    return this._sanitizer.sanitize(SecurityContext.HTML,this._sanitizer.bypassSecurityTrustHtml(profilePic));
+
+  }
+  onProfilePictureError(event : any) {
+    event.target.src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
   }
 
 
