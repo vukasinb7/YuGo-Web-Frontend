@@ -87,7 +87,7 @@ export class HistoryReviewCardPassengerComponent implements DoCheck {
 
 
           } else {
-            if (this.getDayDiff(new Date(), new Date(this.dateToStringConversion(this.ride.startTime))) > 3) {
+            if (this.getDayDiff(new Date(), new Date(this.ride.startTime)) > 3) {
               this.vehicleForm.patchValue({
                 commentv: "Time for review expired."
               });
@@ -106,7 +106,7 @@ export class HistoryReviewCardPassengerComponent implements DoCheck {
             this.enabledReview[1] = false;
 
           } else {
-            if (this.getDayDiff(new Date(), new Date(this.dateToStringConversion(this.ride.startTime))) > 3) {
+            if (this.getDayDiff(new Date(), new Date(this.ride.startTime)) > 3) {
               this.rideForm.patchValue({
                 commentr: "Time for review expired."
               });

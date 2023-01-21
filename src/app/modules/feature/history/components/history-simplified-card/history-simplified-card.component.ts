@@ -115,7 +115,8 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
       data: {ride:ride, userId:this.userId, role:this.role},
       width: '60%',
       maxWidth: '1300px',
-      backdropClass: 'backdropBackground'
+      backdropClass: 'backdropBackground',
+      hasBackdrop:true
     })
 
   }

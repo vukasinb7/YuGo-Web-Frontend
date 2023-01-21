@@ -54,7 +54,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
     this.driverService.getDriver(this.ride.driver.id).subscribe(
       {next:(driver) => {
           this.driverName= driver.name+" "+driver.surname;
-          this._imageService.getImage(driver.profilePicture).then(resp => {
+          this._imageService.getProfilePicture(driver.profilePicture).then(resp => {
             let objectURL = URL.createObjectURL(resp);
             this.driverProfilePicture = this._sanitizer.bypassSecurityTrustUrl(objectURL);
           });
@@ -68,7 +68,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
     this.passengerService.getPassenger(this.ride.passengers[0].id).subscribe(
       {next:(passenger) => {
           this.passengerName= passenger.name+" "+passenger.surname;
-          this._imageService.getImage(passenger.profilePicture).then(resp => {
+          this._imageService.getProfilePicture(passenger.profilePicture).then(resp => {
             let objectURL = URL.createObjectURL(resp);
             this.profilePicture = this._sanitizer.bypassSecurityTrustUrl(objectURL);
           });
@@ -83,7 +83,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
         {
           next: (passenger) => {
             this.passengerName = passenger.name + " " + passenger.surname;
-            this._imageService.getImage(passenger.profilePicture).then(resp => {
+            this._imageService.getProfilePicture(passenger.profilePicture).then(resp => {
               let objectURL = URL.createObjectURL(resp);
               let dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email)};
               this.passengersProfilePics.push(dto);
