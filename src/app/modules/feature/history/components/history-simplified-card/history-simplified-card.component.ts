@@ -114,7 +114,7 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
     this.dialog.open(HistoryDetailedDialogComponent,{
       data: {ride:ride, userId:this.userId, role:this.role},
       width: '60%',
-      maxWidth: '1000px',
+      maxWidth: '1300px',
       backdropClass: 'backdropBackground'
     })
 
