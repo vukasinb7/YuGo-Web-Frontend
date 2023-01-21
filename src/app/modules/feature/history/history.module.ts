@@ -10,6 +10,7 @@ import {
   HistoryReviewCardDriverComponent
 } from "./components/history-review-card-driver/history-review-card-driver.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 
@@ -23,10 +24,11 @@ import {ReactiveFormsModule} from "@angular/forms";
     HistoryReviewCardPassengerComponent,
     HistoryReviewCardDriverComponent
   ],
-  imports: [
-    SharedModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        SharedModule,
+        ReactiveFormsModule,
+        MatTooltipModule
+    ],
   exports:[
     HistoryComponent],
 })

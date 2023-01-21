@@ -18,6 +18,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   @Input() ride:any;
   public profilePicture: any;
   public driverProfilePicture: any;
+  public ppp:any;
 
   public passengersProfilePics:Array<any>;
   driverName:String="";
@@ -84,8 +85,8 @@ export class HistoryDetailedRideCardComponent implements OnInit{
             this.passengerName = passenger.name + " " + passenger.surname;
             this._imageService.getImage(passenger.profilePicture).then(resp => {
               let objectURL = URL.createObjectURL(resp);
-              this.passengersProfilePics.push(objectURL);
-              //this.passengersProfilePics.push(this._sanitizer.sanitize(SecurityContext.HTML,this._sanitizer.bypassSecurityTrustHtml(objectURL)));
+              let dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email)};
+              this.passengersProfilePics.push(dto);
 
             });
           },
@@ -104,6 +105,5 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   onProfilePictureError(event : any) {
     event.target.src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
   }
-
 
 }

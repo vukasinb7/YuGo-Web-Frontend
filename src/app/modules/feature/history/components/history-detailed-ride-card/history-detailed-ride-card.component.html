@@ -16,8 +16,10 @@
       <div id="other-passengers-container" class="d-inline-flex w-50 align-content-center align-items-center justify-content-center">
         <mat-icon aria-hidden="false" class="me-2">group</mat-icon>
         <p class="pe-2"style="margin-bottom:0;">{{ride.passengers.length}}</p>
-        <img *ngFor="let profilePic of passengersProfilePics"  [src]=[sanitize(profilePic)] class=" profile-pic rounded-circle" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
-      </div>
+        <div class="d-flex" *ngFor="let profilePic of passengersProfilePics">
+          <img   [src]="profilePic.picture" class=" profile-pic rounded-circle" [matTooltip]="profilePic.name" matTooltipPosition="above" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
+        </div>
+        </div>
     </div>
 
   <div id="path-conatiner" class=" pt-3">
@@ -46,10 +48,6 @@
       </div>
     </div>
   </div>
-  <div id="add-to-favorites-container" class="d-flex align-items-center justify-content-end">
-    <mat-icon (click)="changeIcon()" style="color:#fad02c">{{icon}}</mat-icon>
-    <a (click)="changeIcon()" class="px-2">Add to favorites</a>
-  </div>
   <div id="date-time-container" class="pt-4 justify-content-center">
     <div class="d-flex align-items-center justify-content-center" >
       <mat-icon>today</mat-icon>
@@ -62,6 +60,7 @@
   </div>
   <div id="button-container"class="w-100 d-flex pt-4 justify-content-between">
     <h2 class="px-2">${{ride.totalCost}}</h2>
+    <button (click)="changeIcon()" mat-flat-button class="mx-2 rounded-pill fw-bold float-end" color="accent">Add to favorites</button>
     <button mat-flat-button class="mx-2 rounded-pill fw-bold float-end" color="accent">Create Ride</button>
 
   </div>
