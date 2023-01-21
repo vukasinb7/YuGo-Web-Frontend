@@ -89,7 +89,7 @@ export class PassengerRegisterComponent implements AfterViewInit{
         }
         else{
           this.dialogRef.close();
-          this._snackBar.open("Passenger registered successfully", "OK");
+          this._snackBar.open("Passenger registered successfully!", "OK");
         }
       },
       error: (error) => {

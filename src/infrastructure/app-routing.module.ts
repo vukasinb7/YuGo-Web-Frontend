@@ -15,11 +15,13 @@ import {ForgotPasswordComponent} from "../app/modules/core/components/forgot-pas
 import {
   AccountActivationComponent
 } from "../app/modules/core/components/account-activation/account-activation.component";
+import {UsersPanicsComponent} from "../app/modules/feature/panic/pages/users-panics.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'history/:role/:userId', component: HistoryComponent, canActivate: [LoginGuard, ProfileGuard]},
   {path: 'account/:role/:userId', component: AccountComponent, canActivate: [LoginGuard, ProfileGuard]},
+  {path: 'panics', component: UsersPanicsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'users-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'vehicle-requests', component: VehicleChangeRequestsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},

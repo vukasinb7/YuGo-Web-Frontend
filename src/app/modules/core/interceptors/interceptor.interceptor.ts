@@ -21,7 +21,10 @@ export class Interceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const accessToken: any = localStorage.getItem('token');
 
-    if (req.headers.get('skip')) return next.handle(req);
+    if (req.headers.get('skip')){
+      const cloned = req.clone({headers: req.headers.delete('skip')})
+      return next.handle(cloned);
+    }
 
     if (accessToken) {
       const helper = new JwtHelperService();
@@ -60,7 +63,7 @@ export class Interceptor implements HttpInterceptor {
           error: (error) => {
             this.isRefreshing = false;
             if (error instanceof HttpErrorResponse) {
-              if (error.status == 403) {
+              if (error.status == 403 || error.status == 404) {
                 localStorage.clear();
                 this._authService.setUser();
                 this._router.navigate(['/']);

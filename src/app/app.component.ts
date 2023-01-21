@@ -7,6 +7,11 @@ import {RideService} from "./modules/feature/ride/services/ride.service";
 import {Frame} from "stompjs";
 import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
+import {Coordinates} from "./modules/feature/ride/model/Coordinates";
+import {RideInfo} from "./modules/shared/models/RideInfo";
+import {PassengerRideNotificationsService} from "./modules/feature/ride/services/passenger-ride-notifications.service";
+import {DriverRideNotificationService} from "./modules/feature/ride/services/driver-ride-notification.service";
+import {DriverService} from "./modules/shared/services/driver.service";
 
 @Component({
   selector: 'app-root',
@@ -18,11 +23,18 @@ export class AppComponent implements OnInit, OnDestroy{
   private serverUrl = environment.apiHost + 'socket'
   private stompClient: any;
   isLoaded: boolean = false;
+  hasActiveRide:boolean = false;
+  activeRide?:RideInfo;
 
   private role: string | undefined;
   private userID: number | undefined;
 
-  constructor(private authService:AuthService, private dialog: MatDialog, private rideService:RideService) {
+  constructor(private authService:AuthService,
+              private dialog: MatDialog,
+              private rideService:RideService,
+              private passengerRideService:PassengerRideNotificationsService,
+              private driverRideService:DriverRideNotificationService,
+              private driverService:DriverService) {
   }
 
   ngOnInit(): void {
@@ -38,6 +50,9 @@ export class AppComponent implements OnInit, OnDestroy{
   private subscribeToSocket(){
     if(this.isLoaded){
       if(this.role == "DRIVER"){
+        this.driverService.getLocation(this.userID!).subscribe(coordinates => {
+          this.driverRideService.currentDriverLocation.next(coordinates);
+        });
         this.stompClient.subscribe("/ride-topic/driver-request/" + this.userID, (frame:Frame) => {
           this.parseRideRequest(frame);
         }, {id:"driver-request"});
@@ -46,13 +61,37 @@ export class AppComponent implements OnInit, OnDestroy{
         this.stompClient.subscribe("/ride-topic/notify-passenger/" + this.userID, (frame:Frame) => {
           this.notifyPassengerAboutRide(frame);
         },{id:"notify-passenger"});
+        if(this.hasActiveRide){
+          this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-location/" + this.userID, (frame:Frame) => {
+            let coordinates:Coordinates = JSON.parse(frame.body);
+            this.passengerRideService.updateDriverLocation(coordinates);
+          }, {id:"vehicle-location"});
+        }
       }
+    }
+  }
+  setHasActiveRide(value:boolean){
+    if(value){
+      this.hasActiveRide = true;
+      this.passengerRideService.rideAcceptedEvent.next(this.activeRide!);
+      this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-location/" + this.userID, (frame:Frame) => {
+        let coordinates:Coordinates = JSON.parse(frame.body);
+        this.passengerRideService.updateDriverLocation(coordinates);
+      }, {id:"vehicle-location"});
+    }else{
+      this.activeRide = undefined;
+      this.hasActiveRide = false;
+      this.stompClient.unsubscribe("vehicle-location");
     }
   }
   notifyPassengerAboutRide(frame:Frame){
     let message:{rideID:number} = JSON.parse(frame.body);
     this.rideService.getRide(message.rideID).subscribe(ride => {
-      this.rideService.rideSearchCompleted.next(ride);
+      this.passengerRideService.rideSearchCompleted(ride);
+      if(ride.status == "ACCEPTED"){
+        this.activeRide = ride;
+        this.setHasActiveRide(true);
+      }
     });
   }
   parseRideRequest(frame:Frame){
