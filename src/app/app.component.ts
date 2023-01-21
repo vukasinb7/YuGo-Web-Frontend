@@ -12,6 +12,9 @@ import {RideInfo} from "./modules/shared/models/RideInfo";
 import {PassengerRideNotificationsService} from "./modules/feature/ride/services/passenger-ride-notifications.service";
 import {DriverRideNotificationService} from "./modules/feature/ride/services/driver-ride-notification.service";
 import {DriverService} from "./modules/shared/services/driver.service";
+import {PanicService} from "./modules/shared/services/panic.service";
+import {take} from "rxjs";
+import {PanicCardComponent} from "./modules/feature/panic/components/panic-card/panic-card.component";
 
 @Component({
   selector: 'app-root',
@@ -34,7 +37,8 @@ export class AppComponent implements OnInit, OnDestroy{
               private rideService:RideService,
               private passengerRideService:PassengerRideNotificationsService,
               private driverRideService:DriverRideNotificationService,
-              private driverService:DriverService) {
+              private driverService:DriverService,
+              private panicService: PanicService) {
   }
 
   ngOnInit(): void {
@@ -68,8 +72,32 @@ export class AppComponent implements OnInit, OnDestroy{
           }, {id:"vehicle-location"});
         }
       }
+      else if (this.role == "ADMIN"){
+        this.stompClient.subscribe("/ride-topic/notify-admin-panic", (frame: Frame) => {
+          this.notifyAdminAboutPanic(frame);
+        }, {id:"admin-panic"})
+      }
     }
   }
+
+  notifyAdminAboutPanic(frame: Frame){
+    let message:{panicId:number} = JSON.parse(frame.body);
+    this.panicService.getPanic(message.panicId).pipe(take(1)).subscribe({
+        next: panic =>{
+          let panicDialog = this.dialog.open(PanicCardComponent, {
+            minWidth: '350px',
+            minHeight: '300px',
+            width: '30%',
+            height: '40%',
+          })
+          let panicDialogInstance = panicDialog.componentInstance;
+          panicDialogInstance.panic = panic;
+          panicDialogInstance.notification = true;
+        }
+      }
+    )
+  }
+
   setHasActiveRide(value:boolean){
     if(value){
       this.hasActiveRide = true;
@@ -110,6 +138,7 @@ export class AppComponent implements OnInit, OnDestroy{
   ngOnDestroy(){
     this.stompClient.unsubscribe("driver-request");
     this.stompClient.unsubscribe("notify-passenger");
+    this.stompClient.unsubscribe("admin-panic");
   }
   initializeWebSocketConnection() {
     let ws = new SockJS(this.serverUrl);
