@@ -1,5 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {Panic} from "../../models/Panic";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  HistoryDetailedRideCardComponent
+} from "../../../history/components/history-detailed-ride-card/history-detailed-ride-card.component";
 
 @Component({
   selector: 'app-panic-card',
@@ -11,7 +15,20 @@ export class PanicCardComponent {
   public panic! : Panic;
   @Input()
   public notification! : boolean;
-  constructor() {
+  constructor(private _dialog: MatDialog) {
 
+  }
+
+  openRidePreview(){
+    let ridePreview = this._dialog.open(HistoryDetailedRideCardComponent, {
+      minWidth: '300px',
+      maxWidth: '500px',
+      minHeight: '650px',
+      width: '30%',
+      height: '50%',
+    })
+    let ridePreviewDialogInstance = ridePreview.componentInstance;
+    ridePreviewDialogInstance.ride = this.panic.ride;
+    ridePreviewDialogInstance.historyPreview = false;
   }
 }

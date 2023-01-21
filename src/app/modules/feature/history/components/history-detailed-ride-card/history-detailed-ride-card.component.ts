@@ -16,15 +16,15 @@ import {ImageService} from "../../../../core/services/image.service";
 export class HistoryDetailedRideCardComponent implements OnInit{
   public icon = 'star_outlined';
   @Input() ride:any;
+  @Input() historyPreview: boolean = true;
   public profilePicture: any;
   public driverProfilePicture: any;
-  public ppp:any;
-
   public passengersProfilePics:Array<any>;
   driverName:String="";
   passengerName:String="";
 
-  constructor(private _sanitizer: DomSanitizer,private _imageService: ImageService,private driverService:DriverService, public dialog: MatDialog, private passengerService: PassengerService, private favoritePathService:FavoritePathService) {
+  constructor(private _sanitizer: DomSanitizer,private _imageService: ImageService,private driverService:DriverService,
+              public dialog: MatDialog, private passengerService: PassengerService) {
     this.passengersProfilePics=[];
   }
   ngOnInit(){
@@ -45,9 +45,6 @@ export class HistoryDetailedRideCardComponent implements OnInit{
           backdropClass: 'backdropBackground'
         });
     }
-  }
-  padTo2Digits(num:number) {
-    return num.toString().padStart(2, '0');
   }
 
   getDriver(){
@@ -85,7 +82,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
             this.passengerName = passenger.name + " " + passenger.surname;
             this._imageService.getProfilePicture(passenger.profilePicture).then(resp => {
               let objectURL = URL.createObjectURL(resp);
-              let dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email)};
+              let dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email + "\n" + passenger.telephoneNumber)};
               this.passengersProfilePics.push(dto);
 
             });
