@@ -96,7 +96,9 @@ export class PasswordComponent{
             next: (result) => {
               localStorage.clear()
               this._authService.setUser();
-              this._router.navigate(['/']);
+              this._router.navigate(['/']).then(() => {
+                window.location.reload();
+              });
             },
             error: (error) => {
 
