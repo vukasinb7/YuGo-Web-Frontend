@@ -7,6 +7,7 @@ import {AuthService} from "../../../core/services/auth.service";
 import {Router} from "@angular/router";
 import {Subject} from "rxjs";
 import {RideInfo} from "../../../shared/models/RideInfo";
+import {UserSimpleInfo} from "../../../shared/models/UserSimpleInfo";
 
 @Component({
   selector: 'app-ride',
@@ -20,6 +21,8 @@ export class RideComponent {
   rideProperties?:RideProperties;
   fromAddress?:LocationInfo;
   toAddress?:LocationInfo;
+  passengers?:UserSimpleInfo[];
+
   searchingDriver:boolean = false;
 
   errorMessageEvent:Subject<string> = new Subject<string>();
@@ -28,12 +31,8 @@ export class RideComponent {
   constructor(private rideService:RideService, private authService:AuthService, private router: Router) {
   }
 
-  test(selectedDateTime:Date){
-    console.log(selectedDateTime);
-    this.rideDateTime = selectedDateTime;
-  }
   switchFormPage(switchDirection:number){
-    if(this.formPageIndex + switchDirection > 2){
+    if(this.formPageIndex + switchDirection > 3){
       this.formPageIndex += switchDirection;
       this.searchingDriver = true;
       this.bookRide().then(_ => {
@@ -51,9 +50,10 @@ export class RideComponent {
   }
 
   async bookRide(){
+    console.log(this.passengers);
     let ride:RideBooking = {
       locations:[{departure:this.fromAddress!, destination:this.toAddress!}],
-      passengers:[{id:this.authService.getId(), email:""}],
+      passengers:this.passengers!,
       vehicleType:this.rideProperties!.vehicleTypeName,
       babyTransport:this.rideProperties!.includeBabies,
       petTransport:this.rideProperties!.includePets,
