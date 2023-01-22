@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {VehicleTypeCardData} from "../vehicle-type-card/vehicle-type-card.component";
 
 @Component({
   selector: 'app-email-list-card',

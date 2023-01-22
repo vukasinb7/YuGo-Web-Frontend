@@ -53,7 +53,7 @@
       <mat-icon>today</mat-icon>
       <label class="px-2">{{ride.startTime | date: 'dd-MMM-yyyy HH:mm'}}</label>
     </div>
-    <div *ngIf="ride.endTime!=null" class="d-flex align-items-center pt-3 justify-content-center" >
+    <div *ngIf="ride.endTime!==null" class="d-flex align-items-center pt-3 justify-content-center" >
       <mat-icon>event</mat-icon>
       <label class="px-2">{{ride.endTime | date: 'dd-MMM-yyyy HH:mm'}}</label>
     </div>

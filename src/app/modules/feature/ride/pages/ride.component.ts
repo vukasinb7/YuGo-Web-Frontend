@@ -15,7 +15,7 @@ import {UserSimpleInfo} from "../../../shared/models/UserSimpleInfo";
   styleUrls: ['./ride.component.css']
 })
 export class RideComponent {
-  formPageIndex: number = 0;
+  formPageIndex = 0;
 
   rideDateTime?:Date;
   rideProperties?:RideProperties;
@@ -23,7 +23,7 @@ export class RideComponent {
   toAddress?:LocationInfo;
   passengers?:UserSimpleInfo[];
 
-  searchingDriver:boolean = false;
+  searchingDriver = false;
 
   errorMessageEvent:Subject<string> = new Subject<string>();
   rideFoundEvent:Subject<RideInfo> = new Subject<RideInfo>();
@@ -35,7 +35,7 @@ export class RideComponent {
     if(this.formPageIndex + switchDirection > 3){
       this.formPageIndex += switchDirection;
       this.searchingDriver = true;
-      this.bookRide().then(_ => {
+      this.bookRide().then(() => {
         //this.formPageIndex = 0;
       });
     }
@@ -51,7 +51,7 @@ export class RideComponent {
 
   async bookRide(){
     console.log(this.passengers);
-    let ride:RideBooking = {
+    const ride:RideBooking = {
       locations:[{departure:this.fromAddress!, destination:this.toAddress!}],
       passengers:this.passengers!,
       vehicleType:this.rideProperties!.vehicleTypeName,
