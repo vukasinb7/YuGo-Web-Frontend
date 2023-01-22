@@ -1,14 +1,14 @@
 import {AfterViewInit, Component} from '@angular/core';
 import * as L from 'leaflet';
-import {Control, LatLng, latLng, LeafletMouseEvent, Marker} from 'leaflet';
+import {LeafletMouseEvent, Marker} from 'leaflet';
 import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
 import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
 import {RideService} from "../../../ride/services/ride.service";
-import {Subscription, take} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {PassengerRideNotificationsService} from "../../../ride/services/passenger-ride-notifications.service";
-import {DriverRideNotificationService} from "../../../ride/services/driver-ride-notification.service";
+import {RideInfo} from "../../../../shared/models/RideInfo";
 
 @Component({
   selector: 'app-map',
@@ -18,17 +18,22 @@ import {DriverRideNotificationService} from "../../../ride/services/driver-ride-
 export class MapComponent implements AfterViewInit{
   private map:any;
   private fromAddressMarker?:Marker;
-  private driverLocationMarker?:Marker;
   private toAddressMarker?:Marker;
   private canSelectFromAddress:boolean = false;
   private canSelectToAddress:boolean = false;
-  private path?:Control;
+  private path?:L.Routing.Control;
   private driverLocationSubscription?:Subscription;
+  private startRideSubscription?:Subscription;
+  private destination?:LocationInfo;
+  hasActiveRide:boolean = false;
+  currentRide?:RideInfo;
+  rideDistance?:number;
+  rideDistanceLeftChanged:Subject<number> = new Subject<number>();
+
   constructor(private mapService:MapService,
               private destinationPickerService:DestinationPickerService,
               private rideService:RideService,
-              private passengerRideService:PassengerRideNotificationsService,
-              private driverRideService:DriverRideNotificationService) {
+              private passengerRideService:PassengerRideNotificationsService) {
   }
   private initMap():void{
     this.map = L.map('map', {
@@ -53,8 +58,13 @@ export class MapComponent implements AfterViewInit{
     }
     this.path = L.Routing.control({
       addWaypoints:false,
+      autoRoute:true,
       waypoints: [L.latLng(fromLat, fromLong), L.latLng(toLat, toLong)],
-    }).addTo(this.map);
+    }).addTo(this.map).on('routesfound', e => {
+      let routes:any = e.routes;
+      let summary = routes[0].summary;
+      this.rideDistance = summary.totalDistance / 1000.0;
+    });
     this.destinationPickerService.path.next(this.path);
   }
 
@@ -68,18 +78,31 @@ export class MapComponent implements AfterViewInit{
     this.initMap();
 
     this.passengerRideService.rideAcceptedEvent.subscribe(ride => {
-      this.driverLocationSubscription = this.passengerRideService.driverLocationSubscriber.subscribe(coordinates => {
-        if(this.driverLocationMarker){
-          this.driverLocationMarker.setLatLng([coordinates.latitude, coordinates.longitude]);
-        }else{
-          this.driverLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map);
-        }
+      console.log("Passenger is notified about accepted ride");
+      this.currentRide = ride;
+      this.startRideSubscription = this.passengerRideService.startRideEvent.subscribe(() => {
+        this.hasActiveRide = true;
+        this.driverLocationSubscription = this.passengerRideService.driverLocationUpdatedEvent.subscribe(coordinates => {
+          this.path?.setWaypoints([L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination!.latitude, this.destination!.longitude)]);
+          this.path!.on('routesfound', e => {
+            let routes:any = e.routes;
+            let summary = routes[0].summary;
+            this.rideDistanceLeftChanged.next(summary.totalDistance / 1000.0);
+          });
+        });
+        this.passengerRideService.endRideEvent.subscribe(() => {
+          this.map.removeControl(this.fromAddressMarker);
+          this.fromAddressMarker = undefined;
+          this.map.removeControl(this.toAddressMarker);
+          this.toAddressMarker = undefined;
+          this.hasActiveRide = false;
+          this.currentRide = undefined;
+          this.driverLocationSubscription?.unsubscribe();
+          this.startRideSubscription?.unsubscribe();
+          this.map.removeControl(this.path);
+          this.path = undefined;
+        });
       });
-    })
-    this.passengerRideService.endRideEvent.subscribe(ride => {
-      this.driverLocationSubscription?.unsubscribe();
-      this.map.removeControl(this.driverLocationMarker);
-      this.driverLocationMarker = undefined;
     });
 
     this.destinationPickerService.currentFromAddress.subscribe({
@@ -100,6 +123,7 @@ export class MapComponent implements AfterViewInit{
         if(this.toAddressMarker){
           this.map.removeControl(this.toAddressMarker);
         }
+        this.destination = address;
         if(!address){
           this.toAddressMarker = undefined;
         }else {
@@ -126,6 +150,7 @@ export class MapComponent implements AfterViewInit{
         this.toAddressMarker = L.marker(e.latlng).addTo(this.map);
         this.reverseAddressSearch(e.latlng.lat, e.latlng.lng).then((address:LocationInfo) => {
           this.destinationPickerService.manuallySelectedToAddress.next(address);
+          this.destination = address;
           this.canSelectToAddress = false;
           this.checkForPath();
         });

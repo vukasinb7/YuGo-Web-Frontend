@@ -28,9 +28,8 @@ export class InridePanelComponent implements OnInit{
     }else{
       this.rideEstTime = `${hours}hr ${minutes}min`;
     }
-    this.rideLength = `${this.rideLengthKm}km`;
+    this.rideLength = `${Math.round(this.rideLengthKm! * 10) / 10}km`;
     this.distanceLeftChangedEvent?.subscribe(distance => {
-      console.log(`Total distance: ${this.rideLengthKm} ------> Distance left: ${distance}`);
       let ridePercent:number = Math.ceil((1 - (distance / this.rideLengthKm!)) * 100);
       this.progressBarHeight = `${ridePercent}%`;
     });

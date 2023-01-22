@@ -73,9 +73,6 @@ export class DriverMapComponent implements AfterViewInit{
         }).addTo(this.map);
       }
     }
-    else if(this.path){
-      this.map.removeControl(this.path);
-    }
   }
 
   startRide(){
@@ -83,10 +80,12 @@ export class DriverMapComponent implements AfterViewInit{
     this.driverRideService.startCurrentRide();
   }
   endRide(){
+    this.rideStatus = 0;
     this.inrideDataReady = false;
-    this.driverRideService.endCurrentRide();
+    this.map.removeControl(this.path);
+    this.path = undefined;
     this.destination = undefined;
-    this.checkForRoute();
+    this.driverRideService.endCurrentRide();
   }
 
   ngAfterViewInit(): void {
@@ -95,12 +94,12 @@ export class DriverMapComponent implements AfterViewInit{
       iconAnchor: [12.5, 41]
     });
     this.driverRideService.currentRideChangedEvent.subscribe(ride => {
+      this.currentRide = ride;
       if(!ride){
         this.rideStatus = 0;
       }else{
         this.rideStatus = 1;
       }
-      this.currentRide = ride;
     });
     this.driverRideService.currentDriverLocation.pipe(take(1)).subscribe(coordinates => {
       this.driverLocation = coordinates;
