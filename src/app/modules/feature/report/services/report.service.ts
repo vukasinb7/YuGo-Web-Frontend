@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {DocumentInfo} from "../../../shared/models/DocumentInfo";
 import {environment} from "../../../../../enviroments/environment";
 import {HttpClient} from "@angular/common/http";
 
@@ -11,12 +10,34 @@ export class ReportService {
 
   constructor(private http: HttpClient) { }
 
-  getUserRidesPerDay(userId:number,from:string,to:string):Observable<Map<Date,number>>{
-    return this.http.get<Map<Date,number>>(environment.apiHost+`report/${userId}/ridesPerDay`,{
+  getUserRidesPerDay(userId:number,from:string,to:string):Observable<ReportOut>{
+    return this.http.get<ReportOut>(environment.apiHost+`report/${userId}/ridesPerDay`,{
       params: {
         from: from,
         to: to
       }
     });
   }
+
+  getUserKilometersPerDay(userId:number,from:string,to:string):Observable<ReportOut>{
+    return this.http.get<ReportOut>(environment.apiHost+`report/${userId}/kilometersPerDay`,{
+      params: {
+        from: from,
+        to: to
+      }
+    });
+  }
+
+  getUserSpendingsPerDay(userId:number,from:string,to:string):Observable<ReportOut>{
+    return this.http.get<ReportOut>(environment.apiHost+`report/${userId}/totalCostPerDay`,{
+      params: {
+        from: from,
+        to: to
+      }
+    });
+  }
+}
+export interface ReportOut{
+  keys:Date[];
+  values:number[];
 }

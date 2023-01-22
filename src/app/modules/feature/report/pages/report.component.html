@@ -11,18 +11,19 @@
       <mat-datepicker-toggle matSuffix [for]="releasedAtPicker"></mat-datepicker-toggle>
       <mat-datepicker #releasedAtPicker startView="year"></mat-datepicker>
     </mat-form-field>
-    <mat-form-field class="ms-2 float-end" appearance="outline">
-      <mat-label>Sort criterium</mat-label>
-      <mat-select >
-        <mat-option value="startTime">Date</mat-option>
-        <mat-option value="totalCost">Price</mat-option>
+    <mat-form-field class="ms-2 float-end" appearance="outline" >
+      <mat-label>Diagram Type</mat-label>
+      <mat-select [(value)]="selected" (selectionChange)="loadData()" >
+        <mat-option value="rides">Rides Per Day</mat-option>
+        <mat-option value="kilometers">Kilometers Per Day</mat-option>
+        <mat-option value="spendings">Spendings Per Day</mat-option>
       </mat-select>
     </mat-form-field>
 
   </form>
 
 </div>
-<div class="w-75 mx-auto">
-  <h5>Horizontal</h5>
+<div class="w-75 py-4 mx-auto">
+  <h5 class="text-center">{{diagramTitle}}</h5>
   <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
 </div>

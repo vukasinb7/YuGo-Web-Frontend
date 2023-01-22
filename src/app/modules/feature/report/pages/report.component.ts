@@ -23,13 +23,14 @@ export class ReportComponent {
   public userId: number = -1;
   @Input()
   public role: string = "";
-  selected:string="startTime";
+  selected:string="rides";
   totalRows = 0;
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   @Output()
   dateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
+  diagramTitle: any;
 
   constructor(@Inject(LOCALE_ID) private _locale: string, private _passengerService:PassengerService, public dialog: MatDialog,
               private _reportService:ReportService,private _authService:AuthService) {
@@ -41,20 +42,74 @@ export class ReportComponent {
     this.loadData();
 
   }
-  loadData(){
-    this._reportService.getUserRidesPerDay(this._authService.getId(),formatDate(this.reportInfoForm.get('startDate')?.value, "yyyy-MM-dd",this._locale),formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",this._locale)).subscribe({next:(result)=>{
-      let keys = Object.keys(result);
-        this.basicData = {
-          labels: keys,
-          datasets: [
-            {
-              label: 'My First dataset',
-              backgroundColor: '#42A5F5',
-              data: Object.values(result),
-            }
-          ]
-        };
-      }})
+  loadData() {
+    if (this.selected == "rides") {
+      this.diagramTitle="Rides Per Day"
+      this._reportService.getUserRidesPerDay(this._authService.getId(), formatDate(this.reportInfoForm.get('startDate')?.value, "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd", this._locale)).subscribe({
+        next: (result) => {
+          let keys: string[] = [];
+          result.keys.forEach(function (value) {
+            const date = String(value).split(',');
+            keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
+          });
+          this.basicData = {
+            labels: keys,
+            datasets: [
+              {
+                label: 'Number Of Rides',
+                backgroundColor: '#FAD02C',
+                data: result.values,
+              }
+            ]
+          };
+        }
+      })
+    }
+    else if (this.selected=="kilometers")
+    {
+      this.diagramTitle="Kilometers Per Day"
+      this._reportService.getUserKilometersPerDay(this._authService.getId(), formatDate(this.reportInfoForm.get('startDate')?.value, "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd", this._locale)).subscribe({
+        next: (result) => {
+          let keys: string[] = [];
+          result.keys.forEach(function (value) {
+            const date = String(value).split(',');
+            keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
+          });
+          this.basicData = {
+            labels: keys,
+            datasets: [
+              {
+                label: 'Distance',
+                backgroundColor: '#FAD02C',
+                data: result.values,
+              }
+            ]
+          };
+        }
+      })
+    }
+    else if(this.selected="spendings"){
+      this.diagramTitle="Spendings Per Day"
+      this._reportService.getUserSpendingsPerDay(this._authService.getId(), formatDate(this.reportInfoForm.get('startDate')?.value, "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd", this._locale)).subscribe({
+        next: (result) => {
+          let keys: string[] = [];
+          result.keys.forEach(function (value) {
+            const date = String(value).split(',');
+            keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
+          });
+          this.basicData = {
+            labels: keys,
+            datasets: [
+              {
+                label: 'Spendings In Dollars',
+                backgroundColor: '#FAD02C',
+                data: result.values,
+              }
+            ]
+          };
+        }
+      })
+    }
     this.basicOptions = {
       plugins: {
         legend: {
