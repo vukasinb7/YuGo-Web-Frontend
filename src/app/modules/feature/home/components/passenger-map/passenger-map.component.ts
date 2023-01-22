@@ -11,11 +11,11 @@ import {PassengerRideNotificationsService} from "../../../ride/services/passenge
 import {DriverRideNotificationService} from "../../../ride/services/driver-ride-notification.service";
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  selector: 'app-passenger-map',
+  templateUrl: './passenger-map.component.html',
+  styleUrls: ['./passenger-map.component.css']
 })
-export class MapComponent implements AfterViewInit{
+export class PassengerMapComponent implements AfterViewInit{
   private map:any;
   private fromAddressMarker?:Marker;
   private driverLocationMarker?:Marker;
