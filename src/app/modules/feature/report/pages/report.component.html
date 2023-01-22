@@ -12,6 +12,13 @@
       <mat-datepicker #releasedAtPicker startView="year"></mat-datepicker>
     </mat-form-field>
     <mat-form-field class="ms-2 float-end" appearance="outline" >
+      <mat-label>Diagram Style</mat-label>
+      <mat-select [(value)]="chartType" (selectionChange)="loadData()" >
+        <mat-option value="bar">Bar</mat-option>
+        <mat-option value="line">Line</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ms-2 float-end" appearance="outline" >
       <mat-label>Diagram Type</mat-label>
       <mat-select [(value)]="selected" (selectionChange)="loadData()" >
         <mat-option value="rides">Rides Per Day</mat-option>
@@ -25,5 +32,9 @@
 </div>
 <div class="w-75 py-4 mx-auto">
   <h5 class="text-center">{{diagramTitle}}</h5>
-  <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+  <div class="d-flex justify-content-center">
+  <p class="text-center px-2 pt-2">{{total}}</p>
+  <p class="text-center px-2 pt-2">{{average}}</p>
+  </div>
+  <p-chart [type]="chartType" [data]="basicData" [options]="basicOptions"></p-chart>
 </div>
