@@ -24,5 +24,7 @@ export class RideService {
   rejectRide(rideID:number, rejectionReason:string):Observable<RideInfo>{
     return this.http.put<RideInfo>(environment.apiHost + "ride/" + rideID + "/cancel", {reason:rejectionReason});
   }
-
+  getDriverActiveRide(driverId: number): Observable<RideInfo>{
+    return this.http.get<RideInfo>(environment.apiHost + `ride/driver/${driverId}/active`)
+  }
 }
