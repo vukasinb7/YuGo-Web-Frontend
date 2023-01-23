@@ -22,12 +22,12 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'history/:role/:userId', component: HistoryComponent, canActivate: [LoginGuard, ProfileGuard]},
   {path: 'account/:role/:userId', component: AccountComponent, canActivate: [LoginGuard, ProfileGuard]},
+  {path: 'report/:role/:userId', component: ReportComponent, canActivate: [LoginGuard, ProfileGuard]},
   {path: 'panics', component: UsersPanicsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'users-accounts', component: AdminUsersAccountsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'vehicle-requests', component: VehicleChangeRequestsComponent, canActivate: [LoginGuard, AdminGuard]},
   {path: 'favorite', component: FavoritePathComponent, canActivate: [LoginGuard]},
   {path: 'reset/:code', component: ForgotPasswordComponent },
-  {path: 'reports', component: ReportComponent },
   {path: 'home?activationDialog=true&code=:code', component: AccountActivationComponent },
   {path: '**',  redirectTo: '/home'}
 ];

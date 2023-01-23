@@ -8,6 +8,7 @@ import {DriverService} from "../../../shared/services/driver.service";
 import {ReportService} from "../services/report.service";
 import {AuthService} from "../../../core/services/auth.service";
 import {formatDate} from "@angular/common";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-report',
@@ -19,15 +20,9 @@ export class ReportComponent {
   basicOptions:any
   horizontalOptions:any;
   reportInfoForm: any;
-  @Input()
   public userId: number = -1;
-  @Input()
   public role: string = "";
   selected:string="rides";
-  totalRows = 0;
-  pageSize = 5;
-  currentPage = 0;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
   @Output()
   dateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
   diagramTitle= "";
@@ -35,13 +30,19 @@ export class ReportComponent {
   chartType="bar";
   average="";
 
-  constructor(@Inject(LOCALE_ID) private _locale: string, private _passengerService:PassengerService, public dialog: MatDialog,
-              private _reportService:ReportService,private _authService:AuthService) {
+
+
+  constructor(@Inject(LOCALE_ID) private _locale: string, private _passengerService:PassengerService,
+              private _reportService:ReportService,private _route: ActivatedRoute) {
     this.reportInfoForm = new FormGroup({
       startDate: new FormControl(new Date(2022,0,1), [Validators.required]),
       endDate: new FormControl(new Date(), [Validators.required])});
   }
   ngOnInit() {
+    this._route.params.subscribe(params => {
+      this.userId = Number.parseInt(params['userId'])
+      this.role = params['role'];
+    })
     this.loadData();
     this.basicOptions = {
       plugins: {
@@ -99,39 +100,103 @@ export class ReportComponent {
       }
     };
 
+
   }
   loadData() {
     if (this.selected == "rides") {
-      this.diagramTitle="Rides Per Day"
-      this._reportService.getUserRidesPerDay(this._authService.getId(), formatDate(this.reportInfoForm.get('startDate')?.value, "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd", this._locale)).subscribe({
-        next: (result) => {
-          let keys: string[] = [];
-          result.keys.forEach(function (value) {
-            const date = String(value).split(',');
-            keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
-          });
-          this.basicData = {
-            labels: keys,
-            datasets: [
-              {
-                label: 'Number Of Rides',
-                backgroundColor: '#FAD02C',
-                borderColor:'rgba(233,234,236,0.2)',
-                tension: .4,
-                data: result.values,
-              }
-            ]
-          };
-          let sum = result.values.reduce((a, b) => a + b, 0);
-          this.total="Total number of rides: "+sum;
-          this.average="Average number of rides: "+Math.round((sum/keys.length)*100)/100;
-        }
-      })
-    }
+      this.diagramTitle="Rides Per Day";
+      if (this.role=="ADMIN")
+      {
+        this._reportService.getTotalRidesPerDay(formatDate(this.reportInfoForm.get('startDate')?.value,
+          "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
+          this._locale)).subscribe({
+          next: (result) => {
+            let keys: string[] = [];
+            result.keys.forEach(function (value) {
+              const date = String(value).split(',');
+              keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
+            });
+            this.basicData = {
+              labels: keys,
+              datasets: [
+                {
+                  label: 'Number Of Rides',
+                  backgroundColor: '#FAD02C',
+                  borderColor:'rgba(233,234,236,0.2)',
+                  tension: .4,
+                  data: result.values,
+                }
+              ]
+            };
+            let sum = result.values.reduce((a, b) => a + b, 0);
+            this.total="Total number of rides: "+sum;
+            this.average="Average number of rides: "+Math.round((sum/keys.length)*100)/100;
+          }
+        });
+      }
+      else {
+        this._reportService.getUserRidesPerDay(this.userId, formatDate(this.reportInfoForm.get('startDate')?.value,
+          "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
+          this._locale)).subscribe({
+          next: (result) => {
+            let keys: string[] = [];
+            result.keys.forEach(function (value) {
+              const date = String(value).split(',');
+              keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
+            });
+            this.basicData = {
+              labels: keys,
+              datasets: [
+                {
+                  label: 'Number Of Rides',
+                  backgroundColor: '#FAD02C',
+                  borderColor:'rgba(233,234,236,0.2)',
+                  tension: .4,
+                  data: result.values,
+                }
+              ]
+            };
+            let sum = result.values.reduce((a, b) => a + b, 0);
+            this.total="Total number of rides: "+sum;
+            this.average="Average number of rides: "+Math.round((sum/keys.length)*100)/100;
+          }
+        });
+      }
+      }
     else if (this.selected=="kilometers")
     {
-      this.diagramTitle="Kilometers Per Day"
-      this._reportService.getUserKilometersPerDay(this._authService.getId(), formatDate(this.reportInfoForm.get('startDate')?.value, "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd", this._locale)).subscribe({
+      this.diagramTitle="Kilometers Per Day";
+      if (this.role=="ADMIN"){
+        this._reportService.getTotalKilometersPerDay(formatDate(this.reportInfoForm.get('startDate')?.value,
+          "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
+          this._locale)).subscribe({
+          next: (result) => {
+            let keys: string[] = [];
+            result.keys.forEach(function (value) {
+              const date = String(value).split(',');
+              keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
+            });
+            this.basicData = {
+              labels: keys,
+              datasets: [
+                {
+                  label: 'Distance',
+                  backgroundColor: '#FAD02C',
+                  borderColor:'rgba(233,234,236,0.2)',
+                  tension: .4,
+                  data: result.values,
+                }
+              ]
+            };
+            let sum = result.values.reduce((a, b) => a + b, 0);
+            this.total="Total number of kilometers: "+Math.round(sum * 100) / 100+"km";
+            this.average="Average number of kilometers: "+Math.round((sum/keys.length)*100)/100+"km";
+          }
+        });
+      }else{
+      this._reportService.getUserKilometersPerDay(this.userId, formatDate(this.reportInfoForm.get('startDate')?.value,
+        "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
+        this._locale)).subscribe({
         next: (result) => {
           let keys: string[] = [];
           result.keys.forEach(function (value) {
@@ -154,34 +219,66 @@ export class ReportComponent {
           this.total="Total number of kilometers: "+Math.round(sum * 100) / 100+"km";
           this.average="Average number of kilometers: "+Math.round((sum/keys.length)*100)/100+"km";
         }
-      })
+      });
+      }
     }
     else if(this.selected="spendings"){
-      this.diagramTitle="Spendings Per Day"
-      this._reportService.getUserSpendingsPerDay(this._authService.getId(), formatDate(this.reportInfoForm.get('startDate')?.value, "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd", this._locale)).subscribe({
-        next: (result) => {
-          let keys: string[] = [];
-          result.keys.forEach(function (value) {
-            const date = String(value).split(',');
-            keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
-          });
-          this.basicData = {
-            labels: keys,
-            datasets: [
-              {
-                label: 'Spendings In Dollars',
-                backgroundColor: '#FAD02C',
-                borderColor:'rgba(233,234,236,0.2)',
-                tension: .4,
-                data: result.values,
-              }
-            ]
-          };
-          let sum = result.values.reduce((a, b) => a + b, 0);
-          this.total="Total spendings: $"+Math.round(sum * 100) / 100;
-          this.average="Average spendings: $"+Math.round((sum/keys.length)*100)/100;
-        }
-      })
+      this.diagramTitle="Spendings Per Day";
+      if (this.role=="ADMIN"){
+        this._reportService.getTotalSpendingsPerDay(formatDate(this.reportInfoForm.get('startDate')?.value,
+          "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
+          this._locale)).subscribe({
+          next: (result) => {
+            let keys: string[] = [];
+            result.keys.forEach(function (value) {
+              const date = String(value).split(',');
+              keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
+            });
+            this.basicData = {
+              labels: keys,
+              datasets: [
+                {
+                  label: 'Spendings In Dollars',
+                  backgroundColor: '#FAD02C',
+                  borderColor: 'rgba(233,234,236,0.2)',
+                  tension: .4,
+                  data: result.values,
+                }
+              ]
+            };
+            let sum = result.values.reduce((a, b) => a + b, 0);
+            this.total = "Total spendings: $" + Math.round(sum * 100) / 100;
+            this.average = "Average spendings: $" + Math.round((sum / keys.length) * 100) / 100;
+          }
+        });
+      }else {
+        this._reportService.getUserSpendingsPerDay(this.userId, formatDate(this.reportInfoForm.get('startDate')?.value,
+          "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
+          this._locale)).subscribe({
+          next: (result) => {
+            let keys: string[] = [];
+            result.keys.forEach(function (value) {
+              const date = String(value).split(',');
+              keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
+            });
+            this.basicData = {
+              labels: keys,
+              datasets: [
+                {
+                  label: 'Spendings In Dollars',
+                  backgroundColor: '#FAD02C',
+                  borderColor: 'rgba(233,234,236,0.2)',
+                  tension: .4,
+                  data: result.values,
+                }
+              ]
+            };
+            let sum = result.values.reduce((a, b) => a + b, 0);
+            this.total = "Total spendings: $" + Math.round(sum * 100) / 100;
+            this.average = "Average spendings: $" + Math.round((sum / keys.length) * 100) / 100;
+          }
+        });
+      }
     }
 
   }

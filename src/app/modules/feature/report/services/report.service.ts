@@ -19,6 +19,15 @@ export class ReportService {
     });
   }
 
+  getTotalRidesPerDay(from:string,to:string):Observable<ReportOut>{
+    return this.http.get<ReportOut>(environment.apiHost+`report/totalRidesPerDay`,{
+      params: {
+        from: from,
+        to: to
+      }
+    });
+  }
+
   getUserKilometersPerDay(userId:number,from:string,to:string):Observable<ReportOut>{
     return this.http.get<ReportOut>(environment.apiHost+`report/${userId}/kilometersPerDay`,{
       params: {
@@ -28,8 +37,25 @@ export class ReportService {
     });
   }
 
+  getTotalKilometersPerDay(from:string,to:string):Observable<ReportOut>{
+    return this.http.get<ReportOut>(environment.apiHost+`report/totalKilometersPerDay`,{
+      params: {
+        from: from,
+        to: to
+      }
+    });
+  }
+
   getUserSpendingsPerDay(userId:number,from:string,to:string):Observable<ReportOut>{
     return this.http.get<ReportOut>(environment.apiHost+`report/${userId}/totalCostPerDay`,{
+      params: {
+        from: from,
+        to: to
+      }
+    });
+  }
+  getTotalSpendingsPerDay(from:string,to:string):Observable<ReportOut>{
+    return this.http.get<ReportOut>(environment.apiHost+`report/totalCostPerDay`,{
       params: {
         from: from,
         to: to

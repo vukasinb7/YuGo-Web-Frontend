@@ -121,6 +121,9 @@ export class UsersTableComponent implements AfterViewInit {
   showHistory(){
     this._router.navigate(['/history', this.selectedUser.role, this.selectedUser.id])
   }
+  showReport(){
+    this._router.navigate(['/report', this.selectedUser.role, this.selectedUser.id])
+  }
 
   createDriver(){
     this._dialog.open(DriverRegisterComponent,{
