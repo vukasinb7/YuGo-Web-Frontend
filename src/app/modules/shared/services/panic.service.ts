@@ -24,4 +24,8 @@ export class PanicService {
   getPanic(panicId: number): Observable<Panic> {
     return this.http.get<Panic>(environment.apiHost + `panic/${panicId}`);
   }
+
+  getPanicByRideId(rideId: number): Observable<Panic> {
+    return this.http.get<Panic>(environment.apiHost + `panic/ride/${rideId}`);
+  }
 }

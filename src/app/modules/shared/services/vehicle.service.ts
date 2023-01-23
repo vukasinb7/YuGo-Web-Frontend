@@ -13,6 +13,10 @@ export class VehicleService {
   constructor(private http: HttpClient) {
   }
 
+  getAllVehicles() : Observable<Vehicle[]>{
+    return this.http.get<Vehicle[]>(environment.apiHost + `vehicle/vehicles`);
+  }
+
   getVehicle(driverId : number) : Observable<Vehicle>{
     return this.http.get<Vehicle>(environment.apiHost + `driver/${driverId}/vehicle`);
   }
