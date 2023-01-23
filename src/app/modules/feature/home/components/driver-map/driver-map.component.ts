@@ -1,24 +1,27 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from "leaflet";
 import {DriverRideNotificationService} from "../../../ride/services/driver-ride-notification.service";
 import {Coordinates} from "../../../ride/model/Coordinates";
 import {Subject, take} from "rxjs";
-import {Control, Marker} from "leaflet";
+import {Marker} from "leaflet";
 import {RideInfo} from "../../../../shared/models/RideInfo";
-import {Path} from "../../../../shared/models/Path";
+import {DriverService} from "../../../../shared/services/driver.service";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-driver-map',
   templateUrl: './driver-map.component.html',
   styleUrls: ['./driver-map.component.css']
 })
-export class DriverMapComponent implements AfterViewInit{
+export class DriverMapComponent implements AfterViewInit, OnInit{
+
   private map:any;
   private driverLocation?:Coordinates;
   private driverLocationMarker?:Marker;
   private destination?:Coordinates;
   private path?:L.Routing.Control;
 
+  driverStatus?:string;
   currentRide?:RideInfo;
   calculateDistance:number = 0      // 0 - distance not calculated and shouldn't be | 1 - distance not calculated but should be | 2 - distance calculated
   rideDistance?:number;
@@ -27,7 +30,23 @@ export class DriverMapComponent implements AfterViewInit{
 
   rideStatus?:number;   // 0 - no active ride | 1 - there is an active ride, but it is not started yet | 2 - there is an active ride, and it is started
 
-  constructor(private driverRideService:DriverRideNotificationService) {
+  constructor(private driverRideService:DriverRideNotificationService, private driverService:DriverService, private authService:AuthService) {
+  }
+  ngOnInit(): void {
+    this.driverService.getDriverStatus(this.authService.getId()).subscribe(status =>{
+      if(status.online){
+        this.driverStatus = "online";
+      }
+      else{
+        this.driverStatus = "offline";
+      }
+    });
+  }
+  changeDriverStatus(event:string){
+    this.driverStatus = event;
+    let val:boolean;
+    val = this.driverStatus == "online";
+    this.driverService.updateDriverStatus(this.authService.getId(), {online: val}).subscribe();
   }
 
   private initMap():void{
@@ -94,6 +113,7 @@ export class DriverMapComponent implements AfterViewInit{
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
       iconAnchor: [12.5, 41]
     });
+
     this.driverRideService.currentRideChangedEvent.subscribe(ride => {
       this.currentRide = ride;
       if(!ride){
