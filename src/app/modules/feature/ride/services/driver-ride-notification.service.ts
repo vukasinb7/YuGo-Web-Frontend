@@ -60,6 +60,7 @@ export class DriverRideNotificationService {
   }
 
   startCurrentRide(){
+    this.rideService.currentRide = this.currentRide;
     this.rideService.startRide(this.currentRide!.id).subscribe();
     this.startRideEvent.next();
   }

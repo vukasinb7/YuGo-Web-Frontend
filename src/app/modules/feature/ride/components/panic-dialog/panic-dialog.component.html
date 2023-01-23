@@ -1,0 +1,10 @@
+<div class="p-4" style="border-radius:25px; background-color: #26272b">
+  <h1 class="w-100 mb-4">Give us a description of situation</h1>
+  <form (ngSubmit)="submitForm()" [formGroup]="form">
+    <mat-form-field class="w-100">
+      <textarea id="panicMessageTextArea"  matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <button type="submit" [disabled]="!form.valid" class="w-100 mt-4" mat-flat-button color="accent">Send</button>
+  </form>
+
+</div>

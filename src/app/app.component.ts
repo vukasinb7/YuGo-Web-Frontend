@@ -81,9 +81,11 @@ export class AppComponent implements OnInit, OnDestroy{
             let coordinates:Coordinates = JSON.parse(frameLocation.body);
             this.passengerRideService.driverLocationUpdatedEvent.next(coordinates);
           }, {id:"notify-passenger-vehicle-location"});
+          this.rideService.currentRide = ride;
           this.passengerRideService.startRideEvent.next(ride);
           this.stompClient.unsubscribe("notify-passenger-start-ride");
           this.stompClient.subscribe("/ride-topic/notify-passenger-end-ride/" + this.userID, () => {
+            this.rideService.currentRide = undefined;
             this.passengerRideService.endRideEvent.next(ride);
             this.stompClient.unsubscribe("notify-passenger-end-ride");
             this.stompClient.unsubscribe("notify-passenger-vehicle-location");

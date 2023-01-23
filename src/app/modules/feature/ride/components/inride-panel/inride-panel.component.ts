@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {Observable} from "rxjs";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {PanicDialogComponent} from "../panic-dialog/panic-dialog.component";
+import {RideService} from "../../services/ride.service";
 
 @Component({
   selector: 'app-inride-panel',
@@ -16,6 +19,23 @@ export class InridePanelComponent implements OnInit{
   @Input() currentRide?:RideInfo;
   @Input() rideLengthKm?:number;
   @Input() distanceLeftChangedEvent?:Observable<number>;
+
+  panicDialog?: MatDialogRef<PanicDialogComponent>;
+  panicEnabled:boolean = true;
+
+  constructor(private dialog: MatDialog, private rideService:RideService) {
+  }
+
+  openPanicDialog(){
+    this.panicDialog = this.dialog.open(PanicDialogComponent);
+    this.panicDialog.afterClosed().subscribe(res => {
+      if(res != undefined){
+        let rideID:number = this.rideService.currentRide!.id;
+        this.rideService.createPanic(rideID, res.message).subscribe();
+        this.panicEnabled = false;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.destinationAddress = this.currentRide!.locations[0].destination.address;

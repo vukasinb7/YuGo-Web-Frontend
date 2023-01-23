@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {RideBooking} from "../model/RideBooking";
 import {RideInfo} from "../../../shared/models/RideInfo";
-import * as http from "http";
 import {environment} from "../../../../../enviroments/environment";
-import {Observable, Subject} from "rxjs";
-import {Coordinates} from "../model/Coordinates";
+import {Observable, } from "rxjs";
+import {Panic} from "../../panic/models/Panic";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +13,11 @@ export class RideService {
 
   constructor(private http:HttpClient) { }
 
+  currentRide?:RideInfo;
+
+  createPanic(rideID:number, message:{reason:string}):Observable<Panic>{
+    return this.http.put<Panic>(environment.apiHost + `ride/${rideID}/panic`, message);
+  }
   createRide(ride:RideBooking):Observable<RideInfo>{
     return this.http.post<RideInfo>(environment.apiHost + 'ride', ride);
   }

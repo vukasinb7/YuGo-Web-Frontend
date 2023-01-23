@@ -15,6 +15,7 @@ import { RideAddPassengersComponent } from './components/ride-add-passengers/rid
 import { EmailListCardComponent } from './components/email-list-card/email-list-card.component';
 import { InridePanelComponent } from './components/inride-panel/inride-panel.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import { PanicDialogComponent } from './components/panic-dialog/panic-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     RideOfferCardComponent,
     RideAddPassengersComponent,
     EmailListCardComponent,
-    InridePanelComponent],
+    InridePanelComponent,
+    PanicDialogComponent],
     exports: [
         RideComponent,
         RideOfferCardComponent,

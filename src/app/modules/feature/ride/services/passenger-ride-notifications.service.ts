@@ -18,4 +18,6 @@ export class PassengerRideNotificationsService {
   startRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
   endRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
 
+
+
 }
