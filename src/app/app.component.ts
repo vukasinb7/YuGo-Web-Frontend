@@ -66,6 +66,11 @@ export class AppComponent implements OnInit, OnDestroy{
 
   notifyPassengerAboutRide(frameRide:Frame){
     let message:{rideID:number} = JSON.parse(frameRide.body);
+    if(message.rideID == -1){
+      console.log("=================");
+      this.passengerRideService.rideNotAvailableEvent.next();
+      return;
+    }
     this.rideService.getRide(message.rideID).subscribe(ride => {
       if(ride.status == "ACCEPTED"){
         console.log("Passenger is notified that ride is accepted");

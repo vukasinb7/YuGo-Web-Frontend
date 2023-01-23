@@ -1,21 +1,24 @@
-import { Component } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {RideProperties} from "../model/RideProperties";
 import {LocationInfo} from "../../../shared/models/LocationInfo";
 import {RideService} from "../services/ride.service";
 import {RideBooking} from "../model/RideBooking";
 import {AuthService} from "../../../core/services/auth.service";
 import {Router} from "@angular/router";
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {RideInfo} from "../../../shared/models/RideInfo";
 import {UserSimpleInfo} from "../../../shared/models/UserSimpleInfo";
+import {PassengerRideNotificationsService} from "../services/passenger-ride-notifications.service";
 
 @Component({
   selector: 'app-ride',
   templateUrl: './ride.component.html',
   styleUrls: ['./ride.component.css']
 })
-export class RideComponent {
+export class RideComponent implements OnInit{
   formPageIndex: number = 0;
+
+  isDataReady:boolean = false;
 
   rideDateTime?:Date;
   rideProperties?:RideProperties;
@@ -23,12 +26,12 @@ export class RideComponent {
   toAddress?:LocationInfo;
   passengers?:UserSimpleInfo[];
 
-  searchingDriver:boolean = false;
+ searchingDriver:boolean = false;
 
   errorMessageEvent:Subject<string> = new Subject<string>();
-  rideFoundEvent:Subject<RideInfo> = new Subject<RideInfo>();
+  rideFoundEvent:BehaviorSubject<RideInfo | undefined> = new BehaviorSubject<RideInfo | undefined>(undefined);
 
-  constructor(private rideService:RideService, private authService:AuthService, private router: Router) {
+  constructor(private rideService:RideService, private authService:AuthService, private router: Router, private passengerRideService:PassengerRideNotificationsService) {
   }
 
   switchFormPage(switchDirection:number){
@@ -50,14 +53,14 @@ export class RideComponent {
   }
 
   async bookRide(){
-    console.log(this.passengers);
+    console.log((new Date(this.rideDateTime!.getTime() - this.rideDateTime!.getTimezoneOffset() * 60000)).toISOString());
     let ride:RideBooking = {
       locations:[{departure:this.fromAddress!, destination:this.toAddress!}],
       passengers:this.passengers!,
       vehicleType:this.rideProperties!.vehicleTypeName,
       babyTransport:this.rideProperties!.includeBabies,
       petTransport:this.rideProperties!.includePets,
-      dateTime: (new Date(this.rideDateTime!.getTime() - this.rideDateTime!.getTimezoneOffset() * 60000)).toISOString()
+      scheduledTime: (new Date(this.rideDateTime!.getTime() - this.rideDateTime!.getTimezoneOffset() * 60000)).toISOString()
     };
 
     this.rideService.createRide(ride).subscribe({
@@ -71,6 +74,34 @@ export class RideComponent {
       }
     });
 
+
+  }
+
+  ngOnInit(): void {
+    this.authService.userState$.subscribe(role => {
+      if(role != "PASSENGER"){
+        return;
+      }
+      let userID:number = this.authService.getId();
+      if(userID == -1){
+        return;
+      }
+      this.rideService.getUnresolvedRide(userID).subscribe({
+        next: (ride) => {
+          this.formPageIndex = 4;
+          this.searchingDriver = true;
+          this.rideFoundEvent.next(ride);
+          this.isDataReady = true;
+          console.log("asfasfaf");
+        },
+        error: err => {
+          this.formPageIndex = 0;
+          this.isDataReady = true;
+          console.log("000000000000000000");
+        }
+      });
+
+    });
 
   }
 }

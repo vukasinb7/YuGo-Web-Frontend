@@ -81,6 +81,7 @@ export class DriverMapComponent implements AfterViewInit{
   }
   endRide(){
     this.rideStatus = 0;
+    this.calculateDistance = 0;
     this.inrideDataReady = false;
     this.map.removeControl(this.path);
     this.path = undefined;

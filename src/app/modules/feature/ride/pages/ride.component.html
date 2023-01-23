@@ -3,5 +3,5 @@
   <app-ride-pick-properties [ngClass]="{hidden:formPageIndex!=1}" (changeFormPageEmitter)="switchFormPage($event)" (ridePropertiesChangedEvent)="rideProperties=$event"></app-ride-pick-properties>
   <app-ride-add-passengers [ngClass]="{hidden:formPageIndex!=2}" (changeFormPageEmitter)="switchFormPage($event)" (passengersChangedEvent)="passengers=$event"></app-ride-add-passengers>
   <app-ride-pick-time [ngClass]="{hidden:formPageIndex!=3}" (changeFormPageEmitter)="switchFormPage($event)" (rideDateTimeChangedEvent)="rideDateTime = $event"></app-ride-pick-time>
-  <app-searching-driver-screen [rideFoundEvent]="rideFoundEvent.asObservable()" [errorMessageEvent]="errorMessageEvent.asObservable()"  *ngIf="searchingDriver"></app-searching-driver-screen>
+  <app-searching-driver-screen [rideFoundEvent]="rideFoundEvent.asObservable()" [errorMessageEvent]="errorMessageEvent.asObservable()"  *ngIf="searchingDriver && isDataReady"></app-searching-driver-screen>
 </div>

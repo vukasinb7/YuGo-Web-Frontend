@@ -17,6 +17,9 @@ export class RideService {
   createRide(ride:RideBooking):Observable<RideInfo>{
     return this.http.post<RideInfo>(environment.apiHost + 'ride', ride);
   }
+  getUnresolvedRide(userID:number):Observable<RideInfo>{
+    return this.http.get<RideInfo>(environment.apiHost + `ride/passenger/${userID}/unresolved`);
+  }
   getRide(rideID:number):Observable<RideInfo>{
     return this.http.get<RideInfo>(environment.apiHost + "ride/" + rideID);
   }

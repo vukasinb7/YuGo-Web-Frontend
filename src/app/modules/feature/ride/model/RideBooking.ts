@@ -7,5 +7,5 @@ export interface RideBooking{
   vehicleType:string;
   babyTransport:boolean;
   petTransport:boolean;
-  dateTime:string;
+  scheduledTime:string;
 }
