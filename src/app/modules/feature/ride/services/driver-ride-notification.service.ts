@@ -96,8 +96,12 @@ export class DriverRideNotificationService {
     this.driverDestination.next(rideStartLocation);
     this.driverService.getLocation(this.authService.getId()).subscribe(currentLocation => {
       // Simulates the route from drivers current location to the ride departure
-      this.runSimulation(currentLocation, rideStartLocation).then(() => {
-        console.log("Driver arrived at ride departure");
+
+      let currentLocCoords:Coordinates = {
+        latitude: currentLocation.latitude,
+        longitude:currentLocation.longitude
+      }
+      this.runSimulation(currentLocCoords, rideStartLocation).then(() => {
       });
     });
 
@@ -109,8 +113,11 @@ export class DriverRideNotificationService {
       this.driverDestination.next(rideEndLocation);
       this.driverService.getLocation(this.authService.getId()).subscribe(currentLocation => {
         // Simulates the route from drivers current location to the ride destination
-        this.runSimulation(currentLocation, rideEndLocation).then(() => {
-          console.log("Driver arrived at ride destination");
+        let currentLocCoords:Coordinates = {
+          latitude: currentLocation.latitude,
+          longitude:currentLocation.longitude
+        }
+        this.runSimulation(currentLocCoords, rideEndLocation).then(() => {
         })
       });
     })
