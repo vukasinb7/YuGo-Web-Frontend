@@ -1,5 +1,6 @@
 <div id="mapDiv">
-  <app-ride *ngIf="role!='DRIVER'" class="floating front"></app-ride>
-  <app-map *ngIf="role!='DRIVER'" class="w-100 h-100"></app-map>
-  <app-driver-map *ngIf="role=='DRIVER'" class="w-100 h-100"></app-driver-map>
+  <app-ride *ngIf="(role==='PASSENGER' || role==='UNREGISTERED') && !hasActiveRide" class="floating front"></app-ride>
+  <app-passenger-map *ngIf="role==='PASSENGER' || role==='UNREGISTERED'" class="w-100 h-100"></app-passenger-map>
+  <app-admin-map *ngIf="role==='ADMIN'" class="w-100 h-100"></app-admin-map>
+  <app-driver-map *ngIf="role==='DRIVER'" class="w-100 h-100"></app-driver-map>
 </div>

@@ -1,0 +1,18 @@
+.map-frame {
+  height: 100%;
+}
+.to-front{
+  z-index: 999;
+}
+#map {
+  height: 100%;
+}
+::ng-deep .leaflet-routing-container
+{color:black;}
+.snack-bar-style{
+  background-color: #26272b;
+  color: white;
+}
+::ng-deep .leaflet-top.leaflet-right{
+  display:none
+}

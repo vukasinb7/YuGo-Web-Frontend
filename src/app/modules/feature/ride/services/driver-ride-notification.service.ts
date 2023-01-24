@@ -7,13 +7,14 @@ import {HttpClient} from "@angular/common/http";
 import {RideInfo} from "../../../shared/models/RideInfo";
 import {VehicleService} from "../../../shared/services/vehicle.service";
 import {LocationInfo} from "../../../shared/models/LocationInfo";
+import {RideService} from "./ride.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DriverRideNotificationService {
 
-  constructor(private driverService:DriverService, private authService:AuthService, private http:HttpClient, private vehicleService:VehicleService) { }
+  constructor(private driverService:DriverService, private authService:AuthService, private http:HttpClient, private vehicleService:VehicleService, private rideService:RideService) { }
   private currentRide?:RideInfo;
   private nextRide?:RideInfo;
 
@@ -27,26 +28,26 @@ export class DriverRideNotificationService {
   private async runSimulation(departure:Coordinates, destination:Coordinates){
     const headers = {'skip':'true'};
     this.vehicleService.getVehicle(this.authService.getId()).subscribe(vehicle => {
-      let response:Observable<any> = this.http.get(`https://routing.openstreetmap.de/routed-car/route/v1/driving/${departure.longitude},${departure.latitude};${destination.longitude},${destination.latitude}?geometries=geojson&overview=false&alternatives=true&steps=true`, {'headers':headers});
+      const response:Observable<any> = this.http.get(`https://routing.openstreetmap.de/routed-car/route/v1/driving/${departure.longitude},${departure.latitude};${destination.longitude},${destination.latitude}?geometries=geojson&overview=false&alternatives=true&steps=true`, {'headers':headers});
       response.subscribe(value => {
         let coordinates:any[] = [];
-        for(let step of value.routes[0].legs[0].steps){
+        for(const step of value.routes[0].legs[0].steps){
           coordinates = [...coordinates, ...step.geometry.coordinates]
         }
-        let simulationEndEvent:Subject<void> = new Subject();
+        const simulationEndEvent:Subject<void> = new Subject();
         timer(0,1000).pipe(takeUntil(simulationEndEvent), takeUntil(this.startRideEvent), takeUntil(this.endRideEvent))
-          .subscribe(_ => {
-            let newCoordsArr = coordinates.shift();
+          .subscribe(() => {
+            const newCoordsArr = coordinates.shift();
             if(!newCoordsArr){
               simulationEndEvent.next();
               return;
             }
-            let coords:Coordinates = {
+            const coords:Coordinates = {
               latitude:newCoordsArr[1],
               longitude:newCoordsArr[0]
             }
             this.currentDriverLocation.next(coords);
-            let updatedLocation:LocationInfo = {
+            const updatedLocation:LocationInfo = {
               address:"some address",
               latitude:coords.latitude,
               longitude:coords.longitude
@@ -59,10 +60,13 @@ export class DriverRideNotificationService {
   }
 
   startCurrentRide(){
+    this.rideService.currentRide = this.currentRide;
+    this.rideService.startRide(this.currentRide!.id).subscribe();
     this.startRideEvent.next();
   }
 
   endCurrentRide(){
+    this.rideService.endRide(this.currentRide!.id).subscribe();
     this.endRideEvent.next();
     if(this.nextRide){
       this.currentRide = this.nextRide;
@@ -84,7 +88,7 @@ export class DriverRideNotificationService {
     }
   }
 
-  private startRideSimulation(ride:RideInfo){
+  public startRideSimulation(ride:RideInfo){
     let rideStartLocation:Coordinates = {
       latitude: ride.locations[0].departure.latitude,
       longitude: ride.locations[0].departure.longitude,
@@ -97,7 +101,7 @@ export class DriverRideNotificationService {
       });
     });
 
-    let rideEndLocation:Coordinates = {
+    const rideEndLocation:Coordinates = {
       latitude: ride.locations[0].destination.latitude,
       longitude: ride.locations[0].destination.longitude,
     }

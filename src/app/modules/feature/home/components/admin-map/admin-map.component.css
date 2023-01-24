@@ -2,7 +2,7 @@
   height: 100%;
 }
 
-#map {
+#map-admin {
   height: 100%;
 }
 ::ng-deep .leaflet-routing-container
