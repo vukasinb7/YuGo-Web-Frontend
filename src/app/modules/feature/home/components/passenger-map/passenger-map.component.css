@@ -13,3 +13,6 @@
   background-color: #26272b;
   color: white;
 }
+::ng-deep .leaflet-top.leaflet-right{
+  display:none
+}
