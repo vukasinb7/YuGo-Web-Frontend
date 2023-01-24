@@ -1,4 +1,6 @@
 <div>
   <h1 class="w-100">{{text}}</h1>
   <mat-spinner *ngIf="loading" class="w-100 mt-2"></mat-spinner>
+  <button class="mt-4 w-100" *ngIf="enableCancelButton" (click)="cancelRide()" mat-flat-button color="accent">Cancel ride</button>
+  <button class="mt-4 w-100" *ngIf="enableReturnButton" (click)="returnToFirstPage()" mat-flat-button color="accent">Return</button>
 </div>
