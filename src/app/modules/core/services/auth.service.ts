@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import { environment } from 'src/enviroments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Token} from "../models/Token";
@@ -14,6 +14,7 @@ export class AuthService {
     skip: 'true',
   });
 
+  onLogoutEvent:Subject<void> = new Subject<void>();
   user$ = new BehaviorSubject("");
   userState$ = this.user$.asObservable();
 
@@ -28,6 +29,7 @@ export class AuthService {
   }
 
   logOut(): Observable<string> {
+    this.onLogoutEvent.next();
     return this.http.get(environment.apiHost + 'user/logout', {
       responseType: 'text',
     });

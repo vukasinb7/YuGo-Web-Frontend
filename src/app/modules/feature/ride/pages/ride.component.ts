@@ -82,6 +82,9 @@ export class RideComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.authService.onLogoutEvent.subscribe(() => {
+      this.returnToFirstPage();
+    });
     this.authService.userState$.subscribe(role => {
       if(role != "PASSENGER"){
         return;

@@ -5,7 +5,6 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {PanicDialogComponent} from "../panic-dialog/panic-dialog.component";
 import {RideService} from "../../services/ride.service";
 import {ImageService} from "../../../../core/services/image.service";
-import {UserInfo} from "../../../../shared/models/UserInfo";
 import {UserSimpleInfo} from "../../../../shared/models/UserSimpleInfo";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {DomSanitizer} from "@angular/platform-browser";

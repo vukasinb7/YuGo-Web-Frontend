@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, Subject, takeUntil, timer} from "rxjs";
+import {BehaviorSubject, Observable, Observer, Subject, Subscription, takeUntil, timer} from "rxjs";
 import {Coordinates} from "../model/Coordinates";
 import {DriverService} from "../../../shared/services/driver.service";
 import {AuthService} from "../../../core/services/auth.service";
@@ -17,6 +17,8 @@ export class DriverRideNotificationService {
   constructor(private driverService:DriverService, private authService:AuthService, private http:HttpClient, private vehicleService:VehicleService, private rideService:RideService) { }
   private currentRide?:RideInfo;
   private nextRide?:RideInfo;
+
+  private startRideSubscription?:Subscription;
 
   currentDriverLocation:Subject<Coordinates> = new Subject<Coordinates>();    // triggered by this service while simulation is running or home component when page is loaded
   driverDestination:Subject<Coordinates> = new Subject<Coordinates>();        // triggered by this service when new route is created - the route is created either from current location to ride departure or from current location to ride destination
@@ -66,6 +68,7 @@ export class DriverRideNotificationService {
   }
 
   endCurrentRide(){
+    this.startRideSubscription?.unsubscribe();
     this.rideService.endRide(this.currentRide!.id).subscribe();
     this.endRideEvent.next();
     if(this.nextRide){
@@ -109,7 +112,7 @@ export class DriverRideNotificationService {
       latitude: ride.locations[0].destination.latitude,
       longitude: ride.locations[0].destination.longitude,
     }
-    this.startRideEvent.subscribe(() => {
+    this.startRideSubscription = this.startRideEvent.subscribe(() => {
       this.driverDestination.next(rideEndLocation);
       this.driverService.getLocation(this.authService.getId()).subscribe(currentLocation => {
         // Simulates the route from drivers current location to the ride destination
@@ -120,6 +123,6 @@ export class DriverRideNotificationService {
         this.runSimulation(currentLocCoords, rideEndLocation).then(() => {
         })
       });
-    })
+    });
   }
 }
