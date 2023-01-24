@@ -2,5 +2,5 @@
   <div class="map-frame">
     <div id="map"></div>
   </div>
-  <app-inride-panel *ngIf="hasActiveRide" [currentRide]="currentRide" [rideLengthKm]="rideDistance" [distanceLeftChangedEvent]="rideDistanceLeftChanged.asObservable()" class="position-absolute top-0 start-0 ms-5 mt-5 to-front"></app-inride-panel>
+  <app-inride-panel *ngIf="hasActiveRide" [userType]="'PASSENGER'" [currentRide]="currentRide" [rideLengthKm]="rideDistance" [distanceLeftChangedEvent]="rideDistanceLeftChanged.asObservable()" class="position-absolute top-0 start-0 ms-5 mt-5 to-front"></app-inride-panel>
 </div>

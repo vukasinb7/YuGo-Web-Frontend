@@ -114,10 +114,11 @@ export class AppComponent implements OnInit, OnDestroy{
           this.passengerRideService.startRideEvent.next(ride);
           this.stompClient.unsubscribe("notify-passenger-start-ride");
           this.stompClient.subscribe("/ride-topic/notify-passenger-end-ride/" + this.userID, () => {
-            this.rideService.currentRide = undefined;
             this.passengerRideService.endRideEvent.next(ride);
+            this.rideService.currentRide = undefined;
             this.stompClient.unsubscribe("notify-passenger-end-ride");
             this.stompClient.unsubscribe("notify-passenger-vehicle-location");
+            this.stompClient.unsubscribe("notify-passenger-vehicle-arrival");
             this.stompClient.unsubscribe("notify-passenger-vehicle-arrival");
           }, {id:"notify-passenger-end-ride"});
         }, {id:"notify-passenger-start-ride"});
@@ -144,6 +145,8 @@ export class AppComponent implements OnInit, OnDestroy{
     this.stompClient.unsubscribe("driver-request");
     this.stompClient.unsubscribe("notify-passenger");
     this.stompClient.unsubscribe("admin-panic");
+    this.stompClient.unsubscribe("notify-passenger-end-ride");
+    this.stompClient.unsubscribe("notify-passenger-start-ride");
   }
   initializeWebSocketConnection() {
     const ws = new SockJS(this.serverUrl);

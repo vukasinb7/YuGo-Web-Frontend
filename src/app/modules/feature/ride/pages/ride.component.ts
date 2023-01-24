@@ -9,6 +9,7 @@ import {BehaviorSubject, Subject} from "rxjs";
 import {RideInfo} from "../../../shared/models/RideInfo";
 import {UserSimpleInfo} from "../../../shared/models/UserSimpleInfo";
 import {PassengerRideNotificationsService} from "../services/passenger-ride-notifications.service";
+import {DestinationPickerService} from "../services/destination-picker.service";
 
 @Component({
   selector: 'app-ride',
@@ -31,7 +32,13 @@ export class RideComponent implements OnInit{
   errorMessageEvent:Subject<string> = new Subject<string>();
   rideFoundEvent:BehaviorSubject<RideInfo | undefined> = new BehaviorSubject<RideInfo | undefined>(undefined);
 
-  constructor(private rideService:RideService, private authService:AuthService, private router: Router, private passengerRideService:PassengerRideNotificationsService) {
+  constructor(private rideService:RideService, private authService:AuthService, private router: Router, private passengerRideService:PassengerRideNotificationsService,private destinationService:DestinationPickerService) {
+  }
+
+  returnToFirstPage(){
+    this.formPageIndex = 0;
+    this.destinationService.updateFromAddress(undefined);
+    this.destinationService.updateToAddress(undefined);
   }
 
   switchFormPage(switchDirection:number){
@@ -64,11 +71,9 @@ export class RideComponent implements OnInit{
 
     this.rideService.createRide(ride).subscribe({
       next: response => {
-        console.log(response);
         this.rideFoundEvent.next(response);
       },
       error: err => {
-        console.log(err);
         this.rideFoundEvent.error(err);
       }
     });
@@ -77,6 +82,9 @@ export class RideComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.authService.onLogoutEvent.subscribe(() => {
+      this.returnToFirstPage();
+    });
     this.authService.userState$.subscribe(role => {
       if(role != "PASSENGER"){
         return;

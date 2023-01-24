@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
-import {Control, LeafletMouseEvent, Marker} from 'leaflet';
+import {LatLng, LeafletMouseEvent, Marker} from 'leaflet';
 import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
 import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
 import {RideService} from "../../../ride/services/ride.service";
-import {Subject, Subscription, interval} from "rxjs";
+import {interval, Subject, Subscription} from "rxjs";
 import {PassengerRideNotificationsService} from "../../../ride/services/passenger-ride-notifications.service";
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -23,6 +23,7 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   private map:any;
   private fromAddressMarker?:Marker;
   private toAddressMarker?:Marker;
+  private currentLocationMarker?:Marker;
   private canSelectFromAddress:boolean = false;
   private canSelectToAddress:boolean = false;
   private path?:L.Routing.Control;
@@ -130,31 +131,29 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   }
 
   ngAfterViewInit(): void {
-    const DefaultIcon = L.icon({
+    L.Marker.prototype.options.icon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
       iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [0, -35],
       shadowSize: [41, 41]
     });
-
-    L.Marker.prototype.options.icon = DefaultIcon;
     this.initMap();
 
     this.passengerRideService.rideAcceptedEvent.subscribe(ride => {
-      console.log("Passenger is notified about accepted ride");
       this.currentRide = ride;
       this.startRideSubscription = this.passengerRideService.startRideEvent.subscribe(() => {
         this.hasActiveRide = true;
         this.driverLocationSubscription = this.passengerRideService.driverLocationUpdatedEvent.subscribe(coordinates => {
-          this.path?.setWaypoints([L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination!.latitude, this.destination!.longitude)]);
-          this.path!.on('routesfound', e => {
-            let routes:any = e.routes;
-            let summary = routes[0].summary;
-            this.rideDistanceLeftChanged.next(summary.totalDistance / 1000.0);
-          });
+          if(this.currentLocationMarker == undefined){
+            this.currentLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map);
+          }else{
+            this.currentLocationMarker.setLatLng(L.latLng(coordinates.latitude, coordinates.longitude));
+          }
         });
         this.passengerRideService.endRideEvent.subscribe(() => {
+          this.map.removeControl(this.currentLocationMarker);
+          this.currentLocationMarker = undefined;
           this.map.removeControl(this.fromAddressMarker);
           this.fromAddressMarker = undefined;
           this.map.removeControl(this.toAddressMarker);
@@ -265,7 +264,6 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
       });
     });
     this.passengerRideService.vehicleArrivedEvent.subscribe(() => {
-      console.log("-------------");
       this.snackBar.open("Vehicle arrived at pickup location", "Ok", {
         panelClass: ["snack-bar-style"],
       });

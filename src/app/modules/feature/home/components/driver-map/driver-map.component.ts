@@ -20,6 +20,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
   private driverLocation?:Coordinates;
   private driverLocationMarker?:Marker;
   private destination?:Coordinates;
+
   private path?:L.Routing.Control;
 
   driverStatus?:string;
@@ -72,7 +73,14 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
     if(this.driverLocation && this.destination){
       if(this.path){
         this.path.setWaypoints([L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)]);
-
+      }else{
+        this.path = L.Routing.control({
+          autoRoute:true,
+          addWaypoints:false,
+          waypoints: [L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)],
+        }).addTo(this.map);
+      }
+      if(this.rideStatus == 2){
         this.path.on('routesfound', e => {
           const routes:any = e.routes;
           const summary = routes[0].summary;
@@ -83,19 +91,13 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
             this.inrideDataReady = true;
           }
           this.distanceLeftChanged.next(distance);
-        })
-
-      }else{
-        this.path = L.Routing.control({
-          autoRoute:true,
-          addWaypoints:false,
-          waypoints: [L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)],
-        }).addTo(this.map);
+        });
       }
     }
   }
 
   startRide(){
+    console.log(this);
     this.rideStatus = 2;
     this.driverRideService.startCurrentRide();
   }
@@ -128,6 +130,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
       this.initMap();
     });
     this.driverRideService.currentDriverLocation.subscribe(coordinates => {
+
       this.driverLocation = coordinates;
       if(this.driverLocationMarker){
         this.driverLocationMarker.setLatLng([coordinates.latitude, coordinates.longitude]);
@@ -137,6 +140,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
       this.checkForRoute();
     });
     this.driverRideService.driverDestination.subscribe(coordinates => {
+      console.log(this.rideStatus);
       if(this.rideStatus == 2 && this.calculateDistance == 0){
         this.calculateDistance = 1;
       }

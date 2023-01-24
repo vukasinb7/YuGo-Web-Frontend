@@ -4,6 +4,11 @@ import {Observable} from "rxjs";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {PanicDialogComponent} from "../panic-dialog/panic-dialog.component";
 import {RideService} from "../../services/ride.service";
+import {ImageService} from "../../../../core/services/image.service";
+import {UserSimpleInfo} from "../../../../shared/models/UserSimpleInfo";
+import {PassengerService} from "../../../../shared/services/passenger.service";
+import {DomSanitizer} from "@angular/platform-browser";
+import {DriverService} from "../../../../shared/services/driver.service";
 
 @Component({
   selector: 'app-inride-panel',
@@ -16,14 +21,22 @@ export class InridePanelComponent implements OnInit{
   destinationAddress = "Bulevar oslobodjenja 30"
   rideEstTime = "1hr 15min"
   rideLength = "55km"
+  image:any;
+
   @Input() currentRide?:RideInfo;
   @Input() rideLengthKm?:number;
   @Input() distanceLeftChangedEvent?:Observable<number>;
+  @Input() userType?:string;
 
   panicDialog?: MatDialogRef<PanicDialogComponent>;
   panicEnabled:boolean = true;
 
-  constructor(private dialog: MatDialog, private rideService:RideService) {
+  constructor(private dialog: MatDialog,
+              private rideService:RideService,
+              private imageService:ImageService,
+              private passengerService:PassengerService,
+              private driverService:DriverService,
+              private sanitizer: DomSanitizer) {
   }
 
   openPanicDialog(){
@@ -34,6 +47,13 @@ export class InridePanelComponent implements OnInit{
         this.rideService.createPanic(rideID, res.message).subscribe();
         this.panicEnabled = false;
       }
+    });
+  }
+
+  setupImage(imgName:string){
+    this.imageService.getProfilePicture(imgName).then(imgData => {
+      const objectURL = URL.createObjectURL(imgData);
+      this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
     });
   }
 
@@ -53,5 +73,18 @@ export class InridePanelComponent implements OnInit{
       let ridePercent:number = Math.ceil((1 - (distance / this.rideLengthKm!)) * 100);
       this.progressBarHeight = `${ridePercent}%`;
     });
+    if(this.userType == "DRIVER"){
+      let passengerBase:UserSimpleInfo = this.currentRide!.passengers[0];
+      this.passengerService.getPassenger(passengerBase.id).subscribe(user => {
+        this.setupImage(user.profilePicture);
+      });
+    }else if(this.userType == "PASSENGER"){
+      let driverBase:UserSimpleInfo = this.currentRide!.driver;
+      this.driverService.getDriver(driverBase.id).subscribe(user => {
+        this.setupImage(user.profilePicture);
+      });
+    }
+
+
   }
 }
