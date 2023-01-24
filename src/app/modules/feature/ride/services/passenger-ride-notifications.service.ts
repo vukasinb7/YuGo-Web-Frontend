@@ -9,21 +9,15 @@ import {Coordinates} from "../model/Coordinates";
 export class PassengerRideNotificationsService {
 
 
-  private rideSearchCompletedPublisher:Subject<RideInfo> = new Subject<RideInfo>();
-  rideSearchCompleteSubscriber:Observable<RideInfo> = this.rideSearchCompletedPublisher.asObservable();
-
-  private driverLocationPublisher:Subject<Coordinates> = new Subject<Coordinates>();
-  public driverLocationSubscriber:Observable<Coordinates> = this.driverLocationPublisher.asObservable();
-
+  driverLocationUpdatedEvent:Subject<Coordinates> = new Subject<Coordinates>();
+  passengerAddedToRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
+  vehicleArrivedEvent:Subject<void> = new Subject<void>();
+  rideNotAvailableEvent:Subject<void> = new Subject();
   rideAcceptedEvent:Subject<RideInfo> = new Subject<RideInfo>();
+  rideRejectedEvent:Subject<RideInfo> = new Subject<RideInfo>();
   startRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
   endRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
 
-  updateDriverLocation(coordinates:Coordinates){
-    this.driverLocationPublisher.next(coordinates);
-  }
 
-  rideSearchCompleted(ride: RideInfo){
-    this.rideSearchCompletedPublisher.next(ride);
-  }
+
 }

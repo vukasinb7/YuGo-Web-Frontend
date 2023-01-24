@@ -8,7 +8,6 @@ import {Frame} from "stompjs";
 import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
 import {Coordinates} from "./modules/feature/ride/model/Coordinates";
-import {RideInfo} from "./modules/shared/models/RideInfo";
 import {PassengerRideNotificationsService} from "./modules/feature/ride/services/passenger-ride-notifications.service";
 import {DriverRideNotificationService} from "./modules/feature/ride/services/driver-ride-notification.service";
 import {DriverService} from "./modules/shared/services/driver.service";
@@ -25,9 +24,7 @@ export class AppComponent implements OnInit, OnDestroy{
   title = 'YuGo';
   private serverUrl = environment.apiHost + 'socket'
   private stompClient: any;
-  isLoaded= false;
-  hasActiveRide= false;
-  activeRide?:RideInfo;
+  isLoaded: boolean = false;
 
   private role: string | undefined;
   private userID: number | undefined;
@@ -65,12 +62,12 @@ export class AppComponent implements OnInit, OnDestroy{
         this.stompClient.subscribe("/ride-topic/notify-passenger/" + this.userID, (frame:Frame) => {
           this.notifyPassengerAboutRide(frame);
         },{id:"notify-passenger"});
-        if(this.hasActiveRide){
-          this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-location/" + this.userID, (frame:Frame) => {
-            const coordinates:Coordinates = JSON.parse(frame.body);
-            this.passengerRideService.updateDriverLocation(coordinates);
-          }, {id:"vehicle-location"});
-        }
+        this.stompClient.subscribe("/ride-topic/notify-added-passenger/" + this.userID, (frame:Frame) => {
+          let message:{rideID:number} = JSON.parse(frame.body);
+          this.rideService.getRide(message.rideID).subscribe(ride => {
+            this.passengerRideService.passengerAddedToRideEvent.next(ride);
+          });
+        });
       }
       else if (this.role == "ADMIN"){
         this.stompClient.subscribe("/ride-topic/notify-admin-panic", (frame: Frame) => {
@@ -79,7 +76,6 @@ export class AppComponent implements OnInit, OnDestroy{
       }
     }
   }
-
   notifyAdminAboutPanic(frame: Frame){
     const message:{panicId:number} = JSON.parse(frame.body);
     this.panicService.getPanic(message.panicId).pipe(take(1)).subscribe({
@@ -97,28 +93,37 @@ export class AppComponent implements OnInit, OnDestroy{
       }
     )
   }
-
-  setHasActiveRide(value:boolean){
-    if(value){
-      this.hasActiveRide = true;
-      this.passengerRideService.rideAcceptedEvent.next(this.activeRide!);
-      this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-location/" + this.userID, (frame:Frame) => {
-        const coordinates:Coordinates = JSON.parse(frame.body);
-        this.passengerRideService.updateDriverLocation(coordinates);
-      }, {id:"vehicle-location"});
-    }else{
-      this.activeRide = undefined;
-      this.hasActiveRide = false;
-      this.stompClient.unsubscribe("vehicle-location");
+  notifyPassengerAboutRide(frameRide:Frame){
+    let message:{rideID:number} = JSON.parse(frameRide.body);
+    if(message.rideID == -1){
+      this.passengerRideService.rideNotAvailableEvent.next();
+      return;
     }
-  }
-  notifyPassengerAboutRide(frame:Frame){
-    const message:{rideID:number} = JSON.parse(frame.body);
     this.rideService.getRide(message.rideID).subscribe(ride => {
-      this.passengerRideService.rideSearchCompleted(ride);
       if(ride.status == "ACCEPTED"){
-        this.activeRide = ride;
-        this.setHasActiveRide(true);
+        this.passengerRideService.rideAcceptedEvent.next(ride);
+        this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-arrival/" + this.userID, () => {
+          this.passengerRideService.vehicleArrivedEvent.next();
+        }, {id:"notify-passenger-vehicle-arrival"});
+        this.stompClient.subscribe("/ride-topic/notify-passenger-start-ride/" + this.userID, () => {
+          this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-location/" + this.userID, (frameLocation:Frame) => {
+            let coordinates:Coordinates = JSON.parse(frameLocation.body);
+            this.passengerRideService.driverLocationUpdatedEvent.next(coordinates);
+          }, {id:"notify-passenger-vehicle-location"});
+          this.rideService.currentRide = ride;
+          this.passengerRideService.startRideEvent.next(ride);
+          this.stompClient.unsubscribe("notify-passenger-start-ride");
+          this.stompClient.subscribe("/ride-topic/notify-passenger-end-ride/" + this.userID, () => {
+            this.rideService.currentRide = undefined;
+            this.passengerRideService.endRideEvent.next(ride);
+            this.stompClient.unsubscribe("notify-passenger-end-ride");
+            this.stompClient.unsubscribe("notify-passenger-vehicle-location");
+            this.stompClient.unsubscribe("notify-passenger-vehicle-arrival");
+          }, {id:"notify-passenger-end-ride"});
+        }, {id:"notify-passenger-start-ride"});
+      }
+      else if(ride.status == "REJECTED"){
+        this.passengerRideService.rideRejectedEvent.next(ride);
       }
     });
   }

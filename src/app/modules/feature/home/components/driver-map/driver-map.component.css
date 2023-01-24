@@ -8,3 +8,10 @@
 .to-front{
   z-index: 999;
 }
+
+#btnOnline.mat-button-toggle-checked{
+  background-color: #32a852;
+}
+#btnOffline.mat-button-toggle-checked{
+  background-color: #E04141;
+}

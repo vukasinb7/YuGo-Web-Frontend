@@ -24,6 +24,13 @@ export class DriverService {
     return this.http.get<UserInfo>(environment.apiHost + `driver/${userId}`);
   }
 
+  getDriverStatus(driverID:number):Observable<{ online:boolean }>{
+    return this.http.get<{ online:boolean }>(environment.apiHost + `driver/status/${driverID}`);
+  }
+  updateDriverStatus(driverID:number, status: { online:boolean }):Observable<void>{
+    return this.http.put<void>(environment.apiHost + `driver/status/${driverID}`, status);
+  }
+
   getDriverRides(passengerId: number, page: number, size: number, sort: string, from: string, to: string): Observable<RidesPaged> {
     return this.http.get<RidesPaged>(environment.apiHost + `driver/${passengerId}/ride`,
       {

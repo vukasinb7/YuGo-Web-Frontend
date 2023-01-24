@@ -7,13 +7,14 @@ import {HttpClient} from "@angular/common/http";
 import {RideInfo} from "../../../shared/models/RideInfo";
 import {VehicleService} from "../../../shared/services/vehicle.service";
 import {LocationInfo} from "../../../shared/models/LocationInfo";
+import {RideService} from "./ride.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DriverRideNotificationService {
 
-  constructor(private driverService:DriverService, private authService:AuthService, private http:HttpClient, private vehicleService:VehicleService) { }
+  constructor(private driverService:DriverService, private authService:AuthService, private http:HttpClient, private vehicleService:VehicleService, private rideService:RideService) { }
   private currentRide?:RideInfo;
   private nextRide?:RideInfo;
 
@@ -59,10 +60,13 @@ export class DriverRideNotificationService {
   }
 
   startCurrentRide(){
+    this.rideService.currentRide = this.currentRide;
+    this.rideService.startRide(this.currentRide!.id).subscribe();
     this.startRideEvent.next();
   }
 
   endCurrentRide(){
+    this.rideService.endRide(this.currentRide!.id).subscribe();
     this.endRideEvent.next();
     if(this.nextRide){
       this.currentRide = this.nextRide;
@@ -84,8 +88,8 @@ export class DriverRideNotificationService {
     }
   }
 
-  private startRideSimulation(ride:RideInfo){
-    const rideStartLocation:Coordinates = {
+  public startRideSimulation(ride:RideInfo){
+    let rideStartLocation:Coordinates = {
       latitude: ride.locations[0].departure.latitude,
       longitude: ride.locations[0].departure.longitude,
     }
