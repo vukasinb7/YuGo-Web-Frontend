@@ -9,3 +9,9 @@ table {
   background-color: #26272b;
   overflow-x:auto;
 }
+
+td , th {
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 200px;
+}

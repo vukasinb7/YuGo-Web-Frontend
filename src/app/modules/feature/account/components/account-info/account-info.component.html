@@ -6,7 +6,7 @@
         <img [src]=profilePicture class="rounded-circle m-auto mb-2" width="150" height="150"
              (error)="onProfilePictureError($event)" alt="Profile picture">
 
-        <div class="d-flex w-100 pt-2 justify-content-center align-items-center">
+        <div class="d-flex w-100 pt-2 justify-content-center">
           <input *ngIf="editEnabled" class="ng-hide mb-3" id="input-file-picture" multiple type="file"
                  accept="image/png, image/jpeg" (change)="onImageUpload($event)"/>
         </div>

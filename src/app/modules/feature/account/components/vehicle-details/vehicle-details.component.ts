@@ -17,7 +17,6 @@ export class VehicleDetailsComponent implements OnInit, AfterViewInit{
   LICENSE_NUMBER_REGEX= "[A-Z][A-Z][0-9]*[A-Z][A-Z]";
   vehicleDetailsForm : FormGroup;
   editEnabled = false;
-  responseMessage = "";
   constructor(private _snackBar: MatSnackBar, private _vehicleService: VehicleService) {
     this.vehicleDetailsForm = new FormGroup({
       model: new FormControl('', [Validators.required]),
