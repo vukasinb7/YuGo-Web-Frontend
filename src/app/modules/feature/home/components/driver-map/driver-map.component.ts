@@ -24,10 +24,10 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
 
   driverStatus?:string;
   currentRide?:RideInfo;
-  calculateDistance:number = 0      // 0 - distance not calculated and shouldn't be | 1 - distance not calculated but should be | 2 - distance calculated
+  calculateDistance = 0      // 0 - distance not calculated and shouldn't be | 1 - distance not calculated but should be | 2 - distance calculated
   rideDistance?:number;
   distanceLeftChanged:Subject<number> = new Subject<number>();
-  inrideDataReady:boolean = false;
+  inrideDataReady = false;
 
   rideStatus?:number;   // 0 - no active ride | 1 - there is an active ride, but it is not started yet | 2 - there is an active ride, and it is started
 
@@ -74,9 +74,9 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
         this.path.setWaypoints([L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)]);
 
         this.path.on('routesfound', e => {
-          let routes:any = e.routes;
-          let summary = routes[0].summary;
-          let distance:number = summary.totalDistance / 1000.0;
+          const routes:any = e.routes;
+          const summary = routes[0].summary;
+          const distance:number = summary.totalDistance / 1000.0;
           if(this.calculateDistance == 1){
             this.calculateDistance = 2;
             this.rideDistance = distance;

@@ -11,11 +11,11 @@ import {RideService} from "../../services/ride.service";
   styleUrls: ['./inride-panel.component.css']
 })
 export class InridePanelComponent implements OnInit{
-  progressBarHeight:string = "0%";
-  departureAddress:string = "Bulevar oslobodjenja fsafas asfasfasf asfasfasfa asfasf asfasfas asfasfasf sa saf 30";
-  destinationAddress:string = "Bulevar oslobodjenja fsafas asfasfasf asfasfasfa asfasf asfasfas asfasfasf sa saf 30"
-  rideEstTime:string = "1hr 15min"
-  rideLength:string = "55km"
+  progressBarHeight = "0%";
+  departureAddress = "Bulevar oslobodjenja";
+  destinationAddress = "Bulevar oslobodjenja 30"
+  rideEstTime = "1hr 15min"
+  rideLength = "55km"
   @Input() currentRide?:RideInfo;
   @Input() rideLengthKm?:number;
   @Input() distanceLeftChangedEvent?:Observable<number>;
@@ -40,9 +40,9 @@ export class InridePanelComponent implements OnInit{
   ngOnInit(): void {
     this.destinationAddress = this.currentRide!.locations[0].destination.address;
     this.departureAddress = this.currentRide!.locations[0].departure.address;
-    let estTimeMinutes:number = this.currentRide!.estimatedTimeInMinutes;
-    let hours:number = Math.floor(estTimeMinutes / 60);
-    let minutes:number = estTimeMinutes % 60;
+    const estTimeMinutes:number = this.currentRide!.estimatedTimeInMinutes;
+    const hours:number = Math.floor(estTimeMinutes / 60);
+    const minutes:number = estTimeMinutes % 60;
     if(hours == 0){
       this.rideEstTime = `${minutes}min`;
     }else{

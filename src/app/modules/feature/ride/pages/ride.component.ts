@@ -38,7 +38,7 @@ export class RideComponent implements OnInit{
     if(this.formPageIndex + switchDirection > 3){
       this.formPageIndex += switchDirection;
       this.searchingDriver = true;
-      this.bookRide().then(_ => {
+      this.bookRide().then(() => {
         //this.formPageIndex = 0;
       });
     }
@@ -53,7 +53,6 @@ export class RideComponent implements OnInit{
   }
 
   async bookRide(){
-    console.log((new Date(this.rideDateTime!.getTime() - this.rideDateTime!.getTimezoneOffset() * 60000)).toISOString());
     let ride:RideBooking = {
       locations:[{departure:this.fromAddress!, destination:this.toAddress!}],
       passengers:this.passengers!,

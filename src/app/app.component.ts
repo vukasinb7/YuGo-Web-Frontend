@@ -11,6 +11,9 @@ import {Coordinates} from "./modules/feature/ride/model/Coordinates";
 import {PassengerRideNotificationsService} from "./modules/feature/ride/services/passenger-ride-notifications.service";
 import {DriverRideNotificationService} from "./modules/feature/ride/services/driver-ride-notification.service";
 import {DriverService} from "./modules/shared/services/driver.service";
+import {PanicService} from "./modules/shared/services/panic.service";
+import {take} from "rxjs";
+import {PanicCardComponent} from "./modules/feature/panic/components/panic-card/panic-card.component";
 
 @Component({
   selector: 'app-root',
@@ -31,7 +34,8 @@ export class AppComponent implements OnInit, OnDestroy{
               private rideService:RideService,
               private passengerRideService:PassengerRideNotificationsService,
               private driverRideService:DriverRideNotificationService,
-              private driverService:DriverService) {
+              private driverService:DriverService,
+              private panicService: PanicService) {
   }
 
   ngOnInit(): void {
@@ -65,9 +69,30 @@ export class AppComponent implements OnInit, OnDestroy{
           });
         });
       }
+      else if (this.role == "ADMIN"){
+        this.stompClient.subscribe("/ride-topic/notify-admin-panic", (frame: Frame) => {
+          this.notifyAdminAboutPanic(frame);
+        }, {id:"admin-panic"})
+      }
     }
   }
-
+  notifyAdminAboutPanic(frame: Frame){
+    const message:{panicId:number} = JSON.parse(frame.body);
+    this.panicService.getPanic(message.panicId).pipe(take(1)).subscribe({
+        next: panic =>{
+          const panicDialog = this.dialog.open(PanicCardComponent, {
+            minWidth: '350px',
+            minHeight: '300px',
+            width: '30%',
+            height: '40%',
+          })
+          const panicDialogInstance = panicDialog.componentInstance;
+          panicDialogInstance.panic = panic;
+          panicDialogInstance.notification = true;
+        }
+      }
+    )
+  }
   notifyPassengerAboutRide(frameRide:Frame){
     let message:{rideID:number} = JSON.parse(frameRide.body);
     if(message.rideID == -1){
@@ -103,7 +128,7 @@ export class AppComponent implements OnInit, OnDestroy{
     });
   }
   parseRideRequest(frame:Frame){
-    let message:{rideID:number} = JSON.parse(frame.body);
+    const message:{rideID:number} = JSON.parse(frame.body);
     this.rideService.getRide(message.rideID).subscribe(ride => {
       this.dialog.open(RideOfferCardComponent,{
         width: '20%',
@@ -118,11 +143,12 @@ export class AppComponent implements OnInit, OnDestroy{
   ngOnDestroy(){
     this.stompClient.unsubscribe("driver-request");
     this.stompClient.unsubscribe("notify-passenger");
+    this.stompClient.unsubscribe("admin-panic");
   }
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    const ws = new SockJS(this.serverUrl);
     this.stompClient = Stomp.over(ws);
-    let that = this;
+    const that = this;
 
     this.stompClient.connect({}, function () {
       that.isLoaded = true;

@@ -21,7 +21,7 @@ export class RideAddPassengersComponent {
   constructor(private authService:AuthService, private passengerService:PassengerService) {}
 
   private isDuplicateEmail(email:string):boolean{
-    for(let passenger of this.ridePassengers){
+    for(const passenger of this.ridePassengers){
       if(passenger.email == email){
         return true;
       }
@@ -33,12 +33,12 @@ export class RideAddPassengersComponent {
     this.changeFormPageEmitter.emit(-1);
   }
   nextFormPage(){
-    let output:UserSimpleInfo[] = [{id:this.authService.getId(), email:this.authService.getEmail()}, ...this.ridePassengers];
+    const output:UserSimpleInfo[] = [{id:this.authService.getId(), email:this.authService.getEmail()}, ...this.ridePassengers];
     this.passengersChangedEvent.emit(output);
     this.changeFormPageEmitter.emit(1);
   }
   addPassenger(){
-    let email:string = this.addPassengersForm.controls['email'].value;
+    const email:string = this.addPassengersForm.controls['email'].value;
     this.addPassengersForm.controls['email'].setValue('');
     if(this.authService.getEmail() == email){
       const errors = this.addPassengersForm.controls['email'].errors || {};

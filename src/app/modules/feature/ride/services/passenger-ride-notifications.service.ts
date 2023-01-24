@@ -8,7 +8,6 @@ import {Coordinates} from "../model/Coordinates";
 })
 export class PassengerRideNotificationsService {
 
-  constructor() { }
 
   driverLocationUpdatedEvent:Subject<Coordinates> = new Subject<Coordinates>();
   passengerAddedToRideEvent:Subject<RideInfo> = new Subject<RideInfo>();

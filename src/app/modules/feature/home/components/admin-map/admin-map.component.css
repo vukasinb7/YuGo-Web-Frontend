@@ -1,0 +1,9 @@
+.map-frame {
+  height: 100%;
+}
+
+#map-admin {
+  height: 100%;
+}
+::ng-deep .leaflet-routing-container
+{color:black;}

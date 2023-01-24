@@ -1,22 +1,25 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
-import {LeafletMouseEvent, Marker} from 'leaflet';
+import {Control, LeafletMouseEvent, Marker} from 'leaflet';
 import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
 import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
 import {RideService} from "../../../ride/services/ride.service";
-import {Subject, Subscription} from "rxjs";
+import {Subject, Subscription, interval} from "rxjs";
 import {PassengerRideNotificationsService} from "../../../ride/services/passenger-ride-notifications.service";
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DriverRideNotificationService} from "../../../ride/services/driver-ride-notification.service";
+import {Vehicle} from "../../../../shared/models/Vehicle";
+import {VehicleService} from "../../../../shared/services/vehicle.service";
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  selector: 'app-passenger-map',
+  templateUrl: './passenger-map.component.html',
+  styleUrls: ['./passenger-map.component.css']
 })
-export class MapComponent implements AfterViewInit, OnInit{
+export class PassengerMapComponent implements AfterViewInit,OnInit{
   private map:any;
   private fromAddressMarker?:Marker;
   private toAddressMarker?:Marker;
@@ -31,18 +34,73 @@ export class MapComponent implements AfterViewInit, OnInit{
   rideDistance?:number;
   rideDistanceLeftChanged:Subject<number> = new Subject<number>();
 
+  private vehiclesMarkersLayout:any;
+  private vehiclesMarkersMap = new Map<number, any>();
+  private counter = 0;
   constructor(private mapService:MapService,
               private destinationPickerService:DestinationPickerService,
               private rideService:RideService,
               private passengerRideService:PassengerRideNotificationsService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private driverRideService:DriverRideNotificationService,
+              private _vehicleService: VehicleService,
+              private _rideService: RideService) {
+    interval(1000).subscribe((() => {
+      this.updateVehicles();
+    }));
   }
+
+  updateVehicles(){
+    this._vehicleService.getAllVehicles().subscribe({
+      next: (vehicles) => {
+        if (this.counter%30 == 0 ){
+          this.vehiclesMarkersLayout.clearLayers();
+        }
+
+        vehicles.forEach((vehicle) => {
+          if (this.counter%30 == 0){
+            this.recreateMarker(vehicle);
+          }
+          else{
+            if (this.vehiclesMarkersMap.get(vehicle.id)) {
+              this.vehiclesMarkersMap.get(vehicle.id).setLatLng([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude]);
+            }
+          }
+        });
+
+        this.counter++;
+      }});
+  }
+
+  recreateMarker(vehicle: Vehicle){
+    this._rideService.getDriverActiveRide(vehicle.driverId).subscribe({
+      next: (ride) => {
+        let iconPath = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'
+        if (ride != null) {
+          iconPath = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png';
+        }
+        let markerIcon = new L.Icon({
+          iconUrl: iconPath,
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [0, -35],
+          shadowSize: [41, 41]
+        });
+        let marker = L.marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude], {icon: markerIcon});
+        this.vehiclesMarkersLayout.addLayer(marker);
+        this.vehiclesMarkersMap.set(vehicle.id, marker);
+        this.vehiclesMarkersLayout.addTo(this.map);
+      }});
+  }
+
   private initMap():void{
     this.map = L.map('map', {
       center:[45.2396, 19.8227],
       scrollWheelZoom:false,
       zoom:13
     });
+    this.vehiclesMarkersLayout = L.layerGroup();
     const tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
@@ -54,6 +112,7 @@ export class MapComponent implements AfterViewInit, OnInit{
     );
     tiles.addTo(this.map);
   }
+
   route(fromLat:number, fromLong:number, toLat:number, toLong:number): void {
     if(this.path){
       this.map.removeControl(this.path);
@@ -71,9 +130,12 @@ export class MapComponent implements AfterViewInit, OnInit{
   }
 
   ngAfterViewInit(): void {
-    let DefaultIcon = L.icon({
+    const DefaultIcon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
-      iconAnchor:[12.5, 41]
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [0, -35],
+      shadowSize: [41, 41]
     });
 
     L.Marker.prototype.options.icon = DefaultIcon;
@@ -172,8 +234,8 @@ export class MapComponent implements AfterViewInit, OnInit{
   }
   private checkForPath(){
     if(this.toAddressMarker && this.fromAddressMarker){
-      let fromLatlng:any = this.fromAddressMarker.getLatLng();
-      let toLatlng:any = this.toAddressMarker.getLatLng();
+      const fromLatlng:any = this.fromAddressMarker.getLatLng();
+      const toLatlng:any = this.toAddressMarker.getLatLng();
       this.route(fromLatlng.lat, fromLatlng.lng, toLatlng.lat, toLatlng.lng);
     }else{
       if(this.path){
@@ -185,7 +247,7 @@ export class MapComponent implements AfterViewInit, OnInit{
   }
   private reverseAddressSearch(lat:number, lng:number): Promise<LocationInfo>{
     return new Promise<LocationInfo>( resolve => {
-        let address:LocationInfo = {latitude: 0, longitude: 0, address: ""};
+        const address:LocationInfo = {latitude: 0, longitude: 0, address: ""};
         this.mapService.reverseSearch(lat, lng).subscribe((val:any) => {
           address.address = val.display_name;
           address.latitude = lat;
