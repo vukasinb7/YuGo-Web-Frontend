@@ -50,8 +50,8 @@ export class HistoryDetailedRideCardComponent implements OnInit{
       {next:(driver) => {
           this.driverName= driver.name+" "+driver.surname;
           this._imageService.getProfilePicture(driver.profilePicture).then(resp => {
-            const objectURL = URL.createObjectURL(resp);
-            this.driverProfilePicture = this._sanitizer.bypassSecurityTrustUrl(objectURL);
+            let objectURL = URL.createObjectURL(resp);
+            this.driverProfilePicture = {picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(driver.name+" "+driver.surname+"\n"+driver.email+"\n"+driver.telephoneNumber)};
           });
         }})
   }
@@ -61,8 +61,8 @@ export class HistoryDetailedRideCardComponent implements OnInit{
       {next:(passenger) => {
           this.passengerName= passenger.name+" "+passenger.surname;
           this._imageService.getProfilePicture(passenger.profilePicture).then(resp => {
-            const objectURL = URL.createObjectURL(resp);
-            this.profilePicture = this._sanitizer.bypassSecurityTrustUrl(objectURL);
+            let objectURL = URL.createObjectURL(resp);
+            this.profilePicture={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
           });
         }})
   }
@@ -73,8 +73,9 @@ export class HistoryDetailedRideCardComponent implements OnInit{
           next: (passenger) => {
             this.passengerName = passenger.name + " " + passenger.surname;
             this._imageService.getProfilePicture(passenger.profilePicture).then(resp => {
-              const objectURL = URL.createObjectURL(resp);
-              const dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email + "\n" + passenger.telephoneNumber)};
+              let objectURL = URL.createObjectURL(resp);
+              let dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
+
               this.passengersProfilePics.push(dto);
 
             });

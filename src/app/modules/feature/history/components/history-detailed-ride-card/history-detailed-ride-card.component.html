@@ -3,14 +3,14 @@
 
 
   <div class="d-flex w-100 align-items-center p-4">
-    <img [src]=profilePicture class=" profile-pic rounded-circle" width="70px" height="70px" style="outline: 4px solid  #fad02c;"
-         (error)="onProfilePictureError($event)" alt="Profile picture">
+    <img [src]=profilePicture.picture class=" profile-pic rounded-circle" width="70px" height="70px" style="outline: 4px solid  #fad02c;"
+         (error)="onProfilePictureError($event)" [matTooltip]="profilePicture.name" matTooltipPosition="above" alt="Profile picture">
    <h1 class="mb-0 mx-2">{{passengerName}}</h1>
   </div>
     <div class="w-100 pt-2 justify-content-center mx-0">
       <div id="driver-container" class="d-flex w-100 align-content-center align-items-center justify-content-center">
         <mat-icon aria-hidden="false" class="me-2">local_taxi</mat-icon>
-        <img  [src]=driverProfilePicture (error)="onProfilePictureError($event)" class=" profile-pic rounded-circle" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
+        <img  [src]=driverProfilePicture.picture (error)="onProfilePictureError($event)" [matTooltip]="driverProfilePicture.name" matTooltipPosition="above" class=" profile-pic rounded-circle" alt="Profile Picture" width="50px" height="50px" style="outline: 2px solid  #fad02c;">
         <p class="px-2"style="margin-bottom:0;">{{driverName}}</p>
       </div>
       <div id="other-passengers-container" class="d-inline-flex pt-2 w-100 align-content-center align-items-center justify-content-center">
