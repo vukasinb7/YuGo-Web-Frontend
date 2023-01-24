@@ -7,6 +7,7 @@ import {Marker} from "leaflet";
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {DriverService} from "../../../../shared/services/driver.service";
 import {AuthService} from "../../../../core/services/auth.service";
+import {RideService} from "../../../ride/services/ride.service";
 
 @Component({
   selector: 'app-driver-map',
@@ -30,7 +31,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
 
   rideStatus?:number;   // 0 - no active ride | 1 - there is an active ride, but it is not started yet | 2 - there is an active ride, and it is started
 
-  constructor(private driverRideService:DriverRideNotificationService, private driverService:DriverService, private authService:AuthService) {
+  constructor(private driverRideService:DriverRideNotificationService, private driverService:DriverService, private authService:AuthService, private rideService:RideService) {
   }
   ngOnInit(): void {
     this.driverService.getDriverStatus(this.authService.getId()).subscribe(status =>{
@@ -142,5 +143,9 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
       this.destination = coordinates;
       this.checkForRoute();
     });
+  }
+
+  nodPassengers() {
+    this.rideService.notifyPassengersThatVehicleHasArrived(this.currentRide!.id).subscribe();
   }
 }

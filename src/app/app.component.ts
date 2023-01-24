@@ -8,7 +8,6 @@ import {Frame} from "stompjs";
 import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
 import {Coordinates} from "./modules/feature/ride/model/Coordinates";
-import {RideInfo} from "./modules/shared/models/RideInfo";
 import {PassengerRideNotificationsService} from "./modules/feature/ride/services/passenger-ride-notifications.service";
 import {DriverRideNotificationService} from "./modules/feature/ride/services/driver-ride-notification.service";
 import {DriverService} from "./modules/shared/services/driver.service";
@@ -59,7 +58,12 @@ export class AppComponent implements OnInit, OnDestroy{
         this.stompClient.subscribe("/ride-topic/notify-passenger/" + this.userID, (frame:Frame) => {
           this.notifyPassengerAboutRide(frame);
         },{id:"notify-passenger"});
-
+        this.stompClient.subscribe("/ride-topic/notify-added-passenger/" + this.userID, (frame:Frame) => {
+          let message:{rideID:number} = JSON.parse(frame.body);
+          this.rideService.getRide(message.rideID).subscribe(ride => {
+            this.passengerRideService.passengerAddedToRideEvent.next(ride);
+          });
+        });
       }
     }
   }
@@ -67,16 +71,16 @@ export class AppComponent implements OnInit, OnDestroy{
   notifyPassengerAboutRide(frameRide:Frame){
     let message:{rideID:number} = JSON.parse(frameRide.body);
     if(message.rideID == -1){
-      console.log("=================");
       this.passengerRideService.rideNotAvailableEvent.next();
       return;
     }
     this.rideService.getRide(message.rideID).subscribe(ride => {
       if(ride.status == "ACCEPTED"){
-        console.log("Passenger is notified that ride is accepted");
         this.passengerRideService.rideAcceptedEvent.next(ride);
+        this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-arrival/" + this.userID, () => {
+          this.passengerRideService.vehicleArrivedEvent.next();
+        }, {id:"notify-passenger-vehicle-arrival"});
         this.stompClient.subscribe("/ride-topic/notify-passenger-start-ride/" + this.userID, () => {
-          console.log("Passenger is notified that ride has started")
           this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-location/" + this.userID, (frameLocation:Frame) => {
             let coordinates:Coordinates = JSON.parse(frameLocation.body);
             this.passengerRideService.driverLocationUpdatedEvent.next(coordinates);
@@ -89,6 +93,7 @@ export class AppComponent implements OnInit, OnDestroy{
             this.passengerRideService.endRideEvent.next(ride);
             this.stompClient.unsubscribe("notify-passenger-end-ride");
             this.stompClient.unsubscribe("notify-passenger-vehicle-location");
+            this.stompClient.unsubscribe("notify-passenger-vehicle-arrival");
           }, {id:"notify-passenger-end-ride"});
         }, {id:"notify-passenger-start-ride"});
       }

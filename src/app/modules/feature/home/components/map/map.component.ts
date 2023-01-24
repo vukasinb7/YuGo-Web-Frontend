@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {LeafletMouseEvent, Marker} from 'leaflet';
 import 'leaflet-routing-machine';
@@ -9,13 +9,14 @@ import {RideService} from "../../../ride/services/ride.service";
 import {Subject, Subscription} from "rxjs";
 import {PassengerRideNotificationsService} from "../../../ride/services/passenger-ride-notifications.service";
 import {RideInfo} from "../../../../shared/models/RideInfo";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements AfterViewInit{
+export class MapComponent implements AfterViewInit, OnInit{
   private map:any;
   private fromAddressMarker?:Marker;
   private toAddressMarker?:Marker;
@@ -33,7 +34,8 @@ export class MapComponent implements AfterViewInit{
   constructor(private mapService:MapService,
               private destinationPickerService:DestinationPickerService,
               private rideService:RideService,
-              private passengerRideService:PassengerRideNotificationsService) {
+              private passengerRideService:PassengerRideNotificationsService,
+              private snackBar: MatSnackBar) {
   }
   private initMap():void{
     this.map = L.map('map', {
@@ -192,5 +194,19 @@ export class MapComponent implements AfterViewInit{
         });
       })
 
+  }
+
+  ngOnInit(): void {
+    this.passengerRideService.passengerAddedToRideEvent.subscribe(() => {
+      this.snackBar.open("You have been added to the ride", "Ok", {
+        panelClass: ["snack-bar-style"],
+      });
+    });
+    this.passengerRideService.vehicleArrivedEvent.subscribe(() => {
+      console.log("-------------");
+      this.snackBar.open("Vehicle arrived at pickup location", "Ok", {
+        panelClass: ["snack-bar-style"],
+      });
+    });
   }
 }

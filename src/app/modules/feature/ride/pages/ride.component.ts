@@ -82,6 +82,12 @@ export class RideComponent implements OnInit{
       if(role != "PASSENGER"){
         return;
       }
+      this.passengerRideService.passengerAddedToRideEvent.subscribe(ride => {
+        this.formPageIndex = 4;
+        this.searchingDriver = true;
+        this.rideFoundEvent.next(ride);
+        this.isDataReady = true;
+      });
       let userID:number = this.authService.getId();
       if(userID == -1){
         return;
@@ -92,12 +98,10 @@ export class RideComponent implements OnInit{
           this.searchingDriver = true;
           this.rideFoundEvent.next(ride);
           this.isDataReady = true;
-          console.log("asfasfaf");
         },
         error: err => {
           this.formPageIndex = 0;
           this.isDataReady = true;
-          console.log("000000000000000000");
         }
       });
 

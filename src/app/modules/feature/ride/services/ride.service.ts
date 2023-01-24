@@ -15,6 +15,10 @@ export class RideService {
 
   currentRide?:RideInfo;
 
+  notifyPassengersThatVehicleHasArrived(rideID:number):Observable<void>{
+    return this.http.post<void>(environment.apiHost + `ride/vehicle-arrived/${rideID}`, {});
+  }
+
   createPanic(rideID:number, message:{reason:string}):Observable<Panic>{
     return this.http.put<Panic>(environment.apiHost + `ride/${rideID}/panic`, message);
   }

@@ -11,7 +11,8 @@ export class PassengerRideNotificationsService {
   constructor() { }
 
   driverLocationUpdatedEvent:Subject<Coordinates> = new Subject<Coordinates>();
-
+  passengerAddedToRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
+  vehicleArrivedEvent:Subject<void> = new Subject<void>();
   rideNotAvailableEvent:Subject<void> = new Subject();
   rideAcceptedEvent:Subject<RideInfo> = new Subject<RideInfo>();
   rideRejectedEvent:Subject<RideInfo> = new Subject<RideInfo>();

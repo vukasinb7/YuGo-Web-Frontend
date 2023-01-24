@@ -9,3 +9,7 @@
 }
 ::ng-deep .leaflet-routing-container
 {color:black;}
+.snack-bar-style{
+  background-color: #26272b;
+  color: white;
+}
