@@ -34,8 +34,9 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   rideDistance?:number;
   rideDistanceLeftChanged:Subject<number> = new Subject<number>();
 
-  private vehiclesMarkersLayout:any;
-  private vehiclesMarkersMap = new Map<number, any>();
+  private vehiclesUpdateSubscription?: Subscription;
+  private vehiclesMarkersLayout!:L.LayerGroup;
+  private vehiclesMarkersMap = new Map<number, L.Marker>();
   private counter = 0;
   constructor(private mapService:MapService,
               private destinationPickerService:DestinationPickerService,
@@ -45,7 +46,7 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
               private driverRideService:DriverRideNotificationService,
               private _vehicleService: VehicleService,
               private _rideService: RideService) {
-    interval(1000).subscribe((() => {
+    this.vehiclesUpdateSubscription = interval(1000).subscribe((() => {
       this.updateVehicles();
     }));
   }
@@ -53,18 +54,16 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   updateVehicles(){
     this._vehicleService.getAllVehicles().subscribe({
       next: (vehicles) => {
-        if (this.counter%30 == 0 ){
+        if (this.counter%20 == 0 ){
           this.vehiclesMarkersLayout.clearLayers();
         }
 
         vehicles.forEach((vehicle) => {
-          if (this.counter%30 == 0){
+          if (this.counter%20 == 0){
             this.recreateMarker(vehicle);
           }
-          else{
-            if (this.vehiclesMarkersMap.get(vehicle.id)) {
-              this.vehiclesMarkersMap.get(vehicle.id).setLatLng([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude]);
-            }
+          else if (this.vehiclesMarkersMap.get(vehicle.id)){
+              this.vehiclesMarkersMap.get(vehicle.id)?.setLatLng([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude]);
           }
         });
 
@@ -77,9 +76,12 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
       next: (ride) => {
         let iconPath = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'
         if (ride != null) {
+          if (this.currentRide != undefined && ride.id == this.currentRide.id){
+            return;
+          }
           iconPath = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png';
         }
-        let markerIcon = new L.Icon({
+        const markerIcon = new L.Icon({
           iconUrl: iconPath,
           shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
           iconSize: [25, 41],
@@ -87,7 +89,7 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
           popupAnchor: [0, -35],
           shadowSize: [41, 41]
         });
-        let marker = L.marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude], {icon: markerIcon});
+        const marker = L.marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude], {icon: markerIcon});
         this.vehiclesMarkersLayout.addLayer(marker);
         this.vehiclesMarkersMap.set(vehicle.id, marker);
         this.vehiclesMarkersLayout.addTo(this.map);
@@ -164,6 +166,14 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
           this.map.removeControl(this.path);
           this.path = undefined;
         });
+
+
+        this.vehiclesUpdateSubscription?.unsubscribe();
+        this.counter = 0;
+        this.vehiclesMarkersLayout.clearLayers();
+        this.vehiclesUpdateSubscription = interval(1000).subscribe((() => {
+          this.updateVehicles();
+        }));
       });
     });
 
