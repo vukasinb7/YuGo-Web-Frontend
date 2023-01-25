@@ -81,7 +81,8 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
         }
       })
     }else if (this.role=="DRIVER"){
-      this.driverService.getDriverRides(this.userId, this.currentPage, this.pageSize, this.selected, this.accountInfoForm.get('startDate')?.value, this.accountInfoForm.get('endDate')?.value).subscribe({
+
+      this.driverService.getDriverRides(this.userId, this.currentPage, this.pageSize, this.selected, this.accountInfoForm.get('startDate')?.value.toISOString().split('T')[0], this.accountInfoForm.get('endDate')?.value.toISOString().split('T')[0]).subscribe({
         next: (results) => {
           this.dataSource.data = results.results;
           setTimeout(() => {

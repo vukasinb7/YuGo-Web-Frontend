@@ -6,6 +6,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {ImagePreviewComponent} from "../../../../shared/components/image-preview/image-preview.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {DocumentInfo} from "../../../../shared/models/DocumentInfo";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-documents',
@@ -29,17 +30,21 @@ export class DocumentsComponent implements OnInit{
   driverLicenceMessage="No driver license found";
   vehicleIdentificationMessage="No vehicle identification found";
 
-  constructor(private _snackBar: MatSnackBar, public dialog: MatDialog,private http: HttpClient,
+  constructor(private _snackBar: MatSnackBar,private _route: ActivatedRoute, public dialog: MatDialog,private http: HttpClient,
               private driverService:DriverService){
     this.documentsForm = new FormGroup({
       driverLicence: new FormControl('', [Validators.required]),
       vehicleIdentification: new FormControl('', [Validators.required]),
     });
     this.documentsForm.disable();
-    this.editEnabled = false
+    this.editEnabled = false;
+
   }
 
   ngOnInit() {
+    this._route.params.subscribe(params => {
+      this.userId = Number.parseInt(params['userId'])
+    })
     this.loadDocumentsData();
   }
 
@@ -52,14 +57,14 @@ export class DocumentsComponent implements OnInit{
             this.driverLicenceMessage = "Click image for preview";
             this.vehicleIdentificationMessage = "No vehicle identification found";
             this.driverDocument=documents[0];
-            this.vehicleDocument=documents[1];
+            this.vehicleDocument= {} as DocumentInfo;
           }
           else {
             this.vehicleLicence = documents[0].name;
             this.driverLicenceMessage = "No driver licence found";
             this.vehicleIdentificationMessage = "Click image for preview";
-            this.driverDocument=documents[1];
             this.vehicleDocument=documents[0];
+            this.vehicleDocument= {} as DocumentInfo;
           }
         }
         else if (documents.length == 2){
@@ -109,12 +114,25 @@ export class DocumentsComponent implements OnInit{
         {next:(result)=>{
           if (this.driverDocument!=undefined)
           {
-          this.driverService.deleteDocuments(this.driverDocument.id).subscribe({next:()=>{
+            if (this.driverDocument.id!=undefined) {
+              this.driverService.deleteDocuments(this.driverDocument.id).subscribe({
+                next: () => {
+                  this.driverLicence = result.name;
+                  this.uploadedImageDriver = undefined;
+                  this._snackBar.open("Driver licence added successfully", "OK");
+                  this.driverDocument=result;
+                  this.loadDocumentsData();
+
+                }
+              })
+            }
+            else {
               this.driverLicence=result.name;
               this.uploadedImageDriver = undefined;
               this._snackBar.open("Driver licence added successfully","OK");
               this.loadDocumentsData();
-            }})
+              this.driverDocument=result;
+            }
           }else {
             this.driverLicence=result.name;
             this.uploadedImageDriver = undefined;
@@ -131,14 +149,24 @@ export class DocumentsComponent implements OnInit{
       this.driverService.createDocument(this.userId,vehicleFormData,"VEHICLE_REGISTRATION").subscribe(
         {next:(result)=>{
           if (this.vehicleDocument!=undefined) {
-            this.driverService.deleteDocuments(this.vehicleDocument.id).subscribe({
-              next: () => {
-                this.vehicleLicence = result.name;
-                this.uploadedImageVehicle = undefined;
-                this._snackBar.open("Vehicle identification added successfully", "OK");
-                this.loadDocumentsData();
-              }
-            })
+            if (this.vehicleDocument.id!=undefined) {
+              this.driverService.deleteDocuments(this.vehicleDocument.id).subscribe({
+                next: () => {
+                  this.vehicleLicence = result.name;
+                  this.uploadedImageVehicle = undefined;
+                  this._snackBar.open("Vehicle identification added successfully", "OK");
+                  this.vehicleDocument=result;
+                  this.loadDocumentsData();
+                }
+              })
+            }
+            else {
+              this.vehicleLicence = result.name;
+              this.uploadedImageVehicle = undefined;
+              this._snackBar.open("Vehicle identification added successfully", "OK");
+              this.loadDocumentsData();
+              this.vehicleDocument=result;
+            }
           }
           else {
             this.vehicleLicence = result.name;
