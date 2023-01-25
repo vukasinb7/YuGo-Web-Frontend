@@ -23,7 +23,6 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   private map:any;
   private fromAddressMarker?:Marker;
   private toAddressMarker?:Marker;
-  private currentLocationMarker?:Marker;
   private canSelectFromAddress:boolean = false;
   private canSelectToAddress:boolean = false;
   private path?:L.Routing.Control;
@@ -143,21 +142,21 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
     this.passengerRideService.rideAcceptedEvent.subscribe(ride => {
       this.currentRide = ride;
       this.startRideSubscription = this.passengerRideService.startRideEvent.subscribe(() => {
+        this.map.removeControl(this.fromAddressMarker);
+        this.fromAddressMarker = undefined;
+        this.map.removeControl(this.toAddressMarker);
+        this.toAddressMarker = undefined;
         this.hasActiveRide = true;
         this.driverLocationSubscription = this.passengerRideService.driverLocationUpdatedEvent.subscribe(coordinates => {
-          if(this.currentLocationMarker == undefined){
-            this.currentLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map);
-          }else{
-            this.currentLocationMarker.setLatLng(L.latLng(coordinates.latitude, coordinates.longitude));
-          }
+          this.path?.setWaypoints([L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination!.latitude, this.destination!.longitude)]);
+          this.path!.on('routesfound', e => {
+            const routes:any = e.routes;
+            const summary = routes[0].summary;
+            const distance:number = summary.totalDistance / 1000.0;
+            this.rideDistanceLeftChanged.next(distance);
+          });
         });
         this.passengerRideService.endRideEvent.subscribe(() => {
-          this.map.removeControl(this.currentLocationMarker);
-          this.currentLocationMarker = undefined;
-          this.map.removeControl(this.fromAddressMarker);
-          this.fromAddressMarker = undefined;
-          this.map.removeControl(this.toAddressMarker);
-          this.toAddressMarker = undefined;
           this.hasActiveRide = false;
           this.currentRide = undefined;
           this.driverLocationSubscription?.unsubscribe();

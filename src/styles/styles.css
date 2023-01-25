@@ -9,3 +9,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: rgba(0,0,0,0.9);
 }
 
+simple-snack-bar{
+  background-color: #26272b;
+  color: white !important;
+}
+simple-snack-bar div{
+  color: white !important;
+}
