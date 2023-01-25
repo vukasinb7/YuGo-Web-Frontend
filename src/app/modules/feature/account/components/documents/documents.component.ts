@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DocumentService} from "../../services/document.service";
 import {DriverService} from "../../../../shared/services/driver.service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
@@ -31,7 +30,7 @@ export class DocumentsComponent implements OnInit{
   vehicleIdentificationMessage="No vehicle identification found";
 
   constructor(private _snackBar: MatSnackBar, public dialog: MatDialog,private http: HttpClient,
-              private _documentService : DocumentService, private driverService:DriverService){
+              private driverService:DriverService){
     this.documentsForm = new FormGroup({
       driverLicence: new FormControl('', [Validators.required]),
       vehicleIdentification: new FormControl('', [Validators.required]),

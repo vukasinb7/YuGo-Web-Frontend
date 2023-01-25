@@ -63,7 +63,7 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
                 iconPath = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'
               }
 
-              let markerIcon = new L.Icon({
+              const markerIcon = new L.Icon({
                 iconUrl: iconPath,
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
                 iconSize: [25, 41],
@@ -72,7 +72,7 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
                 shadowSize: [41, 41]
               });
 
-              let marker = L.marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude], {icon: markerIcon})
+              const marker = L.marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude], {icon: markerIcon})
                 .on('mousedown', () => this.openRideInfo(ride)).bindPopup("Click for ride info").on('mouseover', () => {
                   marker.openPopup();
                 });
@@ -83,7 +83,7 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
             }});
         }
         else{
-          let markerIcon = new L.Icon({
+          const markerIcon = new L.Icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
             iconSize: [25, 41],
@@ -92,7 +92,7 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
             shadowSize: [41, 41]
           });
 
-          let marker = L.marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude], {icon: markerIcon})
+          const marker = L.marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude], {icon: markerIcon})
             .bindPopup("No active ride")
             .on('mouseover',() => {
               marker.openPopup();
