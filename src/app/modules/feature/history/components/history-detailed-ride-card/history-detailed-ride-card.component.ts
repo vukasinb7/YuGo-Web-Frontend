@@ -15,8 +15,8 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   public icon = 'star_outlined';
   @Input() ride:any;
   @Input() historyPreview = true;
-  public profilePicture: any;
-  public driverProfilePicture: any;
+  public profilePicture={} as imageTransfer;
+  public driverProfilePicture= {} as imageTransfer;
   public passengersProfilePics:Array<any>;
   driverName="";
   passengerName="";
@@ -24,6 +24,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   constructor(private _sanitizer: DomSanitizer,private _imageService: ImageService,private driverService:DriverService,
               public dialog: MatDialog, private passengerService: PassengerService) {
     this.passengersProfilePics=[];
+
   }
   ngOnInit(){
     this.getDriver();
@@ -92,4 +93,9 @@ export class HistoryDetailedRideCardComponent implements OnInit{
     event.target.src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
   }
 
+
+}
+export interface imageTransfer{
+  picture:any;
+  name:string;
 }

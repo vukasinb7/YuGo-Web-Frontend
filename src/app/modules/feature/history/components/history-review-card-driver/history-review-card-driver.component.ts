@@ -20,6 +20,7 @@ export class HistoryReviewCardDriverComponent implements OnInit{
   rideReviewList:ReviewPerPassengerInfo[]=[];
   dataSource= new MatTableDataSource<ReviewOut>();
   obs: Observable<any>;
+  showReviewError=false;
   passengerName="";
   public ride : RideInfo;
   constructor(private reviewService: ReviewService, private passengerService: PassengerService, @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -33,26 +34,38 @@ export class HistoryReviewCardDriverComponent implements OnInit{
   getReviews(){
     this.reviewService.getReviewsForRide(this.ride.id).subscribe(
       {next:(reviews) => {
-          reviews.forEach((reviewPerPassenger) =>{
-            if (reviewPerPassenger.vehicleReview!=null){
-              reviewPerPassenger.vehicleReview.type="VEHICLE";
-              this.reviewList.push(reviewPerPassenger.vehicleReview)
-            }
-            if (reviewPerPassenger.driverReview!=null){
-              reviewPerPassenger.driverReview.type="DRIVER";
-              this.reviewList.push(reviewPerPassenger.driverReview)
-            }})
-          this.reviewList.forEach((item)=>{
-            let passengerCred="";
-            this.passengerService.getPassenger(item.passenger.id).subscribe(
-              {next:(passenger) => {
-                  passengerCred= passenger.name+" "+ passenger.surname;
-                  this.reviewOut.push({reviewInfoOut:item,passengerName:passengerCred,typeOfReview:this.getTypeString(item.type)})
-                }})
+          if (reviews!=null) {
+            reviews.forEach((reviewPerPassenger) => {
+              if (reviewPerPassenger.vehicleReview != null) {
+                reviewPerPassenger.vehicleReview.type = "VEHICLE";
+                this.reviewList.push(reviewPerPassenger.vehicleReview)
+              }
+              if (reviewPerPassenger.driverReview != null) {
+                reviewPerPassenger.driverReview.type = "DRIVER";
+                this.reviewList.push(reviewPerPassenger.driverReview)
+              }
+            })
+            this.reviewList.forEach((item) => {
+              let passengerCred = "";
+              this.passengerService.getPassenger(item.passenger.id).subscribe(
+                {
+                  next: (passenger) => {
+                    passengerCred = passenger.name + " " + passenger.surname;
+                    this.reviewOut.push({
+                      reviewInfoOut: item,
+                      passengerName: passengerCred,
+                      typeOfReview: this.getTypeString(item.type)
+                    })
+                  }
+                })
 
-          })
-          this.dataSource.data=this.reviewOut;
+            })
 
+          }
+          else {
+            this.showReviewError=true;
+          }
+          this.dataSource.data = this.reviewOut;
         }})
   }
 

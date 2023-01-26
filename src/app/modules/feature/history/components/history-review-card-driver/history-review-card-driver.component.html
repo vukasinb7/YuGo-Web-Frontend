@@ -1,5 +1,6 @@
-<mat-card style="border-radius: 25px; height: 100%;  background-color: #26272b;">
-<div id="carouselExampleControls" class="carousel slide h-100" data-bs-ride="carousel">
+<mat-card class="justify-content-center" style="border-radius: 25px; height: 100%;  background-color: #26272b;">
+  <p *ngIf="showReviewError" style="font-style: italic;vertical-align: center">There are no reviews!</p>
+<div *ngIf="!showReviewError" id="carouselExampleControls" class="carousel slide h-100" data-bs-ride="carousel">
   <div class="carousel-inner" >
     <div class="carousel-item" *ngFor="let review of obs|async; let index = index" [class.active]="index === 0">
       <div class="p-4 justify-content-center" >

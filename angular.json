@@ -33,7 +33,6 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/chart.js/dist/Chart.js",
             ]
           },
           "configurations": {

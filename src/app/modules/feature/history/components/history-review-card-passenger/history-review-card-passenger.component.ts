@@ -51,20 +51,22 @@ export class HistoryReviewCardPassengerComponent  {
     this.reviewService.getReviewsForRide(this.ride.id).subscribe(
       {
         next: (reviews) => {
-          reviews.forEach((reviewPerPassenger) => {
-            if (reviewPerPassenger.vehicleReview != null) {
-              if (this.userId == reviewPerPassenger.vehicleReview.passenger.id) {
-                this.foundReview[0] = true;
-                this.reviewList[0] = reviewPerPassenger.vehicleReview;
+          if (reviews!=null) {
+            reviews.forEach((reviewPerPassenger) => {
+              if (reviewPerPassenger.vehicleReview != null) {
+                if (this.userId == reviewPerPassenger.vehicleReview.passenger.id) {
+                  this.foundReview[0] = true;
+                  this.reviewList[0] = reviewPerPassenger.vehicleReview;
+                }
               }
-            }
-            if (reviewPerPassenger.driverReview != null) {
-              if (this.userId == reviewPerPassenger.driverReview.passenger.id) {
-                this.foundReview[1] = true;
-                this.reviewList[1] = reviewPerPassenger.driverReview;
+              if (reviewPerPassenger.driverReview != null) {
+                if (this.userId == reviewPerPassenger.driverReview.passenger.id) {
+                  this.foundReview[1] = true;
+                  this.reviewList[1] = reviewPerPassenger.driverReview;
+                }
               }
-            }
-          })
+            })
+          }
 
           if (this.foundReview[0]) {
             this.vehicleRating = this.reviewList[0].rating;
