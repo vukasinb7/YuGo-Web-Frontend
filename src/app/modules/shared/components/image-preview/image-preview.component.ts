@@ -15,7 +15,7 @@ export class ImagePreviewComponent implements AfterContentInit{
   }
 
   ngAfterContentInit(): void {
-    this.imageService.getImage(this.url).then(resp => {
+    this.imageService.getDocumentImage(this.url).then(resp => {
     const objectURL = URL.createObjectURL(resp);
     this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
   })}

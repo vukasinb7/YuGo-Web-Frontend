@@ -28,4 +28,12 @@ export class ImageService {
       });
     });
   }
+
+  getDocumentImage(pictureName:string):Promise<any>{
+    return new Promise<any>(resolve => {
+      this.http.get(environment.apiHost + `image/document/${pictureName}`, {observe:'response', responseType: 'blob'}).subscribe(resp => {
+        resolve(resp.body);
+      });
+    });
+  }
 }
