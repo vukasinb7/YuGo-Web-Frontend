@@ -1,17 +1,18 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../../core/services/auth.service";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {UserSimpleInfo} from "../../../../shared/models/UserSimpleInfo";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-ride-add-passengers',
   templateUrl: './ride-add-passengers.component.html',
   styleUrls: ['./ride-add-passengers.component.css']
 })
-export class RideAddPassengersComponent {
+export class RideAddPassengersComponent implements OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
-  @Output() passengersChangedEvent = new EventEmitter<UserSimpleInfo[]>();
+  @Input() passengersChangedEvent?:Subject<UserSimpleInfo[]>;
   addPassengersForm:FormGroup = new FormGroup({
     email: new FormControl('', [Validators.email, Validators.required])
   })
@@ -34,7 +35,7 @@ export class RideAddPassengersComponent {
   }
   nextFormPage(){
     const output:UserSimpleInfo[] = [{id:this.authService.getId(), email:this.authService.getEmail()}, ...this.ridePassengers];
-    this.passengersChangedEvent.emit(output);
+    this.passengersChangedEvent!.next(output);
     this.changeFormPageEmitter.emit(1);
   }
   addPassenger(){
@@ -69,5 +70,11 @@ export class RideAddPassengersComponent {
   }
   removeItem(index:number){
     this.ridePassengers.splice(index, 1);
+  }
+
+  ngOnInit(): void {
+    this.passengersChangedEvent?.subscribe(passengers => {
+      this.ridePassengers = passengers;
+    });
   }
 }

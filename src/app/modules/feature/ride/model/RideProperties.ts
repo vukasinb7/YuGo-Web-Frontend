@@ -1,6 +1,7 @@
+import {VehicleTypeCardData} from "../components/vehicle-type-card/vehicle-type-card.component";
+
 export interface RideProperties{
-  vehicleTypeId:number;
-  vehicleTypeName:string;
+  vehicleTypeInfo:VehicleTypeCardData
   includeBabies:boolean;
   includePets:boolean;
 }
