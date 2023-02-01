@@ -28,13 +28,13 @@
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-start align-items-center py-2 ">
           <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">{{ride.locations[0].departure.address}}</p>
+          <p class="m-0 p-1">{{cleanUpLocation(ride.locations[0].departure.address)}}</p>
         </div>
       </div>
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-start align-items-center ">
           <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">{{ride.locations[0].destination.address}}</p>
+          <p class="m-0 p-1">{{cleanUpLocation(ride.locations[0].destination.address)}}</p>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
     <div class="delimiter"></div>
     <div id="price-container"  >
       <div class="d-flex h-100 justify-content-center align-items-center ">
-        <p class="m-0 px-2">${{ride.totalCost}}</p>
+        <p class="m-0 px-2">${{cleanUpCost(ride.totalCost)}}</p>
       </div>
     </div>
   </div>

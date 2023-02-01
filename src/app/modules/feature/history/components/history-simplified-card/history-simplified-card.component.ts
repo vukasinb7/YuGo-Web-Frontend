@@ -119,6 +119,25 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
       backdropClass: 'backdropBackground',
       hasBackdrop:true
     })
+  }
 
+  cleanUpLocation(location:string): string{
+    if (location.includes(",")){
+      const partialLocations=location.split(",");
+      let result="";
+      for (let i=0;i<partialLocations.length;i++){
+        if (i<=2) {
+          if (i === partialLocations.length - 1 || i===2)
+            result = result + partialLocations[i];
+          else
+            result = result + partialLocations[i] + ", ";
+        }
+      }
+      return result;
+    }
+    return location;
+  }
+  cleanUpCost(cost:number):number{
+    return Math.round(cost * 100) / 100
   }
 }

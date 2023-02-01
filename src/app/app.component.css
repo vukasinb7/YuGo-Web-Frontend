@@ -11,6 +11,9 @@
   z-index: 10000000;
   padding: 0;
 }
+app-live-chat{
+  z-index: 1000000000000000000000;
+}
 
 .main{
   width:100%;

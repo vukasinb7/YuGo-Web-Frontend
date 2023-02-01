@@ -7,10 +7,12 @@ import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from "../../../infrastructure/app-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
 import { ImagePreviewComponent } from './components/image-preview/image-preview.component';
+import { LiveChatComponent } from './components/live-chat/live-chat.component';
 
 @NgModule({
   declarations: [
-    ImagePreviewComponent
+    ImagePreviewComponent,
+    LiveChatComponent
   ],
   imports: [
     CommonModule,
@@ -22,15 +24,16 @@ import { ImagePreviewComponent } from './components/image-preview/image-preview.
     AppRoutingModule,
     BrowserModule
   ],
-  exports: [
-    CommonModule,
-    MaterialModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BrowserModule
-  ]
+    exports: [
+        CommonModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BrowserModule,
+        LiveChatComponent
+    ]
 })
 export class SharedModule {}

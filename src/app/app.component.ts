@@ -14,6 +14,12 @@ import {DriverService} from "./modules/shared/services/driver.service";
 import {PanicService} from "./modules/shared/services/panic.service";
 import {take} from "rxjs";
 import {PanicCardComponent} from "./modules/feature/panic/components/panic-card/panic-card.component";
+import {
+  HistoryDetailedDialogComponent
+} from "./modules/feature/history/components/history-detailed-dialog/history-detailed-dialog.component";
+import {
+  HistoryReviewCardPassengerComponent
+} from "./modules/feature/history/components/history-review-card-passenger/history-review-card-passenger.component";
 
 @Component({
   selector: 'app-root',
@@ -114,6 +120,13 @@ export class AppComponent implements OnInit, OnDestroy{
           this.passengerRideService.startRideEvent.next(ride);
           this.stompClient.unsubscribe("notify-passenger-start-ride");
           this.stompClient.subscribe("/ride-topic/notify-passenger-end-ride/" + this.userID, () => {
+            this.dialog.open(HistoryReviewCardPassengerComponent,{
+              data: {ride:ride, userId:this.authService.getId(), role:this.role},
+              width: '60%',
+              maxWidth: '600px',
+              backdropClass: 'backdropBackground',
+              hasBackdrop:true
+            })
             this.passengerRideService.endRideEvent.next(ride);
             this.rideService.currentRide = undefined;
             this.stompClient.unsubscribe("notify-passenger-end-ride");

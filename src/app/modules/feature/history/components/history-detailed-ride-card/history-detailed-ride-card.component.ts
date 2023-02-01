@@ -50,7 +50,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
     this.driverService.getDriver(this.ride.driver.id).subscribe(
       {next:(driver) => {
           this.driverName= driver.name+" "+driver.surname;
-          this._imageService.getProfilePicture(driver.profilePicture).then(resp => {
+          this._imageService. getProfilePicture(driver.profilePicture).then(resp => {
             let objectURL = URL.createObjectURL(resp);
             this.driverProfilePicture = {picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(driver.name+" "+driver.surname+"\n"+driver.email+"\n"+driver.telephoneNumber)};
           });
@@ -91,6 +91,25 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   }
   onProfilePictureError(event : any) {
     event.target.src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
+  }
+  cleanUpLocation(location:string): string{
+    if (location.includes(",")){
+      const partialLocations=location.split(",");
+      let result="";
+      for (let i=0;i<partialLocations.length;i++){
+        if (i<=2) {
+          if (i === partialLocations.length - 1 || i===2)
+            result = result + partialLocations[i];
+          else
+            result = result + partialLocations[i] + ", ";
+        }
+      }
+      return result;
+    }
+    return location;
+  }
+  cleanUpCost(cost:number):number{
+    return Math.round(cost * 100) / 100
   }
 
 

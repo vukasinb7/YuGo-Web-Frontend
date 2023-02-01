@@ -26,8 +26,8 @@
     <div id="path-conatiner" class=" pt-2">
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-center align-items-center py-2">
-          <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">{{path.locations[0].departure.address}}</p>
+          <mat-icon aria-hidden="false" class="pe-4">location_on</mat-icon>
+          <p class="m-0 p-1">{{cleanUpLocation(path.locations[0].departure.address)}}</p>
         </div>
       </div>
       <div class="row justify-content-center">
@@ -35,8 +35,8 @@
       </div>
       <div class="row h-50">
         <div class="d-flex h-100 justify-content-center align-items-center py-2">
-          <mat-icon aria-hidden="false">location_on</mat-icon>
-          <p class="m-0 p-1">{{path.locations[0].destination.address}}</p>
+          <mat-icon aria-hidden="false" class="pe-4">location_on</mat-icon>
+          <p class="m-0 p-1">{{cleanUpLocation(path.locations[0].destination.address)}}</p>
         </div>
       </div>
 
