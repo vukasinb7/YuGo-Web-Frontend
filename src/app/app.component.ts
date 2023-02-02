@@ -172,4 +172,7 @@ export class AppComponent implements OnInit, OnDestroy{
     });
   }
 
+  cahShowLiveChat() {
+    return (this.authService.getRole()==="PASSENGER" || this.authService.getRole()==="DRIVER" || this.authService.getRole()==="ADMIN")
+  }
 }
