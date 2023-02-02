@@ -1,0 +1,33 @@
+<button  class="chatbox-open"[style.background-color]="buttonColor" [title]="tooltipText" [style.bottom.px]="bottom" [style.right.px]="right" (click)="open()">
+  <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+    <mat-icon>{{openIcon}}</mat-icon>
+  </div>
+</button>
+<section [style.visibility]="popupVisibility" [style.opacity]="popupOpacity" class="chatbox-popup" style="display: block; position:fixed; height: 400px;">
+  <header class="chatbox-popup__header">
+    <aside style="display:flex;flex:3;">
+      <i class="fa fa-user-circle fa-4x chatbox-popup__avatar"  style="overflow: hidden;" aria-hidden="true">
+        <img [src]=profilePicture width="64" height="64" alt="">
+      </i>
+    </aside>
+    <aside style="display:flex;flex:8;">
+      <h1 style="font-size: 1.5rem">{{title_name}}</h1>
+    </aside>
+  </header>
+  <main class="chatbox-popup__main" style="overflow: auto">
+    <div style="height: 200px;"class="p-0">
+      <ul #messagecontainter class="messages" id="messages-list">
+      </ul>
+    </div>
+
+  </main>
+  <footer class="chatbox-popup__footer">
+    <aside style="flex:11">
+        <textarea [(ngModel)]="message" type="text" placeholder="Send message..." name="textMessage"></textarea>
+    </aside>
+    <aside style="flex:1;color:#888;text-align:center;">
+      <mat-icon (click)="sendMessage('','other')">send</mat-icon>
+    </aside>
+  </footer>
+</section>
+
