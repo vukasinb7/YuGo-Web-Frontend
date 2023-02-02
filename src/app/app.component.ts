@@ -1,4 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver, ComponentRef,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Renderer2, ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {RideOfferCardComponent} from "./modules/feature/ride/components/ride-offer-card/ride-offer-card.component";
 import {environment} from "../enviroments/environment";
@@ -20,6 +28,7 @@ import {
 import {
   HistoryReviewCardPassengerComponent
 } from "./modules/feature/history/components/history-review-card-passenger/history-review-card-passenger.component";
+import {LiveChatComponent} from "./modules/shared/components/live-chat/live-chat.component";
 
 @Component({
   selector: 'app-root',
@@ -31,6 +40,9 @@ export class AppComponent implements OnInit, OnDestroy{
   private serverUrl = environment.apiHost + 'socket'
   private stompClient: any;
   isLoaded: boolean = false;
+  @ViewChild('passengerLiveChat') passengerLiveChat: LiveChatComponent | undefined;
+
+  components:ComponentRef<any>[]=[];
 
   private role: string | undefined;
   private userID: number | undefined;
@@ -41,7 +53,10 @@ export class AppComponent implements OnInit, OnDestroy{
               private passengerRideService:PassengerRideNotificationsService,
               private driverRideService:DriverRideNotificationService,
               private driverService:DriverService,
-              private panicService: PanicService) {
+              private panicService: PanicService,
+              private renderer: Renderer2,
+              private el: ElementRef,private componentFactoryResolver: ComponentFactoryResolver,
+              private viewContainerRef: ViewContainerRef) {
   }
 
   ngOnInit(): void {
@@ -63,6 +78,9 @@ export class AppComponent implements OnInit, OnDestroy{
         this.stompClient.subscribe("/ride-topic/driver-request/" + this.userID, (frame:Frame) => {
           this.parseRideRequest(frame);
         }, {id:"driver-request"});
+        this.stompClient.subscribe("/live-chat-topic/"+this.userID, (frame: Frame) => {
+          this.notifyPassengerAboutLiveChat(frame);
+        }, {id:"user-live-chat"});
       }
       else if(this.role == "PASSENGER"){
         this.stompClient.subscribe("/ride-topic/notify-passenger/" + this.userID, (frame:Frame) => {
@@ -74,11 +92,17 @@ export class AppComponent implements OnInit, OnDestroy{
             this.passengerRideService.passengerAddedToRideEvent.next(ride);
           });
         });
+        this.stompClient.subscribe("/live-chat-topic/"+this.userID, (frame: Frame) => {
+          this.notifyPassengerAboutLiveChat(frame);
+        }, {id:"user-live-chat"})
       }
       else if (this.role == "ADMIN"){
         this.stompClient.subscribe("/ride-topic/notify-admin-panic", (frame: Frame) => {
           this.notifyAdminAboutPanic(frame);
         }, {id:"admin-panic"})
+        this.stompClient.subscribe("/live-chat-topic/admin", (frame: Frame) => {
+          this.notifyAdminAboutLiveChat(frame);
+        }, {id:"admin-live-chat"})
       }
     }
   }
@@ -99,6 +123,42 @@ export class AppComponent implements OnInit, OnDestroy{
       }
     )
   }
+
+  notifyAdminAboutLiveChat(frame: Frame){
+    const message:{userId:number,message:string} = JSON.parse(frame.body);
+    if (this.getComponent(message.userId).instance===undefined){
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(LiveChatComponent);
+      const componentRef = this.viewContainerRef.createComponent(componentFactory);
+      componentRef.setInput('id',message.userId);
+      componentRef.componentType.name
+      this.components.push(componentRef);
+      componentRef.instance.addMessage(message.message,'self');
+      componentRef.instance.bottom=0;
+      componentRef.instance.right=(this.components.length-1)*60;
+      componentRef.instance.buttonColor="#FF0000";
+    }
+    else{
+      this.getComponent(message.userId).instance.addMessage(message.message,'self');
+      this.getComponent(message.userId).instance.buttonColor="#FF0000";
+
+    }
+  }
+
+  getComponent(id:number):ComponentRef<any>{
+    let found= {} as ComponentRef<any>;
+    this.components.forEach(function(cmp){
+      if (cmp.instance.id===id)
+        found=cmp;
+    })
+    return found;
+  }
+
+  notifyPassengerAboutLiveChat(frame: Frame){
+    const message:{userId:number,message:string} = JSON.parse(frame.body);
+    this.passengerLiveChat?.addMessage(message.message,"self")
+
+  }
+
   notifyPassengerAboutRide(frameRide:Frame){
     let message:{rideID:number} = JSON.parse(frameRide.body);
     if(message.rideID == -1){
@@ -160,6 +220,8 @@ export class AppComponent implements OnInit, OnDestroy{
     this.stompClient.unsubscribe("admin-panic");
     this.stompClient.unsubscribe("notify-passenger-end-ride");
     this.stompClient.unsubscribe("notify-passenger-start-ride");
+    this.stompClient.unsubscribe("admin-live-chat");
+    this.stompClient.unsubscribe("user-live-chat");
   }
   initializeWebSocketConnection() {
     const ws = new SockJS(this.serverUrl);
@@ -174,5 +236,9 @@ export class AppComponent implements OnInit, OnDestroy{
 
   cahShowLiveChat() {
     return (this.authService.getRole()==="PASSENGER" || this.authService.getRole()==="DRIVER" || this.authService.getRole()==="ADMIN")
+  }
+
+  onlyDriverPassengerChat() {
+    return (this.authService.getRole()==="PASSENGER" || this.authService.getRole()==="DRIVER")
   }
 }

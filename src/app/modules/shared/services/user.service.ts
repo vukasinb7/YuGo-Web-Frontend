@@ -17,6 +17,10 @@ export class UserService {
     return this.http.get<UserInfo>(environment.apiHost + `${role}/${userId}`);
   }
 
+  getUserById(userId : number) : Observable<UserInfo>{
+    return this.http.get<UserInfo>(environment.apiHost + `user/${userId}`);
+  }
+
   getUserByEmail(email : string) : Observable<UserSimpleInfo>{
     return this.http.get<UserSimpleInfo>(environment.apiHost + `user/${email}/email` );
   }

@@ -16,9 +16,9 @@ button {
   cursor: pointer;
 }
 button.chatbox-open {
-  position: fixed;
-  bottom: 0;
-  right: 0;
+  position:fixed;
+  bottom:0px;
+  right:0px;
   width: 52px;
   height: 52px;
   color: #000;
@@ -221,7 +221,6 @@ textarea::placeholder {
 }
 .messages li.other:before {
   right: -45px;
-  background-image: url(https://github.com/Thatkookooguy.png);
 }
 .messages li.other:after {
   border-right: 10px solid transparent;
@@ -238,7 +237,6 @@ textarea::placeholder {
 }
 .messages li.self:before {
   left: -45px;
-  background-image: url(https://github.com/ortichon.png);
 }
 .messages li.self:after {
   border-left: 10px solid transparent;

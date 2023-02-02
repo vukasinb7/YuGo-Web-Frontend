@@ -11,8 +11,24 @@
   z-index: 10000000;
   padding: 0;
 }
-app-live-chat{
+app-live-chat button.chatbox-open{
   z-index: 1000000000000000000000;
+  position:fixed;
+  bottom:0;
+  right:0;
+}
+#live-chats {
+  position:fixed;
+  bottom:0;
+  right:0;
+  display:block;
+  z-index:100000000;
+}
+#live-chats-wrapper{
+  position:fixed;
+  bottom:0;
+  right:0;
+  display:block;
 }
 
 .main{
