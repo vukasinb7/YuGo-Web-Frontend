@@ -5,7 +5,7 @@ import {RideService} from "../services/ride.service";
 import {RideBooking} from "../model/RideBooking";
 import {AuthService} from "../../../core/services/auth.service";
 import {Router} from "@angular/router";
-import {BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject, ReplaySubject, Subject} from "rxjs";
 import {RideInfo} from "../../../shared/models/RideInfo";
 import {UserSimpleInfo} from "../../../shared/models/UserSimpleInfo";
 import {PassengerRideNotificationsService} from "../services/passenger-ride-notifications.service";
@@ -14,6 +14,8 @@ import {FavoriteRouteLoadingService} from "../services/favorite-route-loading.se
 import {VehicleTypeService} from "../services/vehicle-type.service";
 import {VehicleType, VehicleTypeCardData} from "../components/vehicle-type-card/vehicle-type-card.component";
 import {ImageService} from "../../../core/services/image.service";
+import {FavoritePathInputComponent} from "../../history/components/favorite-path-input/favorite-path-input.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-ride',
@@ -37,13 +39,14 @@ export class RideComponent implements OnInit{
   rideFoundEvent:BehaviorSubject<RideInfo | undefined> = new BehaviorSubject<RideInfo | undefined>(undefined);
 
   //----------------------
-  routeChangedEvent:Subject<{fromAddress:LocationInfo, toAddress:LocationInfo}> = new Subject();
-  ridePropertiesChangedEvent:Subject<RideProperties> = new Subject<RideProperties>();
-  passengersChangedEvent:Subject<UserSimpleInfo[]> = new Subject<UserSimpleInfo[]>();
+  routeChangedEvent:ReplaySubject<{fromAddress:LocationInfo, toAddress:LocationInfo}> = new ReplaySubject(1);
+  ridePropertiesChangedEvent:ReplaySubject<RideProperties> = new ReplaySubject<RideProperties>(1);
+  passengersChangedEvent:ReplaySubject<UserSimpleInfo[]> = new ReplaySubject<UserSimpleInfo[]>(1);
+
   //----------------------
 
 
-  constructor(private rideService:RideService,private imageService:ImageService, private vehicleTypeService:VehicleTypeService, private favoriteRouteService:FavoriteRouteLoadingService, private authService:AuthService, private router: Router, private passengerRideService:PassengerRideNotificationsService,private destinationService:DestinationPickerService) {
+  constructor(private rideService:RideService,public dialog: MatDialog,private imageService:ImageService, private vehicleTypeService:VehicleTypeService, private favoriteRouteService:FavoriteRouteLoadingService, private authService:AuthService, private router: Router, private passengerRideService:PassengerRideNotificationsService,private destinationService:DestinationPickerService) {
   }
 
   returnToFirstPage(){
@@ -159,5 +162,22 @@ export class RideComponent implements OnInit{
 
     });
 
+  }
+
+  addToFavorite() {
+    let ride = {
+      name:"",
+      id:"",
+      locations:[{departure:this.fromAddress!, destination:this.toAddress!}],
+      passengers:this.passengers!,
+      vehicleType:this.rideProperties!.vehicleTypeInfo.vehicleTypeName,
+      babyTransport:this.rideProperties!.includeBabies,
+      petTransport:this.rideProperties!.includePets,
+    };
+    this.dialog.open(FavoritePathInputComponent,{
+      data: ride,
+      width: '30%',
+      backdropClass: 'backdropBackground'
+    });
   }
 }

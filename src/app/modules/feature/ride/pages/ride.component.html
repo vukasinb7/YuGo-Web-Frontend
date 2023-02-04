@@ -2,6 +2,6 @@
   <app-ride-pick-destination *ngIf="formPageIndex < 4" [ngClass]="{hidden:formPageIndex!=0}" (changeFormPageEmitter)="switchFormPage($event)"  [routeChangedEvent]="routeChangedEvent"></app-ride-pick-destination>
   <app-ride-pick-properties *ngIf="formPageIndex < 4" [ngClass]="{hidden:formPageIndex!=1}" (changeFormPageEmitter)="switchFormPage($event)" [ridePropertiesChangedEvent]="ridePropertiesChangedEvent"></app-ride-pick-properties>
   <app-ride-add-passengers *ngIf="formPageIndex < 4" [ngClass]="{hidden:formPageIndex!=2}" (changeFormPageEmitter)="switchFormPage($event)" [passengersChangedEvent]="passengersChangedEvent"></app-ride-add-passengers>
-  <app-ride-pick-time *ngIf="formPageIndex < 4" [ngClass]="{hidden:formPageIndex!=3}" (changeFormPageEmitter)="switchFormPage($event)" (rideDateTimeChangedEvent)="rideDateTime = $event"></app-ride-pick-time>
+  <app-ride-pick-time *ngIf="formPageIndex < 4" [ngClass]="{hidden:formPageIndex!=3}" (changeFormPageEmitter)="switchFormPage($event)" (rideDateTimeChangedEvent)="rideDateTime = $event" (callFavorite)="addToFavorite()"></app-ride-pick-time>
   <app-searching-driver-screen [rideFoundEvent]="rideFoundEvent.asObservable()" (goToFirstPageEvent)="returnToFirstPage()" [errorMessageEvent]="errorMessageEvent.asObservable()"  *ngIf="searchingDriver && isDataReady && formPageIndex > 3"></app-searching-driver-screen>
 </div>

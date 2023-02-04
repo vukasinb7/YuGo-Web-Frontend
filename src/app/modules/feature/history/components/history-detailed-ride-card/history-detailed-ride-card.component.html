@@ -21,6 +21,14 @@
         </div>
         </div>
     </div>
+  <div id="pet-container" class="mt-4">
+    <div class="d-flex h-100 justify-content-center align-items-center ">
+      <mat-icon class="mx-1" aria-hidden="false" *ngIf="ride.petTransport" style="color: #fad02c">pets</mat-icon>
+      <mat-icon class="mx-1" aria-hidden="false" *ngIf="!ride.petTransport" style="color: #1d1f2f">pets</mat-icon>
+      <mat-icon class="mx-1" aria-hidden="false" *ngIf="ride.babyTransport" style="color: #fad02c">child_friendly</mat-icon>
+      <mat-icon class="mx-1" aria-hidden="false" *ngIf="!ride.babyTransport" style="color: #1d1f2f">child_friendly</mat-icon>
+    </div>
+  </div>
 
   <div id="path-conatiner" class=" pt-3">
     <div class="row h-50">
@@ -61,7 +69,7 @@
   <div id="button-container"class="w-100 d-flex pt-4 justify-content-between" *ngIf="historyPreview">
     <h2 class="px-2">${{cleanUpCost(ride.totalCost)}}</h2>
     <button (click)="changeIcon()" mat-flat-button class="mx-2 rounded-pill fw-bold float-end" color="accent">Add to favorites</button>
-    <button mat-flat-button class="mx-2 rounded-pill fw-bold float-end" color="accent">Create Ride</button>
+    <button (click)="createRide()" mat-flat-button class="mx-2 rounded-pill fw-bold float-end" color="accent">Create Ride</button>
 
   </div>
   </div>

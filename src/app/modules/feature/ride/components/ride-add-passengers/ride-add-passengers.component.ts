@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../../core/services/auth.service";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {UserSimpleInfo} from "../../../../shared/models/UserSimpleInfo";
-import {Subject} from "rxjs";
+import {ReplaySubject, Subject} from "rxjs";
 
 @Component({
   selector: 'app-ride-add-passengers',
@@ -12,7 +12,7 @@ import {Subject} from "rxjs";
 })
 export class RideAddPassengersComponent implements OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
-  @Input() passengersChangedEvent?:Subject<UserSimpleInfo[]>;
+  @Input() passengersChangedEvent?:ReplaySubject<UserSimpleInfo[]>;
   addPassengersForm:FormGroup = new FormGroup({
     email: new FormControl('', [Validators.email, Validators.required])
   })
@@ -74,7 +74,11 @@ export class RideAddPassengersComponent implements OnInit{
 
   ngOnInit(): void {
     this.passengersChangedEvent?.subscribe(passengers => {
-      this.ridePassengers = passengers;
+      passengers.forEach((pass)=>{
+        if (pass.id!==this.authService.getId()){
+          this.ridePassengers.push(pass);
+        }
+      })
     });
   }
 }

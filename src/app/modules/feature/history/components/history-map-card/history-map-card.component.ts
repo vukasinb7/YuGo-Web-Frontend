@@ -35,7 +35,7 @@ export class HistoryMapCardComponent implements  AfterViewInit{
   }
   route(): void {
     L.Routing.control({
-      waypoints: [L.latLng(this.ride.locations[0].departure.latitude, this.ride.locations[0].departure.longitude), L.latLng(this.ride.locations[0].destination.latitude, this.ride.locations[0].destination.longitude)],
+      waypoints: [L.latLng(this.ride.locations[0].departure.latitude, this.ride.locations[0].departure.longitude), L.latLng(this.ride.locations[0].destination.latitude, this.ride.locations[0].destination.longitude)],addWaypoints: false
     }).addTo(this.map);
   }
 

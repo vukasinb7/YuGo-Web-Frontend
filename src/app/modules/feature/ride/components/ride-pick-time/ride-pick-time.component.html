@@ -12,6 +12,7 @@
     </button>
     <ngx-mat-timepicker #timePicker (timeSet)="selectedTimeChanged($event)" ></ngx-mat-timepicker>
   </mat-form-field>
+    <a id="addFavoriteLink" class="text-end text-decoration-none" style="color:#fad02c;" (click)="clickFavorite()">Add to favorite</a>
   <div class="row ps-3 pe-3 mt-4">
     <button mat-flat-button color="accent" class="col-1 me-2" (click)="previousFormPage()">
       <mat-icon>keyboard_arrow_left</mat-icon>

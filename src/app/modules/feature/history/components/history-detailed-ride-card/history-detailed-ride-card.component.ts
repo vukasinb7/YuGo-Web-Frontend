@@ -1,10 +1,14 @@
 import {Component, Input, OnInit, SecurityContext} from '@angular/core';
 import {DriverService} from "../../../../shared/services/driver.service";
 import {PassengerService} from "../../../../shared/services/passenger.service";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {FavoritePathInputComponent} from "../favorite-path-input/favorite-path-input.component";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ImageService} from "../../../../core/services/image.service";
+import {Router} from "@angular/router";
+import {FavoriteRouteLoadingService} from "../../../ride/services/favorite-route-loading.service";
+import {Path} from "../../../../shared/models/Path";
+import {UserSimpleInfo} from "../../../../shared/models/UserSimpleInfo";
 
 @Component({
   selector: 'app-history-detailed-ride-card',
@@ -22,7 +26,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   passengerName="";
 
   constructor(private _sanitizer: DomSanitizer,private _imageService: ImageService,private driverService:DriverService,
-              public dialog: MatDialog, private passengerService: PassengerService) {
+              public dialog: MatDialog, private passengerService: PassengerService,private router: Router,private favoriteRouteLoadingService:FavoriteRouteLoadingService,private dialogRef:MatDialogRef<HistoryDetailedRideCardComponent>) {
     this.passengersProfilePics=[];
 
   }
@@ -72,7 +76,6 @@ export class HistoryDetailedRideCardComponent implements OnInit{
       this.passengerService.getPassenger(this.ride.passengers[i].id).subscribe(
         {
           next: (passenger) => {
-            this.passengerName = passenger.name + " " + passenger.surname;
             this._imageService.getProfilePicture(passenger.profilePicture).then(resp => {
               let objectURL = URL.createObjectURL(resp);
               let dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
@@ -113,6 +116,21 @@ export class HistoryDetailedRideCardComponent implements OnInit{
   }
 
 
+  createRide() {
+    this.dialogRef.close();
+    const f={
+      favoriteName:"",
+      locations: this.ride.locations,
+      passengers: this.ride.passengers,
+      vehicleType:this.ride.vehicleType,
+      babyTransport:this.ride.babyTransport,
+      petTransport:this.ride.petTransport,
+      id:-1
+    }
+    this.router.navigate(['home']).then(() => {
+      this.favoriteRouteLoadingService.loadFavoriteRoute.next(f);
+    });
+  }
 }
 export interface imageTransfer{
   picture:any;

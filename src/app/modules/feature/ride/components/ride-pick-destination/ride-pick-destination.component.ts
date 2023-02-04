@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MapService} from "../../../home/services/map.service";
 import {DestinationPickerService} from "../../services/destination-picker.service";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
-import {Subject} from "rxjs";
+import {ReplaySubject, Subject} from "rxjs";
 
 @Component({
   selector: 'app-ride-pick-destination',
@@ -12,7 +12,7 @@ import {Subject} from "rxjs";
 })
 export class RidePickDestinationComponent implements AfterViewInit, OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
-  @Input() routeChangedEvent?:Subject<{fromAddress:LocationInfo, toAddress:LocationInfo}>;
+  @Input() routeChangedEvent?:ReplaySubject<{fromAddress:LocationInfo, toAddress:LocationInfo}>;
   recommendedAddresses:any[] = [];
   selectedFromAddress?:LocationInfo;
   selectedToAddress?:LocationInfo;
@@ -128,6 +128,8 @@ export class RidePickDestinationComponent implements AfterViewInit, OnInit{
     this.routeChangedEvent?.subscribe(route => {
       this.selectedFromAddress = route.fromAddress;
       this.selectedToAddress = route.toAddress;
+      this.destinationForm.controls['from'].setValue(route.fromAddress.address);
+      this.destinationForm.controls['to'].setValue(route.toAddress.address);
       this.destinationPickerService.updateFromAddress(this.selectedFromAddress);
       this.destinationPickerService.updateToAddress(this.selectedToAddress);
     });

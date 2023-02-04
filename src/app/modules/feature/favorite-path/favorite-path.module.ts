@@ -4,6 +4,7 @@ import { FavoritePathComponent } from './pages/favorite-path.component';
 import { FavoritePathCardComponent } from './components/favorite-path-card/favorite-path-card.component';
 import { FavoritePathDetailedCardComponent } from './components/favorite-path-detailed-card/favorite-path-detailed-card.component';
 import { FavoritePathInputComponent } from '../history/components/favorite-path-input/favorite-path-input.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -12,9 +13,10 @@ import { FavoritePathInputComponent } from '../history/components/favorite-path-
     FavoritePathDetailedCardComponent,
     FavoritePathInputComponent,
   ],
-  imports: [
-    SharedModule,
-  ],
+    imports: [
+        SharedModule,
+        MatTooltipModule,
+    ],
   exports:[
     FavoritePathComponent],
 })

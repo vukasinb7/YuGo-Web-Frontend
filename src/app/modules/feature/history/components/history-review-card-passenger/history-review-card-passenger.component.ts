@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {ReviewInfoOut} from "../../models/ReviewInfoOut";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-history-review-card-passenger',
@@ -51,6 +52,7 @@ export class HistoryReviewCardPassengerComponent  {
     this.reviewService.getReviewsForRide(this.ride.id).subscribe(
       {
         next: (reviews) => {
+
           if (reviews!=null) {
             reviews.forEach((reviewPerPassenger) => {
               if (reviewPerPassenger.vehicleReview != null) {
@@ -110,7 +112,29 @@ export class HistoryReviewCardPassengerComponent  {
           }
 
 
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status==404){
+            if (this.getDayDiff(new Date(), new Date(this.ride.startTime)) > 3) {
+              this.rideForm.patchValue({
+                commentr: "Time for review expired."
+              });
+              document.getElementById("submit-ride")!.hidden = true;
+              this.rideForm.disable();
+              this.enabledReview[1] = false;
+            }
+          }
+          if (this.getDayDiff(new Date(), new Date(this.ride.startTime)) > 3) {
+            this.vehicleForm.patchValue({
+              commentv: "Time for review expired."
+            });
+            document.getElementById("submit-vehicle")!.hidden = true;
+            this.vehicleForm.disable();
+            this.enabledReview[0] = false;
+          }
+
         }
+
       })
   }
 

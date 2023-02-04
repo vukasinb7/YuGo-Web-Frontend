@@ -9,6 +9,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 export class RidePickTimeComponent{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
   @Output() rideDateTimeChangedEvent = new EventEmitter<Date>();
+  @Output() callFavorite = new EventEmitter<void>();
   selectedTime?:string;
   currentDateTime:Date;
   minTime:Date;
@@ -35,6 +36,10 @@ export class RidePickTimeComponent{
   }
   previousFormPage():void{
     this.changeFormPageEmitter.emit(-1);
+  }
+
+  clickFavorite():void{
+    this.callFavorite.emit();
   }
 
   dateToString(date:Date):string{

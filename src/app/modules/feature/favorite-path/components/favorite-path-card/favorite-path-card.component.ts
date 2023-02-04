@@ -3,8 +3,10 @@ import {Observable} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {FavoritePathInfo} from "../../models/FavoritePathInfo";
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {FavoritePathDetailedCardComponent} from "../favorite-path-detailed-card/favorite-path-detailed-card.component";
+import {Router} from "@angular/router";
+import {FavoriteRouteLoadingService} from "../../../ride/services/favorite-route-loading.service";
 
 @Component({
   selector: 'app-favorite-path-card',
@@ -15,7 +17,7 @@ export class FavoritePathCardComponent implements OnInit{
 
   obs: Observable<any>;
   dataSource= new MatTableDataSource<FavoritePathInfo>();
-  constructor(private favoritePathService:FavoritePathService, public dialog: MatDialog) {
+  constructor(private favoritePathService:FavoritePathService, public dialog: MatDialog,private router: Router,private favoriteRouteLoadingService:FavoriteRouteLoadingService) {
     this.obs = this.dataSource.connect();
   }
   ngOnInit() {
@@ -56,5 +58,11 @@ export class FavoritePathCardComponent implements OnInit{
       return result;
     }
     return location;
+  }
+  createRide(path:FavoritePathInfo) {
+
+    this.router.navigate(['home']).then(() => {
+      this.favoriteRouteLoadingService.loadFavoriteRoute.next(path);
+    });
   }
 }
