@@ -71,7 +71,7 @@ export class InridePanelComponent implements OnInit{
     this.rideLength = `${Math.round(this.rideLengthKm! * 10) / 10}km`;
     this.distanceLeftChangedEvent?.subscribe(distance => {
       let ridePercent:number = Math.ceil((1 - (distance / this.rideLengthKm!)) * 100);
-      this.progressBarHeight = `${ridePercent}%`;
+      this.progressBarHeight = ridePercent+"%";
     });
     if(this.userType == "DRIVER"){
       let passengerBase:UserSimpleInfo = this.currentRide!.passengers[0];

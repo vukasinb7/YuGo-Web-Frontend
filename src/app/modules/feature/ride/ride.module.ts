@@ -16,6 +16,7 @@ import { EmailListCardComponent } from './components/email-list-card/email-list-
 import { InridePanelComponent } from './components/inride-panel/inride-panel.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import { PanicDialogComponent } from './components/panic-dialog/panic-dialog.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -36,12 +37,13 @@ import { PanicDialogComponent } from './components/panic-dialog/panic-dialog.com
         RideOfferCardComponent,
         InridePanelComponent,
     ],
-  imports: [
-    SharedModule,
-    MatCheckboxModule,
-    NgxMatTimepickerModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-  ]
+    imports: [
+        SharedModule,
+        MatCheckboxModule,
+        NgxMatTimepickerModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+        MatTooltipModule,
+    ]
 })
 export class RideModule {}

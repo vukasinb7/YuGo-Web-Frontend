@@ -7,6 +7,8 @@ import {LocationInfo} from "../../../../shared/models/LocationInfo";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {RideService} from "../../services/ride.service";
 import {DriverRideNotificationService} from "../../services/driver-ride-notification.service";
+import {ImageService} from "../../../../core/services/image.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-ride-offer-card',
@@ -21,12 +23,15 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
   numOfPassengers=2;
   rejectionText?:string = "";
   rejectionFormEnabled = false;
+  public passengersProfilePics:Array<any>;
+  profilePicture: any;
 
   constructor(private mapService:MapService,private dialogRef: MatDialogRef<RideOfferCardComponent>,
               @Inject(MAT_DIALOG_DATA) private data:RideInfo,
               private passengerService:PassengerService,
               private driverRideService:DriverRideNotificationService,
-              private rideService:RideService) {
+              private rideService:RideService, private imageService:ImageService,private sanitizer: DomSanitizer) {
+    this.passengersProfilePics=[];
   }
 
   private initMap():void{
@@ -85,6 +90,8 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
   }
 
   ngOnInit(): void {
+    this.getPassenger();
+    this.getPassengers();
     const departure:LocationInfo = this.data.locations.at(0)!.departure;
     const destination:LocationInfo = this.data.locations.at(0)!.destination;
     let tokens:string[] = departure.address.split(',');
@@ -99,4 +106,35 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
     });
   }
 
+  getPassenger(){
+    this.passengerService.getPassenger(this.data.passengers[0].id).subscribe(
+      {next:(passenger) => {
+          this.passengerName= passenger.name+" "+passenger.surname;
+          this.imageService.getProfilePicture(passenger.profilePicture).then(resp => {
+            let objectURL = URL.createObjectURL(resp);
+            this.profilePicture={picture:this.sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
+          });
+        }})
+  }
+  getPassengers(){
+    for (let i = 0; i < this.data.passengers.length; i++) {
+      this.passengerService.getPassenger(this.data.passengers[i].id).subscribe(
+        {
+          next: (passenger) => {
+            this.imageService.getProfilePicture(passenger.profilePicture).then(resp => {
+              let objectURL = URL.createObjectURL(resp);
+              let dto={picture:this.sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
+
+              this.passengersProfilePics.push(dto);
+
+            });
+          }
+        })
+    }
+  }
+
+
+  onProfilePictureError($event: ErrorEvent) {
+
+  }
 }
