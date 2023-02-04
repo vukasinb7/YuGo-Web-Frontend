@@ -34,7 +34,7 @@ export class HistoryReviewCardDriverComponent implements OnInit{
   getReviews(){
     this.reviewService.getReviewsForRide(this.ride.id).subscribe(
       {next:(reviews) => {
-          if (reviews!=null) {
+          if (reviews.length!=0) {
             reviews.forEach((reviewPerPassenger) => {
               if (reviewPerPassenger.vehicleReview != null) {
                 reviewPerPassenger.vehicleReview.type = "VEHICLE";
