@@ -1,17 +1,18 @@
-import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MapService} from "../../../home/services/map.service";
 import {DestinationPickerService} from "../../services/destination-picker.service";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
+import {ReplaySubject, Subject} from "rxjs";
 
 @Component({
   selector: 'app-ride-pick-destination',
   templateUrl: './ride-pick-destination.component.html',
   styleUrls: ['./ride-pick-destination.component.css']
 })
-export class RidePickDestinationComponent implements AfterViewInit{
+export class RidePickDestinationComponent implements AfterViewInit, OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
-  @Output() routeChangedEvent = new EventEmitter<[LocationInfo, LocationInfo]>();
+  @Input() routeChangedEvent?:ReplaySubject<{fromAddress:LocationInfo, toAddress:LocationInfo}>;
   recommendedAddresses:any[] = [];
   selectedFromAddress?:LocationInfo;
   selectedToAddress?:LocationInfo;
@@ -38,7 +39,7 @@ export class RidePickDestinationComponent implements AfterViewInit{
     });
     }
   nextFormPage(): void {
-    this.routeChangedEvent.emit([this.selectedFromAddress!, this.selectedToAddress!]);
+    this.routeChangedEvent?.next({fromAddress:this.selectedFromAddress!, toAddress:this.selectedToAddress!});
     this.changeFormPageEmitter.emit(1);
   }
 
@@ -121,5 +122,16 @@ export class RidePickDestinationComponent implements AfterViewInit{
   changeFieldFocus(fieldName:string){
     this.selectedField=fieldName;
     this.recommendedAddresses = [];
+  }
+
+  ngOnInit(): void {
+    this.routeChangedEvent?.subscribe(route => {
+      this.selectedFromAddress = route.fromAddress;
+      this.selectedToAddress = route.toAddress;
+      this.destinationForm.controls['from'].setValue(route.fromAddress.address);
+      this.destinationForm.controls['to'].setValue(route.toAddress.address);
+      this.destinationPickerService.updateFromAddress(this.selectedFromAddress);
+      this.destinationPickerService.updateToAddress(this.selectedToAddress);
+    });
   }
 }

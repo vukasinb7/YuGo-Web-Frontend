@@ -12,3 +12,6 @@ ngx-mat-timepicker-toggle{
 mat-icon{
   margin: 0 !important;
 }
+#addFavoriteLink:hover{
+  cursor:pointer;
+}

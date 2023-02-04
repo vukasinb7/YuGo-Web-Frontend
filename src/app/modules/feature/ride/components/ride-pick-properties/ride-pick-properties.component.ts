@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output,} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 import {
   VehicleTypeCardData,
 } from "../vehicle-type-card/vehicle-type-card.component";
@@ -15,7 +15,7 @@ import {RideProperties} from "../../model/RideProperties";
 })
 export class RidePickPropertiesComponent implements OnInit{
   @Output() changeFormPageEmitter = new EventEmitter<number>();
-  @Output() ridePropertiesChangedEvent = new EventEmitter<RideProperties>();
+  @Input() ridePropertiesChangedEvent?:Subject<RideProperties>;
   distanceChangedEvent:Subject<number> = new Subject<number>();
   includeBabies = false;
   includePets = false;
@@ -28,6 +28,16 @@ export class RidePickPropertiesComponent implements OnInit{
   }
   ngOnInit():void{
     const data:VehicleTypeCardData[] = [];
+    this.ridePropertiesChangedEvent?.subscribe(properties => {
+      this.includeBabies = properties.includeBabies;
+      this.includePets = properties.includePets;
+      this.selectedVehicleType = properties.vehicleTypeInfo;
+      for(let i = 0; i < this.vehicleTypes.length; i++){
+        if(this.vehicleTypes.at(i)!.id == this.selectedVehicleType.id){
+          this.changeCarTypeEvent.next(i);
+        }
+      }
+    });
     this.vehicleTypeService.getVehicleTypes().then(vehicleTypes => {
       for(const vehicleType of vehicleTypes){
         this.imageService.getImage(vehicleType.imgPath).then(resp => {
@@ -56,11 +66,10 @@ export class RidePickPropertiesComponent implements OnInit{
 
   }
   nextFormPage():void{
-    this.ridePropertiesChangedEvent.emit({
+    this.ridePropertiesChangedEvent!.next({
       includeBabies:this.includeBabies,
       includePets:this.includePets,
-      vehicleTypeId:this.selectedVehicleType!.id,
-      vehicleTypeName:this.selectedVehicleType!.vehicleTypeName
+      vehicleTypeInfo:this.selectedVehicleType!
     });
     this.changeFormPageEmitter.emit(1);
   }
