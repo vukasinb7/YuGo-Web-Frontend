@@ -15,15 +15,15 @@ export class SearchingDriverScreenComponent implements OnInit{
   @Output() goToFirstPageEvent:EventEmitter<void> = new EventEmitter<void>();
   text = "We are searching a driver for your ride, please wait."
   loading = true;
-  enableReturnButton:boolean = false;
-  enableCancelButton:boolean = false;
+  enableReturnButton = false;
+  enableCancelButton = false;
   ride?:RideInfo;
   constructor(private passengerRideService:PassengerRideNotificationsService, private rideService:RideService) {
   }
 
   cancelRide(){
     if(this.ride){
-      this.rideService.cancelRide(this.ride.id).subscribe(resp => {
+      this.rideService.cancelRide(this.ride.id).subscribe(() => {
         this.text = "Ride has been canceled";
         this.enableCancelButton = false;
         this.enableReturnButton = true;
@@ -53,11 +53,11 @@ export class SearchingDriverScreenComponent implements OnInit{
       }
     });
     this.passengerRideService.rideAcceptedEvent.subscribe(ride => {
-      let date:Date = new Date(ride.startTime);
+      const date:Date = new Date(ride.startTime);
       this.text = "Driver is on his way.\nEstimated time of arrival: " + date.getHours() + ":" + date.getMinutes() + "h";
       this.loading = false;
     });
-    this.passengerRideService.rideRejectedEvent.subscribe(ride => {
+    this.passengerRideService.rideRejectedEvent.subscribe(() => {
       this.text = "We couldn't find available driver, please try again later."
       this.enableReturnButton = true;
       this.loading = false;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {FavoritePathInfo} from "../../favorite-path/models/FavoritePathInfo";
-import {BehaviorSubject, ReplaySubject, Subject} from "rxjs";
+import {ReplaySubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

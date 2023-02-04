@@ -45,11 +45,11 @@ export class RidePickTimeComponent{
   dateToString(date:Date):string{
     return date.getHours() + ":" + date.getMinutes();
   }
-  selectedDateChanged(event:any){
+  selectedDateChanged(event:Date){
     this.selectedDate = event;
     this.checkMinTime();
   }
-  selectedTimeChanged(event:any){
+  selectedTimeChanged(event:string){
     this.selectedTime = event;
   }
   checkMinTime(){

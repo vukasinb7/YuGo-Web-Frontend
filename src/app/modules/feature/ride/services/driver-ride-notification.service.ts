@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, Observer, Subject, Subscription, takeUntil, timer} from "rxjs";
+import {BehaviorSubject, Observable, Subject, Subscription, takeUntil, timer} from "rxjs";
 import {Coordinates} from "../model/Coordinates";
 import {DriverService} from "../../../shared/services/driver.service";
 import {AuthService} from "../../../core/services/auth.service";
@@ -39,7 +39,7 @@ export class DriverRideNotificationService {
         const simulationEndEvent:Subject<void> = new Subject();
         timer(0,1000).pipe(takeUntil(simulationEndEvent), takeUntil(this.startRideEvent), takeUntil(this.endRideEvent))
           .subscribe(() => {
-            const newCoordsArr = coordinates.shift();
+            const newCoordsArr:number[] = coordinates.shift();
             if(!newCoordsArr){
               simulationEndEvent.next();
               return;
@@ -92,7 +92,7 @@ export class DriverRideNotificationService {
   }
 
   public startRideSimulation(ride:RideInfo){
-    let rideStartLocation:Coordinates = {
+    const rideStartLocation:Coordinates = {
       latitude: ride.locations[0].departure.latitude,
       longitude: ride.locations[0].departure.longitude,
     }
@@ -100,12 +100,11 @@ export class DriverRideNotificationService {
     this.driverService.getLocation(this.authService.getId()).subscribe(currentLocation => {
       // Simulates the route from drivers current location to the ride departure
 
-      let currentLocCoords:Coordinates = {
+      const currentLocCoords:Coordinates = {
         latitude: currentLocation.latitude,
         longitude:currentLocation.longitude
       }
-      this.runSimulation(currentLocCoords, rideStartLocation).then(() => {
-      });
+      this.runSimulation(currentLocCoords, rideStartLocation).then();
     });
 
     const rideEndLocation:Coordinates = {
@@ -116,12 +115,11 @@ export class DriverRideNotificationService {
       this.driverDestination.next(rideEndLocation);
       this.driverService.getLocation(this.authService.getId()).subscribe(currentLocation => {
         // Simulates the route from drivers current location to the ride destination
-        let currentLocCoords:Coordinates = {
+        const currentLocCoords:Coordinates = {
           latitude: currentLocation.latitude,
           longitude:currentLocation.longitude
         }
-        this.runSimulation(currentLocCoords, rideEndLocation).then(() => {
-        })
+        this.runSimulation(currentLocCoords, rideEndLocation).then()
       });
     });
   }

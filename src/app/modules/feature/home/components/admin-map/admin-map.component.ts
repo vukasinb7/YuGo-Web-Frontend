@@ -18,7 +18,7 @@ import {PanicService} from "../../../../shared/services/panic.service";
   styleUrls: ['./admin-map.component.css']
 })
 export class AdminMapComponent implements AfterViewInit, OnDestroy{
-  private map:any;
+  private map?:L.Map;
   private vehiclesMarkersLayout:any;
   private vehiclesMarkersMap = new Map<number, any>();
   private counter = 0;
@@ -148,7 +148,7 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
   }
 
   ngOnDestroy() {
-    this.map.off();
-    this.map.remove();
+    this.map!.off();
+    this.map!.remove();
   }
 }

@@ -23,9 +23,6 @@ import {PanicService} from "./modules/shared/services/panic.service";
 import {take} from "rxjs";
 import {PanicCardComponent} from "./modules/feature/panic/components/panic-card/panic-card.component";
 import {
-  HistoryDetailedDialogComponent
-} from "./modules/feature/history/components/history-detailed-dialog/history-detailed-dialog.component";
-import {
   HistoryReviewCardPassengerComponent
 } from "./modules/feature/history/components/history-review-card-passenger/history-review-card-passenger.component";
 import {LiveChatComponent} from "./modules/shared/components/live-chat/live-chat.component";
@@ -39,7 +36,7 @@ export class AppComponent implements OnInit, OnDestroy{
   title = 'YuGo';
   private serverUrl = environment.apiHost + 'socket'
   private stompClient: any;
-  isLoaded: boolean = false;
+  isLoaded = false;
   @ViewChild('passengerLiveChat') passengerLiveChat: LiveChatComponent | undefined;
 
   components:ComponentRef<any>[]=[];
@@ -87,7 +84,7 @@ export class AppComponent implements OnInit, OnDestroy{
           this.notifyPassengerAboutRide(frame);
         },{id:"notify-passenger"});
         this.stompClient.subscribe("/ride-topic/notify-added-passenger/" + this.userID, (frame:Frame) => {
-          let message:{rideID:number} = JSON.parse(frame.body);
+          const message:{rideID:number} = JSON.parse(frame.body);
           this.rideService.getRide(message.rideID).subscribe(ride => {
             this.passengerRideService.passengerAddedToRideEvent.next(ride);
           });
@@ -160,7 +157,7 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   notifyPassengerAboutRide(frameRide:Frame){
-    let message:{rideID:number} = JSON.parse(frameRide.body);
+    const message:{rideID:number} = JSON.parse(frameRide.body);
     if(message.rideID == -1){
       this.passengerRideService.rideNotAvailableEvent.next();
       return;
@@ -173,7 +170,7 @@ export class AppComponent implements OnInit, OnDestroy{
         }, {id:"notify-passenger-vehicle-arrival"});
         this.stompClient.subscribe("/ride-topic/notify-passenger-start-ride/" + this.userID, () => {
           this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-location/" + this.userID, (frameLocation:Frame) => {
-            let coordinates:Coordinates = JSON.parse(frameLocation.body);
+            const coordinates:Coordinates = JSON.parse(frameLocation.body);
             this.passengerRideService.driverLocationUpdatedEvent.next(coordinates);
           }, {id:"notify-passenger-vehicle-location"});
           this.rideService.currentRide = ride;

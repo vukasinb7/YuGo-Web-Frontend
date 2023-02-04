@@ -29,7 +29,7 @@ export class InridePanelComponent implements OnInit{
   @Input() userType?:string;
 
   panicDialog?: MatDialogRef<PanicDialogComponent>;
-  panicEnabled:boolean = true;
+  panicEnabled = true;
 
   constructor(private dialog: MatDialog,
               private rideService:RideService,
@@ -43,7 +43,7 @@ export class InridePanelComponent implements OnInit{
     this.panicDialog = this.dialog.open(PanicDialogComponent);
     this.panicDialog.afterClosed().subscribe(res => {
       if(res != undefined){
-        let rideID:number = this.rideService.currentRide!.id;
+        const rideID:number = this.rideService.currentRide!.id;
         this.rideService.createPanic(rideID, res.message).subscribe();
         this.panicEnabled = false;
       }
@@ -70,16 +70,16 @@ export class InridePanelComponent implements OnInit{
     }
     this.rideLength = `${Math.round(this.rideLengthKm! * 10) / 10}km`;
     this.distanceLeftChangedEvent?.subscribe(distance => {
-      let ridePercent:number = Math.ceil((1 - (distance / this.rideLengthKm!)) * 100);
+      const ridePercent:number = Math.ceil((1 - (distance / this.rideLengthKm!)) * 100);
       this.progressBarHeight = ridePercent+"%";
     });
     if(this.userType == "DRIVER"){
-      let passengerBase:UserSimpleInfo = this.currentRide!.passengers[0];
+      const passengerBase:UserSimpleInfo = this.currentRide!.passengers[0];
       this.passengerService.getPassenger(passengerBase.id).subscribe(user => {
         this.setupImage(user.profilePicture);
       });
     }else if(this.userType == "PASSENGER"){
-      let driverBase:UserSimpleInfo = this.currentRide!.driver;
+      const driverBase:UserSimpleInfo = this.currentRide!.driver;
       this.driverService.getDriver(driverBase.id).subscribe(user => {
         this.setupImage(user.profilePicture);
       });

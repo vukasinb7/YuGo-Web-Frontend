@@ -1,8 +1,6 @@
-import {Component, ElementRef, HostBinding, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
-import {Button} from "primeng/button";
+import {Component, ElementRef, Input, OnInit, Output, Renderer2} from '@angular/core';
 import {LiveChatService} from "../../services/live.chat.service";
 import {AuthService} from "../../../core/services/auth.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ImageService} from "../../../core/services/image.service";
 import {take} from "rxjs";
 import {UserService} from "../../services/user.service";
@@ -18,13 +16,13 @@ export class LiveChatComponent implements OnInit{
   popupOpacity=0;
 
   openIcon="forum";
-  message: any;
+  message?: string;
   @Input()
   @Output()
   id=-1;
   popupVisibility="hidden";
   profilePicture: any;
-  title_name: any;
+  title_name?: string;
 
   bottom=0;
   right=0;
@@ -73,7 +71,7 @@ export class LiveChatComponent implements OnInit{
   }
   addMessage(message:string,who:string) {
     if(message==="") {
-      message = this.message;
+      message = this.message!;
     }
     const newElement = this.renderer.createElement('li');
     this.renderer.setProperty(newElement, 'innerHTML',message);
@@ -85,11 +83,11 @@ export class LiveChatComponent implements OnInit{
   sendMessage(message:string,who:string){
     this.addMessage(message,who);
     if (this.authService.getRole()!=="ADMIN") {
-      this.liveChatService.sendLiveMessage({userId: this.authService.getId(), message: this.message}).subscribe(() => {
+      this.liveChatService.sendLiveMessage({userId: this.authService.getId(), message: this.message!}).subscribe(() => {
           this.message="";
       });
     }else{
-      this.liveChatService.sendLiveResponse({userId: this.id, message: this.message}).subscribe(()=>{
+      this.liveChatService.sendLiveResponse({userId: this.id, message: this.message!}).subscribe(()=>{
         this.message="";
       });
     }

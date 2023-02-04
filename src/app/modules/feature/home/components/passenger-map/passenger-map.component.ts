@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
-import {LatLng, LeafletMouseEvent, Marker} from 'leaflet';
+import {LeafletMouseEvent, Marker} from 'leaflet';
 import 'leaflet-routing-machine';
 import {MapService} from "../../services/map.service";
 import {DestinationPickerService} from "../../../ride/services/destination-picker.service";
@@ -23,13 +23,13 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   private map:any;
   private fromAddressMarker?:Marker;
   private toAddressMarker?:Marker;
-  private canSelectFromAddress:boolean = false;
-  private canSelectToAddress:boolean = false;
+  private canSelectFromAddress = false;
+  private canSelectToAddress = false;
   private path?:L.Routing.Control;
   private driverLocationSubscription?:Subscription;
   private startRideSubscription?:Subscription;
   private destination?:LocationInfo;
-  hasActiveRide:boolean = false;
+  hasActiveRide = false;
   currentRide?:RideInfo;
   rideDistance?:number;
   rideDistanceLeftChanged:Subject<number> = new Subject<number>();
@@ -124,8 +124,8 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
       autoRoute:true,
       waypoints: [L.latLng(fromLat, fromLong), L.latLng(toLat, toLong)],
     }).addTo(this.map).on('routesfound', e => {
-      let routes:any = e.routes;
-      let summary = routes[0].summary;
+      const routes:any = e.routes;
+      const summary = routes[0].summary;
       this.rideDistance = summary.totalDistance / 1000.0;
     });
     this.destinationPickerService.path.next(this.path);

@@ -68,10 +68,7 @@ export class ForgotPasswordComponent implements OnInit{
   }
 
   submitEdit() : void {
-    if (this.passwordForm.invalid){
-
-    }
-    else {
+    if (this.passwordForm.valid){
       this._userService.resetPasswordWithCode(this.code,this.passwordForm.value.newPassword).pipe(take(1)).subscribe({
         next: () => {
           this._snackBar.open("Password Changed Successfully", "OK");

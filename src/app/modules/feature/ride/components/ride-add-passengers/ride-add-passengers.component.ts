@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../../core/services/auth.service";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {UserSimpleInfo} from "../../../../shared/models/UserSimpleInfo";
-import {ReplaySubject, Subject} from "rxjs";
+import {ReplaySubject} from "rxjs";
 
 @Component({
   selector: 'app-ride-add-passengers',

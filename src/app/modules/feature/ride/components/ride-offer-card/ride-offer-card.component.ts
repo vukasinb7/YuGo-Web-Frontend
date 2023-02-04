@@ -16,7 +16,7 @@ import {DomSanitizer} from "@angular/platform-browser";
   styleUrls: ['./ride-offer-card.component.css']
 })
 export class RideOfferCardComponent implements OnInit,AfterViewInit{
-  private map:any;
+  private map?:L.Map;
   passengerName="John Doe";
   startLocation="Bulevar Oslobodjenja 30";
   endLocation="Majke Jevrosime 112";
@@ -58,7 +58,7 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
     L.Routing.control({
       addWaypoints:false,
       waypoints: [L.latLng(depLat, depLng), L.latLng(destLat, destLng)],
-    }).addTo(this.map);
+    }).addTo(this.map!);
   }
 
 
@@ -111,7 +111,7 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
       {next:(passenger) => {
           this.passengerName= passenger.name+" "+passenger.surname;
           this.imageService.getProfilePicture(passenger.profilePicture).then(resp => {
-            let objectURL = URL.createObjectURL(resp);
+            const objectURL = URL.createObjectURL(resp);
             this.profilePicture={picture:this.sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
           });
         }})
@@ -122,8 +122,8 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
         {
           next: (passenger) => {
             this.imageService.getProfilePicture(passenger.profilePicture).then(resp => {
-              let objectURL = URL.createObjectURL(resp);
-              let dto={picture:this.sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
+              const objectURL = URL.createObjectURL(resp);
+              const dto={picture:this.sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
 
               this.passengersProfilePics.push(dto);
 
@@ -131,10 +131,5 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
           }
         })
     }
-  }
-
-
-  onProfilePictureError($event: ErrorEvent) {
-
   }
 }

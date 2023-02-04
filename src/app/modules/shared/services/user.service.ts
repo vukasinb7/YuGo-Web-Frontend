@@ -4,7 +4,9 @@ import {Observable} from "rxjs";
 import {environment} from "../../../../enviroments/environment";
 import {UsersInfoPaged} from "../../feature/account/models/UsersInfoPaged";
 import {UserInfo} from "../models/UserInfo";
-import {UserSimpleInfo} from "../models/UserSimpleInfo";
+import {AllNotes} from "../models/AllNotes";
+import {Note} from "../../feature/account/models/Note";
+import {MessageSimplifiedInfo} from "../models/MessageSimplifiedInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +23,12 @@ export class UserService {
     return this.http.get<UserInfo>(environment.apiHost + `user/${userId}`);
   }
 
-  getUserByEmail(email : string) : Observable<UserSimpleInfo>{
-    return this.http.get<UserSimpleInfo>(environment.apiHost + `user/${email}/email` );
+  resetPasswordWithCode(code:number,password:string):Observable<string>{
+    return  this.http.put<string>(environment.apiHost+`user/resetPassword`,{"code":code,"newPassword":password})
   }
 
-  resetPasswordWithCode(code:number,password:string):Observable<any>{
-    return  this.http.put(environment.apiHost+`user/resetPassword`,{"code":code,"newPassword":password})
-  }
-  sendPasswordCode(id:number):Observable<any>{
-    return this.http.get<any>(environment.apiHost+`user/${id}/resetPassword`)
-  }
-  sendPasswordCodeEfficient(email:string):Observable<any>{
-    return this.http.post<any>(environment.apiHost+`user/${email}/resetPassword`,{})
+  sendPasswordCodeEfficient(email:string):Observable<string>{
+    return this.http.post<string>(environment.apiHost+`user/${email}/resetPassword`,{})
   }
 
   updateUser(userId : number, role: string, values: any) : Observable<UserInfo>{
@@ -48,24 +44,24 @@ export class UserService {
       }});
   }
 
-  changePassword(userId :number, passwordForm: any): Observable<any>{
-    return this.http.put<any>(environment.apiHost + `user/${userId}/changePassword`,passwordForm)
+  changePassword(userId :number, passwordForm: any): Observable<string>{
+    return this.http.put<string>(environment.apiHost + `user/${userId}/changePassword`,passwordForm)
   }
 
-  blockUser(userId : number) : Observable<any>{
-    return this.http.put<any>(environment.apiHost + `user/${userId}/block`, {});
+  blockUser(userId : number) : Observable<MessageSimplifiedInfo>{
+    return this.http.put<MessageSimplifiedInfo>(environment.apiHost + `user/${userId}/block`, {});
   }
 
-  unblockUser(userId : number) : Observable<any>{
-    return this.http.put(environment.apiHost + `user/${userId}/unblock`, {});
+  unblockUser(userId : number) : Observable<MessageSimplifiedInfo>{
+    return this.http.put<MessageSimplifiedInfo>(environment.apiHost + `user/${userId}/unblock`, {});
   }
 
-  createNote(userId : number, note : string) : Observable<any>{
-    return this.http.post(environment.apiHost + `user/${userId}/note`, {"message":note});
+  createNote(userId : number, note : string) : Observable<Note>{
+    return this.http.post<Note>(environment.apiHost + `user/${userId}/note`, {"message":note});
   }
 
-  getNotes(userId : number, page : number, size :number) : Observable<any>{
-    return this.http.get(environment.apiHost + `user/${userId}/note`,
+  getNotes(userId : number, page : number, size :number) : Observable<AllNotes>{
+    return this.http.get<AllNotes>(environment.apiHost + `user/${userId}/note`,
       {params : {
           page: page,
           size : size

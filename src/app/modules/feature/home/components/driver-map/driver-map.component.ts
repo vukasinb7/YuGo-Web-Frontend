@@ -16,7 +16,7 @@ import {RideService} from "../../../ride/services/ride.service";
 })
 export class DriverMapComponent implements AfterViewInit, OnInit{
 
-  private map:any;
+  private map?:L.Map;
   private driverLocation?:Coordinates;
   private driverLocationMarker?:Marker;
   private destination?:Coordinates;
@@ -46,8 +46,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
   }
   changeDriverStatus(event:string){
     this.driverStatus = event;
-    let val:boolean;
-    val = this.driverStatus == "online";
+    const val:boolean = this.driverStatus == "online";
     this.driverService.updateDriverStatus(this.authService.getId(), {online: val}).subscribe();
   }
 
@@ -78,7 +77,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
           autoRoute:true,
           addWaypoints:false,
           waypoints: [L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)],
-        }).addTo(this.map);
+        }).addTo(this.map!);
       }
       if(this.rideStatus == 2){
         this.path.on('routesfound', e => {
@@ -105,7 +104,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
     this.rideStatus = 0;
     this.calculateDistance = 0;
     this.inrideDataReady = false;
-    this.map.removeControl(this.path);
+    this.map!.removeControl(this.path!);
     this.path = undefined;
     this.destination = undefined;
     this.driverRideService.endCurrentRide();
@@ -135,7 +134,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
       if(this.driverLocationMarker){
         this.driverLocationMarker.setLatLng([coordinates.latitude, coordinates.longitude]);
       }else {
-        this.driverLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map);
+        this.driverLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map!);
       }
       this.checkForRoute();
     });

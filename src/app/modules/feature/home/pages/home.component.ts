@@ -11,8 +11,8 @@ export class HomeComponent implements OnInit{
   constructor(private authService:AuthService, private passengerRideService:PassengerRideNotificationsService){
   }
 
-  hasActiveRide:boolean = false;
-  role?:String;
+  hasActiveRide = false;
+  role?:string;
 
   ngOnInit(): void {
     this.authService.userState$.subscribe(value => {

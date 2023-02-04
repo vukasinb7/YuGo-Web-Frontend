@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RideProperties} from "../model/RideProperties";
 import {LocationInfo} from "../../../shared/models/LocationInfo";
 import {RideService} from "../services/ride.service";
@@ -23,9 +23,9 @@ import {MatDialog} from "@angular/material/dialog";
   styleUrls: ['./ride.component.css']
 })
 export class RideComponent implements OnInit{
-  formPageIndex: number = 0;
+  formPageIndex = 0;
 
-  isDataReady:boolean = false;
+  isDataReady = false;
 
   rideDateTime?:Date;
   rideProperties?:RideProperties;
@@ -33,7 +33,7 @@ export class RideComponent implements OnInit{
   toAddress?:LocationInfo;
   passengers?:UserSimpleInfo[];
 
-  searchingDriver:boolean = false;
+  searchingDriver = false;
 
   errorMessageEvent:Subject<string> = new Subject<string>();
   rideFoundEvent:BehaviorSubject<RideInfo | undefined> = new BehaviorSubject<RideInfo | undefined>(undefined);
@@ -71,7 +71,7 @@ export class RideComponent implements OnInit{
   }
 
   async bookRide(){
-    let ride:RideBooking = {
+    const ride:RideBooking = {
       locations:[{departure:this.fromAddress!, destination:this.toAddress!}],
       passengers:this.passengers!,
       vehicleType:this.rideProperties!.vehicleTypeInfo.vehicleTypeName,
@@ -107,7 +107,7 @@ export class RideComponent implements OnInit{
       this.passengersChangedEvent.next(favoriteRoute.passengers);
       this.vehicleTypeService.getVehicleTypes().then(result => {
         let vehicleType:VehicleType | undefined;
-        for(let vType of result){
+        for(const vType of result){
           if(vType.vehicleType == favoriteRoute.vehicleType){
             vehicleType = vType;
             break;
@@ -143,7 +143,7 @@ export class RideComponent implements OnInit{
         this.rideFoundEvent.next(ride);
         this.isDataReady = true;
       });
-      let userID:number = this.authService.getId();
+      const userID:number = this.authService.getId();
       if(userID == -1){
         return;
       }
@@ -154,7 +154,7 @@ export class RideComponent implements OnInit{
           this.rideFoundEvent.next(ride);
           this.isDataReady = true;
         },
-        error: err => {
+        error: () => {
           this.formPageIndex = 0;
           this.isDataReady = true;
         }
@@ -165,7 +165,7 @@ export class RideComponent implements OnInit{
   }
 
   addToFavorite() {
-    let ride = {
+    const ride = {
       name:"",
       id:"",
       locations:[{departure:this.fromAddress!, destination:this.toAddress!}],

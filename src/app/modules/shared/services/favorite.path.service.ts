@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {environment} from "../../../../enviroments/environment";
 import {FavoritePathInfo} from "../../feature/favorite-path/models/FavoritePathInfo";
 import {HttpClient} from "@angular/common/http";
+import {CreateFavoriteRideDTO} from "../models/CreateFavoriteRideDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,10 @@ export class FavoritePathService {
     return this.http.get<FavoritePathInfo[]>(environment.apiHost + `ride/favorites`);
   }
 
-  deleteFavoritePath(id:number):Observable<any>{
-    return this.http.delete<any>(environment.apiHost+`ride/favorites/${id}`);
+  deleteFavoritePath(id:number):Observable<void>{
+    return this.http.delete<void>(environment.apiHost+`ride/favorites/${id}`);
   }
-  addFavoritePath(values:any):Observable<any>{
-    return this.http.post(environment.apiHost + `ride/favorites`, values);
+  addFavoritePath(values:CreateFavoriteRideDTO):Observable<FavoritePathInfo>{
+    return this.http.post<FavoritePathInfo>(environment.apiHost + `ride/favorites`, values);
   }
 }

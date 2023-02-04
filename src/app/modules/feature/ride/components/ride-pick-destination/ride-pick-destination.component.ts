@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MapService} from "../../../home/services/map.service";
 import {DestinationPickerService} from "../../services/destination-picker.service";
 import {LocationInfo} from "../../../../shared/models/LocationInfo";
-import {ReplaySubject, Subject} from "rxjs";
+import {ReplaySubject} from "rxjs";
 
 @Component({
   selector: 'app-ride-pick-destination',
@@ -90,7 +90,6 @@ export class RidePickDestinationComponent implements AfterViewInit, OnInit{
   }
 
   onAddressSelected(address:any){
-    console.log(address);
     if(this.selectedField == "from"){
       this.selectedFromAddress = {
         address: address.display_name,

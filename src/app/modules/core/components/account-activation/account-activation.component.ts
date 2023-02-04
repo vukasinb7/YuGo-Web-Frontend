@@ -17,7 +17,7 @@ export class AccountActivationComponent implements OnInit{
    this._route.queryParamMap.subscribe(params => {
       this.paramsObject = { ...params.keys, ...params };
       if (this.paramsObject.params["accountActivatedDialog"]==true)
-        this.passengerService.activatePassenger(this.paramsObject.params["code"]).subscribe({next:()=>{}});
+        this.passengerService.activatePassenger(this.paramsObject.params["code"]).subscribe();
     })
   }
 

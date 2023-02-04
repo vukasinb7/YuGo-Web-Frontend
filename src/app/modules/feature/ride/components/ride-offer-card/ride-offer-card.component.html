@@ -12,7 +12,7 @@
   <div *ngIf="!rejectionFormEnabled" class="d-flex justify-content-between m-3">
     <div class="d-flex align-items-center">
       <img [src]=profilePicture.picture class=" profile-pic rounded-circle" width="70px" height="70px" style="outline: 4px solid  #fad02c;"
-           (error)="onProfilePictureError($event)" [matTooltip]="profilePicture.name" matTooltipPosition="above" alt="Profile picture">
+            [matTooltip]="profilePicture.name" matTooltipPosition="above" alt="Profile picture">
       <h5 class="mb-0 mx-2">{{passengerName}}</h5>
     </div>
     <div id="other-passengers-container" class="d-inline-flex w-50 align-content-center align-items-center justify-content-center">

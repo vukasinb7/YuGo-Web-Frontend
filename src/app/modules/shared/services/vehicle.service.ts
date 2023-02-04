@@ -5,6 +5,7 @@ import {environment} from "../../../../enviroments/environment";
 import {Vehicle} from "../models/Vehicle";
 import {VehicleChangeRequestsPaged} from "../../feature/vehicle/model/VehicleChangeRequestsPaged";
 import {LocationInfo} from "../models/LocationInfo";
+import {MessageSimplifiedInfo} from "../models/MessageSimplifiedInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,8 @@ export class VehicleService {
   createVehicle(driverId : number, vehicle : Vehicle): Observable<Vehicle>{
     return this.http.post<Vehicle>(environment.apiHost + `driver/${driverId}/vehicle`, vehicle);
   }
-  makeVehicleChangeRequest(driverId : number, vehicle : Vehicle) : Observable<any>{
-    return this.http.post<any>(environment.apiHost + `vehicle/${driverId}/makeRequest`, vehicle)
+  makeVehicleChangeRequest(driverId : number, vehicle : Vehicle) : Observable<MessageSimplifiedInfo>{
+    return this.http.post<MessageSimplifiedInfo>(environment.apiHost + `vehicle/${driverId}/makeRequest`, vehicle)
   }
   getVehicleChangeRequests(page: number, size: number) : Observable<VehicleChangeRequestsPaged>{
     return this.http.get<VehicleChangeRequestsPaged>(environment.apiHost + `vehicle/changeRequests`,
@@ -36,10 +37,10 @@ export class VehicleService {
           size : size
         }})
   }
-  acceptVehicleChangeRequest(requestId: number): Observable<any>{
-    return this.http.post<any>(environment.apiHost + `vehicle/${requestId}/acceptRequest`, {})
+  acceptVehicleChangeRequest(requestId: number): Observable<MessageSimplifiedInfo>{
+    return this.http.post<MessageSimplifiedInfo>(environment.apiHost + `vehicle/${requestId}/acceptRequest`, {})
   }
-  rejectVehicleChangeRequest(requestId: number): Observable<any>{
-    return this.http.post<any>(environment.apiHost + `vehicle/${requestId}/rejectRequest`, {})
+  rejectVehicleChangeRequest(requestId: number): Observable<MessageSimplifiedInfo>{
+    return this.http.post<MessageSimplifiedInfo>(environment.apiHost + `vehicle/${requestId}/rejectRequest`, {})
   }
 }

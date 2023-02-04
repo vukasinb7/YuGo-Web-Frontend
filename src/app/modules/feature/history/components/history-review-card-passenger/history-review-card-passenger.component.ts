@@ -169,11 +169,7 @@ export class HistoryReviewCardPassengerComponent  {
     else if (this.vehicleForm.value["rating1v"])
       rating = 1;
     if (rating != 0) {
-      this.reviewService.createVehicleReview(this.ride.id, rating, this.vehicleForm.value["commentv"]).subscribe({
-        next: () => {
-
-        }
-      });
+      this.reviewService.createVehicleReview(this.ride.id, rating, this.vehicleForm.value["commentv"]).subscribe();
       this.vehicleForm.disable();
       document.getElementById("submit-vehicle")!.hidden = true;
       this.enabledReview[0] = false;

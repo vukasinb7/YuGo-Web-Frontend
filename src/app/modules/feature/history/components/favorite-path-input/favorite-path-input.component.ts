@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
 import {RideInfo} from "../../../../shared/models/RideInfo";
+import {CreateFavoriteRideDTO} from "../../../../shared/models/CreateFavoriteRideDTO";
 
 @Component({
   selector: 'app-favorite-path-input',
@@ -28,7 +29,7 @@ export class FavoritePathInputComponent {
         "vehicleType":this.ride.vehicleType,
         "babyTransport":this.ride.babyTransport,
         "petTransport":this.ride.petTransport
-      };
+      } as CreateFavoriteRideDTO;
       this.favoritePathService.addFavoritePath(favoritePath).subscribe({next:()=>{
           this.dialogRef.close();
         }});
