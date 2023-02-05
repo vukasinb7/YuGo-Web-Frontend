@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {Observable, take} from "rxjs";
+import {BehaviorSubject, Observable, take} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Panic} from "../models/Panic";
@@ -17,7 +17,7 @@ export class UsersPanicsComponent implements OnInit, AfterViewInit{
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-  dataSourceObservable: Observable<any>;
+  dataSourceObservable: BehaviorSubject<Panic[]>;
   constructor(private _panicService: PanicService, private _snackBar : MatSnackBar) {
     this.dataSourceObservable = this.dataSource.connect();
   }

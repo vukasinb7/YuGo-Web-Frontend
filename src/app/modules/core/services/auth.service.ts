@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable, Subject} from "rxjs";
 import { environment } from 'src/enviroments/environment';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Token} from "../models/Token";
+import {Login} from "../models/login";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class AuthService {
     this.user$.next(this.getRole());
   }
 
-  logIn(auth: any): Observable<Token> {
+  logIn(auth: { password: string | null | undefined; email: string | null | undefined }): Observable<Token> {
     return this.http.post<Token>(environment.apiHost + 'user/login', auth, {
       headers: this.headers,
     });
@@ -37,25 +38,34 @@ export class AuthService {
 
   getRole(): string {
     if (this.isLoggedIn()) {
-      const accessToken: any = localStorage.getItem('token');
+      const accessToken = localStorage.getItem('token');
       const helper = new JwtHelperService();
-      return helper.decodeToken(accessToken).role;
+      if(accessToken!=null)
+        return helper.decodeToken(accessToken).role;
+      else
+        return "UNREGISTERED";
     }
     return "UNREGISTERED";
   }
   getEmail(): string{
     if(this.isLoggedIn()){
-      const accessToken: any = localStorage.getItem('token');
+      const accessToken = localStorage.getItem('token');
       const helper = new JwtHelperService();
-      return helper.decodeToken(accessToken).email;
+      if(accessToken!=null)
+        return helper.decodeToken(accessToken).email;
+      else
+        return "";
     }
     return "";
   }
   getId(): number {
     if (this.isLoggedIn()) {
-      const accessToken: any = localStorage.getItem('token');
+      const accessToken = localStorage.getItem('token');
       const helper = new JwtHelperService();
-      return helper.decodeToken(accessToken).id;
+      if (accessToken!=null)
+        return helper.decodeToken(accessToken).id;
+      else
+        return -1;
     }
     return -1;
   }
@@ -69,7 +79,7 @@ export class AuthService {
   }
 
   refreshToken() : Observable<Token>{
-    const refreshToken: any = localStorage.getItem('refreshToken');
-    return this.http.post<any>(environment.apiHost + 'user/refreshToken', {"refreshToken": refreshToken});
-  }
+      const refreshToken= localStorage.getItem('refreshToken');
+      return this.http.post<Token>(environment.apiHost + 'user/refreshToken', {"refreshToken": refreshToken});
+    }
 }
