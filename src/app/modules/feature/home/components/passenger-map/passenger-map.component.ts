@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {LeafletMouseEvent, Marker} from 'leaflet';
 import 'leaflet-routing-machine';
@@ -19,7 +19,7 @@ import {VehicleService} from "../../../../shared/services/vehicle.service";
   templateUrl: './passenger-map.component.html',
   styleUrls: ['./passenger-map.component.css']
 })
-export class PassengerMapComponent implements AfterViewInit,OnInit{
+export class PassengerMapComponent implements AfterViewInit, OnInit, OnDestroy{
   private map:any;
   private fromAddressMarker?:Marker;
   private toAddressMarker?:Marker;
@@ -34,7 +34,7 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   rideDistance?:number;
   rideDistanceLeftChanged:Subject<number> = new Subject<number>();
 
-  private vehiclesUpdateSubscription?: Subscription;
+  private vehiclesUpdateSubscription: Subscription;
   private vehiclesMarkersLayout!:L.LayerGroup;
   private vehiclesMarkersMap = new Map<number, L.Marker>();
   private counter = 0;
@@ -191,7 +191,7 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
         });
 
 
-        this.vehiclesUpdateSubscription?.unsubscribe();
+        this.vehiclesUpdateSubscription.unsubscribe();
         this.counter = 0;
         this.vehiclesMarkersLayout.clearLayers();
         this.vehiclesUpdateSubscription = interval(1000).subscribe((() => {
@@ -300,5 +300,9 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
         panelClass: ["snack-bar-style"],
       });
     });
+  }
+
+  ngOnDestroy() {
+    this.vehiclesUpdateSubscription.unsubscribe();
   }
 }

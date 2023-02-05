@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import * as L from "leaflet";
-import {interval} from "rxjs";
+import {interval, Subscription} from "rxjs";
 import {MapService} from "../../services/map.service";
 import {VehicleService} from "../../../../shared/services/vehicle.service";
 import {RideService} from "../../../ride/services/ride.service";
@@ -22,10 +22,11 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
   private vehiclesMarkersLayout:any;
   private vehiclesMarkersMap = new Map<number, any>();
   private counter = 0;
+  private vehiclesUpdateSubscription: Subscription;
   constructor(private _mapService:MapService, private _vehicleService: VehicleService,
               private _rideService: RideService, private _dialog: MatDialog,
               private _panicService: PanicService){
-    interval(1000).subscribe((() => {
+    this.vehiclesUpdateSubscription = interval(1000).subscribe((() => {
       this.updateVehicles();
     }));
   }
@@ -107,10 +108,10 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
   private openRideInfo(ride: RideInfo){
     const ridePreview = this._dialog.open(HistoryDetailedRideCardComponent, {
       minWidth: '300px',
-      maxWidth: '500px',
+      maxWidth: '550px',
       minHeight: '650px',
       width: '30%',
-      height: '50%',
+      height: '80%',
     })
     const ridePreviewDialogInstance = ridePreview.componentInstance;
     ridePreviewDialogInstance.ride = ride;
@@ -152,5 +153,6 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
       this.map.off();
       this.map.remove();
     }
+    this.vehiclesUpdateSubscription.unsubscribe();
   }
 }
