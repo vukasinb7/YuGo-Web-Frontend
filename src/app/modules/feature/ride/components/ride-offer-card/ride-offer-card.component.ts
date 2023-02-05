@@ -24,7 +24,7 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
   rejectionText?:string = "";
   rejectionFormEnabled = false;
   public passengersProfilePics:Array<any>;
-  profilePicture: any;
+  public profilePicture:any="assets/img/ADMIN_AVATAR.png";
 
   constructor(private mapService:MapService,private dialogRef: MatDialogRef<RideOfferCardComponent>,
               @Inject(MAT_DIALOG_DATA) private data:RideInfo,
