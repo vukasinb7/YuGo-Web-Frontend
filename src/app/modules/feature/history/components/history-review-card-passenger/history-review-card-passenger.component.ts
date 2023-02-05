@@ -23,7 +23,7 @@ export class HistoryReviewCardPassengerComponent  {
   userId: number;
   role: string;
 
-  constructor(private reviewService: ReviewService, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private reviewService: ReviewService, @Inject(MAT_DIALOG_DATA) public data: RideDataInfo) {
     this.ride = data.ride;
     this.userId = data.userId;
     this.role = data.role;
@@ -75,7 +75,9 @@ export class HistoryReviewCardPassengerComponent  {
             this.vehicleForm.patchValue({
               commentv: this.reviewList[0].comment
             });
-            document.getElementById("submit-vehicle")!.hidden = true;
+            const submitVehicle=document.getElementById("submit-vehicle")
+            if(submitVehicle!=null)
+              submitVehicle.hidden = true;
             this.vehicleForm.disable();
             this.enabledReview[0] = false;
 
@@ -85,7 +87,9 @@ export class HistoryReviewCardPassengerComponent  {
               this.vehicleForm.patchValue({
                 commentv: "Time for review expired."
               });
-              document.getElementById("submit-vehicle")!.hidden = true;
+              const submitVehicle=document.getElementById("submit-vehicle")
+              if(submitVehicle!=null)
+                submitVehicle.hidden = true;
               this.vehicleForm.disable();
               this.enabledReview[0] = false;
             }
@@ -95,7 +99,9 @@ export class HistoryReviewCardPassengerComponent  {
             this.rideForm.patchValue({
               commentr: this.reviewList[1].comment
             });
-            document.getElementById("submit-ride")!.hidden = true;
+            const submitRide=document.getElementById("submit-ride")
+            if(submitRide!=null)
+              submitRide.hidden = true;
             this.rideForm.disable();
             this.enabledReview[1] = false;
 
@@ -104,7 +110,9 @@ export class HistoryReviewCardPassengerComponent  {
               this.rideForm.patchValue({
                 commentr: "Time for review expired."
               });
-              document.getElementById("submit-ride")!.hidden = true;
+              const submitRide=document.getElementById("submit-ride")
+              if(submitRide!=null)
+                submitRide.hidden = true;
               this.rideForm.disable();
               this.enabledReview[1] = false;
             }
@@ -119,7 +127,9 @@ export class HistoryReviewCardPassengerComponent  {
               this.rideForm.patchValue({
                 commentr: "Time for review expired."
               });
-              document.getElementById("submit-ride")!.hidden = true;
+              const submitRide=document.getElementById("submit-ride")
+                if(submitRide!=null)
+                  submitRide.hidden = true;
               this.rideForm.disable();
               this.enabledReview[1] = false;
             }
@@ -128,7 +138,9 @@ export class HistoryReviewCardPassengerComponent  {
             this.vehicleForm.patchValue({
               commentv: "Time for review expired."
             });
-            document.getElementById("submit-vehicle")!.hidden = true;
+            const submitVehicle=document.getElementById("submit-vehicle");
+            if (submitVehicle!=null)
+              submitVehicle.hidden = true;
             this.vehicleForm.disable();
             this.enabledReview[0] = false;
           }
@@ -171,7 +183,9 @@ export class HistoryReviewCardPassengerComponent  {
     if (rating != 0) {
       this.reviewService.createVehicleReview(this.ride.id, rating, this.vehicleForm.value["commentv"]).subscribe();
       this.vehicleForm.disable();
-      document.getElementById("submit-vehicle")!.hidden = true;
+      const submitVehicle=document.getElementById("submit-vehicle");
+      if (submitVehicle!=null)
+        submitVehicle.hidden = true;
       this.enabledReview[0] = false;
       document.getElementById("stars-vehicle")?.classList.remove("invalid-error");
 
@@ -196,7 +210,9 @@ export class HistoryReviewCardPassengerComponent  {
       this.reviewService.createRideReview(this.ride.id, rating, this.rideForm.value["commentr"]).subscribe({
       });
       this.rideForm.disable();
-      document.getElementById("submit-ride")!.hidden = true;
+      const submitRide=document.getElementById("submit-ride");
+      if (submitRide!=null)
+        submitRide.hidden = true;
       this.enabledReview[1] = false;
       document.getElementById("stars-ride")?.classList.remove("invalid-error");
 
@@ -205,4 +221,9 @@ export class HistoryReviewCardPassengerComponent  {
       document.getElementById("stars-ride")?.classList.add("invalid-error");
     }
   }
+}
+export interface RideDataInfo{
+  ride :RideInfo;
+  userId:number;
+  role:string;
 }

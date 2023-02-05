@@ -71,23 +71,25 @@ export class RideComponent implements OnInit{
   }
 
   async bookRide(){
-    const ride:RideBooking = {
-      locations:[{departure:this.fromAddress!, destination:this.toAddress!}],
-      passengers:this.passengers!,
-      vehicleType:this.rideProperties!.vehicleTypeInfo.vehicleTypeName,
-      babyTransport:this.rideProperties!.includeBabies,
-      petTransport:this.rideProperties!.includePets,
-      scheduledTime: (new Date(this.rideDateTime!.getTime() - this.rideDateTime!.getTimezoneOffset() * 60000)).toISOString()
-    };
+    if(this.passengers!=null && this.rideProperties!=null && this.rideDateTime!=null && this.fromAddress!=null && this.toAddress!=null) {
+      const ride: RideBooking = {
+        locations: [{departure: this.fromAddress, destination: this.toAddress}],
+        passengers: this.passengers,
+        vehicleType: this.rideProperties.vehicleTypeInfo.vehicleTypeName,
+        babyTransport: this.rideProperties.includeBabies,
+        petTransport: this.rideProperties.includePets,
+        scheduledTime: (new Date(this.rideDateTime.getTime() - this.rideDateTime.getTimezoneOffset() * 60000)).toISOString()
+      };
 
-    this.rideService.createRide(ride).subscribe({
-      next: response => {
-        this.rideFoundEvent.next(response);
-      },
-      error: err => {
-        this.rideFoundEvent.error(err);
-      }
-    });
+      this.rideService.createRide(ride).subscribe({
+        next: response => {
+          this.rideFoundEvent.next(response);
+        },
+        error: err => {
+          this.rideFoundEvent.error(err);
+        }
+      });
+    }
 
 
   }
@@ -113,23 +115,29 @@ export class RideComponent implements OnInit{
             break;
           }
         }
-        this.imageService.getImage(vehicleType!.imgPath).then(resp => {
-          const vehicleTypeCardData:VehicleTypeCardData = {
-            id: vehicleType!.id,
-            image: resp,
-            pricePerKm: vehicleType!.pricePerKm,
-            vehicleTypeName: vehicleType!.vehicleType
-          }
-          const rideProperties:RideProperties = {
-            vehicleTypeInfo: vehicleTypeCardData,
-            includePets: favoriteRoute.petTransport,
-            includeBabies: favoriteRoute.babyTransport
-          }
-          this.ridePropertiesChangedEvent.next(rideProperties);
-        });
+        if (vehicleType!=null) {
+          this.imageService.getImage(vehicleType.imgPath).then(resp => {
+            if (vehicleType!=null) {
+              const vehicleTypeCardData: VehicleTypeCardData = {
+                id: vehicleType.id,
+                image: resp,
+                pricePerKm: vehicleType.pricePerKm,
+                vehicleTypeName: vehicleType.vehicleType
+              }
+              const rideProperties: RideProperties = {
+                vehicleTypeInfo: vehicleTypeCardData,
+                includePets: favoriteRoute.petTransport,
+                includeBabies: favoriteRoute.babyTransport
+              }
+              this.ridePropertiesChangedEvent.next(rideProperties);
+            }
+          });
+        }
       });
-      this.routeChangedEvent.next({fromAddress: favoriteRoute.locations.at(0)!.departure, toAddress:favoriteRoute.locations.at(0)!.destination});
-    });
+      const path=favoriteRoute.locations.at(0);
+      if (path!=null)
+        this.routeChangedEvent.next({fromAddress: path.departure, toAddress:path.destination});
+      });
     this.authService.onLogoutEvent.subscribe(() => {
       this.returnToFirstPage();
     });
@@ -137,7 +145,7 @@ export class RideComponent implements OnInit{
       if(role != "PASSENGER"){
         return;
       }
-      this.passengerRideService.passengerAddedToRideEvent.subscribe(ride => {
+      this.passengerRideService.passengerAddedToRideEvent.subscribe((ride: RideInfo | undefined) => {
         this.formPageIndex = 4;
         this.searchingDriver = true;
         this.rideFoundEvent.next(ride);
@@ -165,19 +173,21 @@ export class RideComponent implements OnInit{
   }
 
   addToFavorite() {
-    const ride = {
-      name:"",
-      id:"",
-      locations:[{departure:this.fromAddress!, destination:this.toAddress!}],
-      passengers:this.passengers!,
-      vehicleType:this.rideProperties!.vehicleTypeInfo.vehicleTypeName,
-      babyTransport:this.rideProperties!.includeBabies,
-      petTransport:this.rideProperties!.includePets,
-    };
-    this.dialog.open(FavoritePathInputComponent,{
-      data: ride,
-      width: '30%',
-      backdropClass: 'backdropBackground'
-    });
+    if (this.passengers!=null && this.fromAddress!=null && this.toAddress!=null && this.rideProperties!=null) {
+      const ride = {
+        name: "",
+        id: "",
+        locations: [{departure: this.fromAddress, destination: this.toAddress}],
+        passengers: this.passengers,
+        vehicleType: this.rideProperties.vehicleTypeInfo.vehicleTypeName,
+        babyTransport: this.rideProperties.includeBabies,
+        petTransport: this.rideProperties.includePets,
+      };
+      this.dialog.open(FavoritePathInputComponent, {
+        data: ride,
+        width: '30%',
+        backdropClass: 'backdropBackground'
+      });
+    }
   }
 }

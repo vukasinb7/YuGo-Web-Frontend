@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {CreateFavoriteRideDTO} from "../../../../shared/models/CreateFavoriteRideDTO";
+import {RideComponent} from "../../../ride/pages/ride.component";
 
 @Component({
   selector: 'app-favorite-path-input',
@@ -13,7 +14,7 @@ import {CreateFavoriteRideDTO} from "../../../../shared/models/CreateFavoriteRid
 export class FavoritePathInputComponent {
 
   ride:RideInfo;
-  constructor(private favoritePathService:FavoritePathService,private dialogRef:MatDialogRef<FavoritePathInputComponent>, public dialog: MatDialog,@Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private favoritePathService:FavoritePathService,private dialogRef:MatDialogRef<FavoritePathInputComponent>, public dialog: MatDialog,@Inject(MAT_DIALOG_DATA) public data: RideInfo) {
   this.ride=data;
   }
   newPathForm = new FormGroup({

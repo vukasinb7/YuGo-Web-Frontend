@@ -63,13 +63,15 @@ export class DriverRideNotificationService {
 
   startCurrentRide(){
     this.rideService.currentRide = this.currentRide;
-    this.rideService.startRide(this.currentRide!.id).subscribe();
+    if (this.currentRide!=null)
+      this.rideService.startRide(this.currentRide.id).subscribe();
     this.startRideEvent.next();
   }
 
   endCurrentRide(){
     this.startRideSubscription?.unsubscribe();
-    this.rideService.endRide(this.currentRide!.id).subscribe();
+    if (this.currentRide!=null)
+      this.rideService.endRide(this.currentRide.id).subscribe();
     this.endRideEvent.next();
     if(this.nextRide){
       this.currentRide = this.nextRide;

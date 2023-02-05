@@ -33,9 +33,11 @@ export class RidePickPropertiesComponent implements OnInit{
       this.includePets = properties.includePets;
       this.selectedVehicleType = properties.vehicleTypeInfo;
       for(let i = 0; i < this.vehicleTypes.length; i++){
-        if(this.vehicleTypes.at(i)!.id == this.selectedVehicleType.id){
-          this.changeCarTypeEvent.next(i);
-        }
+        const vehicletype=this.vehicleTypes.at(i);
+        if (vehicletype!=null)
+          if(vehicletype.id == this.selectedVehicleType.id){
+            this.changeCarTypeEvent.next(i);
+          }
       }
     });
     this.vehicleTypeService.getVehicleTypes().then(vehicleTypes => {
@@ -66,12 +68,14 @@ export class RidePickPropertiesComponent implements OnInit{
 
   }
   nextFormPage():void{
-    this.ridePropertiesChangedEvent!.next({
-      includeBabies:this.includeBabies,
-      includePets:this.includePets,
-      vehicleTypeInfo:this.selectedVehicleType!
-    });
-    this.changeFormPageEmitter.emit(1);
+    if(this.ridePropertiesChangedEvent!=null && this.selectedVehicleType!=null) {
+      this.ridePropertiesChangedEvent.next({
+        includeBabies: this.includeBabies,
+        includePets: this.includePets,
+        vehicleTypeInfo: this.selectedVehicleType
+      });
+      this.changeFormPageEmitter.emit(1);
+    }
   }
   previousFormPage():void{
     this.changeFormPageEmitter.emit(-1);

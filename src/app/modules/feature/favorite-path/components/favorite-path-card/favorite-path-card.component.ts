@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {FavoritePathInfo} from "../../models/FavoritePathInfo";
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {FavoritePathDetailedCardComponent} from "../favorite-path-detailed-card/favorite-path-detailed-card.component";
 import {Router} from "@angular/router";
 import {FavoriteRouteLoadingService} from "../../../ride/services/favorite-route-loading.service";
@@ -29,7 +29,7 @@ export class FavoritePathCardComponent implements OnInit{
       }})
     document.getElementsByClassName("delete-btn")
   }
-  viewDetails(path: any, event:Event) {
+  viewDetails(path: FavoritePathInfo) {
     this.dialog.open(FavoritePathDetailedCardComponent,{
       data:path,
       width: '25%',

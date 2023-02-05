@@ -51,11 +51,19 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
   }
 
   private initMap():void{
-    this.map = L.map('map-driver', {
-      center:[this.driverLocation!.latitude, this.driverLocation!.longitude],
-      scrollWheelZoom:false,
-      zoom:13
-    });
+    if(this.driverLocation!=null) {
+      this.map = L.map('map-driver', {
+        center: [this.driverLocation.latitude, this.driverLocation.longitude],
+        scrollWheelZoom: false,
+        zoom: 13
+      });}else{
+      this.map = L.map('map-driver', {
+        center: [44,19],
+        scrollWheelZoom: false,
+        zoom: 13
+      });
+    }
+
     const tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
@@ -73,24 +81,27 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
       if(this.path){
         this.path.setWaypoints([L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)]);
       }else{
-        this.path = L.Routing.control({
-          autoRoute:true,
-          addWaypoints:false,
-          waypoints: [L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)],
-        }).addTo(this.map!);
+        if (this.map!=null)
+          this.path = L.Routing.control({
+            autoRoute:true,
+            addWaypoints:false,
+            waypoints: [L.latLng(this.driverLocation.latitude, this.driverLocation.longitude), L.latLng(this.destination.latitude, this.destination.longitude)],
+          }).addTo(this.map);
       }
       if(this.rideStatus == 2){
-        this.path.on('routesfound', e => {
-          const routes:any = e.routes;
-          const summary = routes[0].summary;
-          const distance:number = summary.totalDistance / 1000.0;
-          if(this.calculateDistance == 1){
-            this.calculateDistance = 2;
-            this.rideDistance = distance;
-            this.inrideDataReady = true;
-          }
-          this.distanceLeftChanged.next(distance);
-        });
+        if(this.path!=null) {
+          this.path.on('routesfound', e => {
+            const routes: any = e.routes;
+            const summary = routes[0].summary;
+            const distance: number = summary.totalDistance / 1000.0;
+            if (this.calculateDistance == 1) {
+              this.calculateDistance = 2;
+              this.rideDistance = distance;
+              this.inrideDataReady = true;
+            }
+            this.distanceLeftChanged.next(distance);
+          });
+        }
       }
     }
   }
@@ -104,7 +115,8 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
     this.rideStatus = 0;
     this.calculateDistance = 0;
     this.inrideDataReady = false;
-    this.map!.removeControl(this.path!);
+    if(this.map!=null && this.path!=null)
+    this.map.removeControl(this.path);
     this.path = undefined;
     this.destination = undefined;
     this.driverRideService.endCurrentRide();
@@ -134,7 +146,8 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
       if(this.driverLocationMarker){
         this.driverLocationMarker.setLatLng([coordinates.latitude, coordinates.longitude]);
       }else {
-        this.driverLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map!);
+        if (this.map!=null)
+          this.driverLocationMarker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(this.map);
       }
       this.checkForRoute();
     });
@@ -149,6 +162,7 @@ export class DriverMapComponent implements AfterViewInit, OnInit{
   }
 
   nodPassengers() {
-    this.rideService.notifyPassengersThatVehicleHasArrived(this.currentRide!.id).subscribe();
+    if(this.currentRide!=null)
+      this.rideService.notifyPassengersThatVehicleHasArrived(this.currentRide.id).subscribe();
   }
 }

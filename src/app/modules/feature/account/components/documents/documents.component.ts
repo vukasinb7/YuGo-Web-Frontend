@@ -109,7 +109,8 @@ export class DocumentsComponent implements OnInit{
     this.editEnabled = false;
     if (this.uploadedImageDriver!=undefined){
       const driverFormData = new FormData();
-      driverFormData.append('image', this.uploadedImageDriver!, this.uploadedImageDriver!.name);
+      if(this.uploadedImageDriver!=null)
+        driverFormData.append('image', this.uploadedImageDriver, this.uploadedImageDriver.name);
       this.driverService.createDocument(this.userId,driverFormData,"DRIVING_LICENCE").subscribe(
         {next:(result)=>{
           if (this.driverDocument!=undefined)
@@ -144,7 +145,8 @@ export class DocumentsComponent implements OnInit{
     }
     if(this.uploadedImageVehicle!=undefined){
       const vehicleFormData = new FormData();
-      vehicleFormData.append('image', this.uploadedImageVehicle!, this.uploadedImageVehicle!.name);
+      if(this.uploadedImageVehicle!= null)
+        vehicleFormData.append('image', this.uploadedImageVehicle, this.uploadedImageVehicle.name);
 
       this.driverService.createDocument(this.userId,vehicleFormData,"VEHICLE_REGISTRATION").subscribe(
         {next:(result)=>{
@@ -179,12 +181,14 @@ export class DocumentsComponent implements OnInit{
     }
   }
   public onImageUploadDriver(event:Event) {
-    // @ts-ignore
-    this.uploadedImageDriver = event.target.files[0];
+    const files=(event.target as HTMLInputElement).files;
+    if(files!=null)
+      this.uploadedImageDriver=files[0];
   }
   public onImageUploadVehicle(event:Event) {
-    // @ts-ignore
-    this.uploadedImageVehicle = event.target.files[0];
+    const files=(event.target as HTMLInputElement).files;
+    if(files!=null)
+      this.uploadedImageVehicle=files[0];
   }
   openDialog(path:string) {
     if (path != "No file") {

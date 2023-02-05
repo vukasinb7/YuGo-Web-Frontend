@@ -7,7 +7,6 @@ import {ReplaySubject} from "rxjs";
 })
 export class FavoriteRouteLoadingService {
 
-  constructor() { }
 
   loadFavoriteRoute:ReplaySubject<FavoritePathInfo> = new ReplaySubject<FavoritePathInfo>(1);
 }

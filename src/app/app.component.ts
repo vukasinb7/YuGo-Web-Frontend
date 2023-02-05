@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy{
   isLoaded = false;
   @ViewChild('passengerLiveChat') passengerLiveChat: LiveChatComponent | undefined;
 
-  components:ComponentRef<any>[]=[];
+  components:ComponentRef<LiveChatComponent>[]=[];
 
   private role: string | undefined;
   private userID: number | undefined;
@@ -69,9 +69,10 @@ export class AppComponent implements OnInit, OnDestroy{
   private subscribeToSocket(){
     if(this.isLoaded){
       if(this.role == "DRIVER"){
-        this.driverService.getLocation(this.userID!).subscribe(coordinates => {
-          this.driverRideService.currentDriverLocation.next(coordinates);
-        });
+        if(this.userID!=null)
+          this.driverService.getLocation(this.userID).subscribe(coordinates => {
+            this.driverRideService.currentDriverLocation.next(coordinates);
+          });
         this.stompClient.subscribe("/ride-topic/driver-request/" + this.userID, (frame:Frame) => {
           this.parseRideRequest(frame);
         }, {id:"driver-request"});
@@ -141,8 +142,8 @@ export class AppComponent implements OnInit, OnDestroy{
     }
   }
 
-  getComponent(id:number):ComponentRef<any>{
-    let found= {} as ComponentRef<any>;
+  getComponent(id:number):ComponentRef<LiveChatComponent>{
+    let found= {} as ComponentRef<LiveChatComponent>;
     this.components.forEach(function(cmp){
       if (cmp.instance.id===id)
         found=cmp;

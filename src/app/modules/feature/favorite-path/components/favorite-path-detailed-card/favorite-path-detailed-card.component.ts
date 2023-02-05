@@ -4,7 +4,6 @@ import {FavoritePathInfo} from "../../models/FavoritePathInfo";
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
 import {Router} from "@angular/router";
 import {FavoriteRouteLoadingService} from "../../../ride/services/favorite-route-loading.service";
-import {FavoritePathCardComponent} from "../favorite-path-card/favorite-path-card.component";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {ImageService} from "../../../../core/services/image.service";
 import {DomSanitizer} from "@angular/platform-browser";
@@ -60,8 +59,8 @@ export class FavoritePathDetailedCardComponent implements OnInit{
         {
           next: (passenger) => {
             this.imageService.getProfilePicture(passenger.profilePicture).then(resp => {
-              let objectURL = URL.createObjectURL(resp);
-              let dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
+              const objectURL = URL.createObjectURL(resp);
+              const dto={picture:this._sanitizer.bypassSecurityTrustUrl(objectURL),name:(passenger.name+" "+passenger.surname+"\n"+passenger.email+"\n"+passenger.telephoneNumber)};
 
               this.passengersProfilePics.push(dto);
 

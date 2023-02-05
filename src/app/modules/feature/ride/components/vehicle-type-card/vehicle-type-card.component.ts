@@ -24,7 +24,8 @@ export class VehicleTypeCardComponent implements OnInit, AfterContentInit{
       this.isChecked = this.index == n;
     });
     this.distanceChangedEvent?.subscribe((distance:number) => {
-      this.totalPrice = Math.round(this.vehicleType!.pricePerKm * distance * 100) / 100;
+      if (this.vehicleType!=null)
+        this.totalPrice = Math.round(this.vehicleType.pricePerKm * distance * 100) / 100;
     });
   }
 

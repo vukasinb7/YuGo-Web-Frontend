@@ -150,13 +150,16 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
         this.toAddressMarker = undefined;
         this.hasActiveRide = true;
         this.driverLocationSubscription = this.passengerRideService.driverLocationUpdatedEvent.subscribe(coordinates => {
-          this.path?.setWaypoints([L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination!.latitude, this.destination!.longitude)]);
-          this.path!.on('routesfound', e => {
-            const routes:any = e.routes;
-            const summary = routes[0].summary;
-            const distance:number = summary.totalDistance / 1000.0;
-            this.rideDistanceLeftChanged.next(distance);
-          });
+          if(this.destination!=null)
+            this.path?.setWaypoints([L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination.latitude, this.destination.longitude)]);
+          if (this.path!=null) {
+            this.path.on('routesfound', e => {
+              const routes: any = e.routes;
+              const summary = routes[0].summary;
+              const distance: number = summary.totalDistance / 1000.0;
+              this.rideDistanceLeftChanged.next(distance);
+            });
+          }
         });
         this.passengerRideService.endRideEvent.subscribe(() => {
           this.hasActiveRide = false;

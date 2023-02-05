@@ -39,8 +39,10 @@ export class RidePickDestinationComponent implements AfterViewInit, OnInit{
     });
     }
   nextFormPage(): void {
-    this.routeChangedEvent?.next({fromAddress:this.selectedFromAddress!, toAddress:this.selectedToAddress!});
-    this.changeFormPageEmitter.emit(1);
+    if (this.selectedFromAddress!=null && this.selectedToAddress!=null) {
+      this.routeChangedEvent?.next({fromAddress: this.selectedFromAddress, toAddress: this.selectedToAddress});
+      this.changeFormPageEmitter.emit(1);
+    }
   }
 
   enterSubmit(keyPress: KeyboardEvent):void {

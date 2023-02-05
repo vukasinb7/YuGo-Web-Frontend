@@ -110,7 +110,7 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
     this.loadData();
   }
 
-  viewDetails(ride: any) {
+  viewDetails(ride: RideInfo) {
     this.dialog.open(HistoryDetailedDialogComponent,{
       data: {ride:ride, userId:this.userId, role:this.role},
       width: '60%',

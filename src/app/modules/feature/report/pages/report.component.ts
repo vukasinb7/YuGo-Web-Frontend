@@ -1,12 +1,9 @@
-import {Component, EventEmitter, Inject, Input, LOCALE_ID, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, LOCALE_ID, OnInit, Output} from '@angular/core';
 import {ReportModule} from "../report.module";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {PassengerService} from "../../../shared/services/passenger.service";
-import {MatDialog} from "@angular/material/dialog";
-import {DriverService} from "../../../shared/services/driver.service";
 import {ReportService} from "../services/report.service";
-import {AuthService} from "../../../core/services/auth.service";
 import {formatDate} from "@angular/common";
 import {ActivatedRoute} from "@angular/router";
 
@@ -15,14 +12,14 @@ import {ActivatedRoute} from "@angular/router";
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css']
 })
-export class ReportComponent {
+export class ReportComponent implements OnInit{
   basicData:any;
   basicOptions:any
   horizontalOptions:any;
   reportInfoForm: any;
-  public userId: number = -1;
-  public role: string = "";
-  selected:string="rides";
+  public userId = -1;
+  public role = "";
+  selected="rides";
   @Output()
   dateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
   diagramTitle= "";
@@ -111,7 +108,7 @@ export class ReportComponent {
           "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
           this._locale)).subscribe({
           next: (result) => {
-            let keys: string[] = [];
+            const keys: string[] = [];
             result.keys.forEach(function (value) {
               const date = String(value).split(',');
               keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
@@ -128,7 +125,7 @@ export class ReportComponent {
                 }
               ]
             };
-            let sum = result.values.reduce((a, b) => a + b, 0);
+            const sum = result.values.reduce((a, b) => a + b, 0);
             this.total="Total number of rides: "+sum;
             this.average="Average number of rides: "+Math.round((sum/keys.length)*100)/100;
           }
@@ -139,7 +136,7 @@ export class ReportComponent {
           "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
           this._locale)).subscribe({
           next: (result) => {
-            let keys: string[] = [];
+            const keys: string[] = [];
             result.keys.forEach(function (value) {
               const date = String(value).split(',');
               keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
@@ -156,7 +153,7 @@ export class ReportComponent {
                 }
               ]
             };
-            let sum = result.values.reduce((a, b) => a + b, 0);
+            const sum = result.values.reduce((a, b) => a + b, 0);
             this.total="Total number of rides: "+sum;
             this.average="Average number of rides: "+Math.round((sum/keys.length)*100)/100;
           }
@@ -171,7 +168,7 @@ export class ReportComponent {
           "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
           this._locale)).subscribe({
           next: (result) => {
-            let keys: string[] = [];
+            const keys: string[] = [];
             result.keys.forEach(function (value) {
               const date = String(value).split(',');
               keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
@@ -188,7 +185,7 @@ export class ReportComponent {
                 }
               ]
             };
-            let sum = result.values.reduce((a, b) => a + b, 0);
+            const sum = result.values.reduce((a, b) => a + b, 0);
             this.total="Total number of kilometers: "+Math.round(sum * 100) / 100+"km";
             this.average="Average number of kilometers: "+Math.round((sum/keys.length)*100)/100+"km";
           }
@@ -198,7 +195,7 @@ export class ReportComponent {
         "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
         this._locale)).subscribe({
         next: (result) => {
-          let keys: string[] = [];
+          const keys: string[] = [];
           result.keys.forEach(function (value) {
             const date = String(value).split(',');
             keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
@@ -215,21 +212,21 @@ export class ReportComponent {
               }
             ]
           };
-          let sum = result.values.reduce((a, b) => a + b, 0);
+          const sum = result.values.reduce((a, b) => a + b, 0);
           this.total="Total number of kilometers: "+Math.round(sum * 100) / 100+"km";
           this.average="Average number of kilometers: "+Math.round((sum/keys.length)*100)/100+"km";
         }
       });
       }
     }
-    else if(this.selected="spendings"){
+    else if(this.selected=="spendings"){
       this.diagramTitle="Spendings Per Day";
       if (this.role=="ADMIN"){
         this._reportService.getTotalSpendingsPerDay(formatDate(this.reportInfoForm.get('startDate')?.value,
           "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
           this._locale)).subscribe({
           next: (result) => {
-            let keys: string[] = [];
+            const keys: string[] = [];
             result.keys.forEach(function (value) {
               const date = String(value).split(',');
               keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
@@ -246,7 +243,7 @@ export class ReportComponent {
                 }
               ]
             };
-            let sum = result.values.reduce((a, b) => a + b, 0);
+            const sum = result.values.reduce((a, b) => a + b, 0);
             this.total = "Total spendings: $" + Math.round(sum * 100) / 100;
             this.average = "Average spendings: $" + Math.round((sum / keys.length) * 100) / 100;
           }
@@ -256,7 +253,7 @@ export class ReportComponent {
           "yyyy-MM-dd", this._locale), formatDate(this.reportInfoForm.get('endDate')?.value, "yyyy-MM-dd",
           this._locale)).subscribe({
           next: (result) => {
-            let keys: string[] = [];
+            const keys: string[] = [];
             result.keys.forEach(function (value) {
               const date = String(value).split(',');
               keys.push(String(date[0]) + "-" + String(date[1]) + "-" + String(date[2]));
@@ -273,7 +270,7 @@ export class ReportComponent {
                 }
               ]
             };
-            let sum = result.values.reduce((a, b) => a + b, 0);
+            const sum = result.values.reduce((a, b) => a + b, 0);
             this.total = "Total spendings: $" + Math.round(sum * 100) / 100;
             this.average = "Average spendings: $" + Math.round((sum / keys.length) * 100) / 100;
           }

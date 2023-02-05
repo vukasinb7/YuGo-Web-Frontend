@@ -7,6 +7,7 @@ import {ReviewInfoOut} from "../../models/ReviewInfoOut";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {Observable} from "rxjs";
+import {RideDataInfo} from "../history-review-card-passenger/history-review-card-passenger.component";
 
 @Component({
   selector: 'app-history-review-card-driver',
@@ -23,7 +24,7 @@ export class HistoryReviewCardDriverComponent implements OnInit{
   showReviewError=false;
   passengerName="";
   public ride : RideInfo;
-  constructor(private reviewService: ReviewService, private passengerService: PassengerService, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private reviewService: ReviewService, private passengerService: PassengerService, @Inject(MAT_DIALOG_DATA) public data: RideDataInfo) {
     this.ride = data.ride;
     this.obs = this.dataSource.connect();
   }

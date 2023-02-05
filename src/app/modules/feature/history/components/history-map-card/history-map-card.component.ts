@@ -3,6 +3,7 @@ import {MapService} from "../../../home/services/map.service";
 import * as L from "leaflet";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {RideInfo} from "../../../../shared/models/RideInfo";
+import {RideDataInfo} from "../history-review-card-passenger/history-review-card-passenger.component";
 
 @Component({
   selector: 'app-history-map-card',
@@ -12,7 +13,7 @@ import {RideInfo} from "../../../../shared/models/RideInfo";
 export class HistoryMapCardComponent implements  AfterViewInit{
   private map:any;
   public ride: RideInfo
-  constructor(private mapService:MapService,@Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private mapService:MapService,@Inject(MAT_DIALOG_DATA) public data: RideDataInfo) {
     this.ride = data.ride;
   }
   private initMap():void{

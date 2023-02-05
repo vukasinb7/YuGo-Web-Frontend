@@ -21,13 +21,16 @@ export class RidePickTimeComponent{
     this.selectedDate = this.currentDateTime;
   }
   private getSelectedDateTime():Date{
-    const tokens:string[] = this.selectedTime!.split(':');
-    const hours = Number(tokens[0]);
-    const minutes = Number(tokens[1]);
-    const output:Date = new Date(this.selectedDate!);
-    output.setHours(hours);
-    output.setMinutes(minutes);
-    return output;
+    if (this.selectedDate!=null && this.selectedTime!=null) {
+      const tokens: string[] = this.selectedTime.split(':');
+      const hours = Number(tokens[0]);
+      const minutes = Number(tokens[1]);
+      const output: Date = new Date(this.selectedDate);
+      output.setHours(hours);
+      output.setMinutes(minutes);
+      return output;
+    }
+    return new Date();
   }
 
   nextFormPage():void{

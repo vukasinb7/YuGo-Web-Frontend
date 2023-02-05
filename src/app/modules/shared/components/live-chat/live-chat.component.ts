@@ -71,7 +71,8 @@ export class LiveChatComponent implements OnInit{
   }
   addMessage(message:string,who:string) {
     if(message==="") {
-      message = this.message!;
+      if(this.message!=null)
+        message = this.message;
     }
     const newElement = this.renderer.createElement('li');
     this.renderer.setProperty(newElement, 'innerHTML',message);
@@ -83,13 +84,15 @@ export class LiveChatComponent implements OnInit{
   sendMessage(message:string,who:string){
     this.addMessage(message,who);
     if (this.authService.getRole()!=="ADMIN") {
-      this.liveChatService.sendLiveMessage({userId: this.authService.getId(), message: this.message!}).subscribe(() => {
-          this.message="";
-      });
+      if (this.message!=null)
+        this.liveChatService.sendLiveMessage({userId: this.authService.getId(), message: this.message}).subscribe(() => {
+            this.message="";
+        });
     }else{
-      this.liveChatService.sendLiveResponse({userId: this.id, message: this.message!}).subscribe(()=>{
-        this.message="";
-      });
+      if (this.message!=null)
+        this.liveChatService.sendLiveResponse({userId: this.id, message: this.message}).subscribe(()=>{
+          this.message="";
+        });
     }
   }
 }

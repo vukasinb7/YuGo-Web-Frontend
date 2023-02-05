@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from "rxjs";
 import {RideInfo} from "../../../shared/models/RideInfo";
 import {Coordinates} from "../model/Coordinates";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

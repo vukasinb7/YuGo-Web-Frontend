@@ -7,6 +7,7 @@ import {UserInfo} from "../models/UserInfo";
 import {AllNotes} from "../models/AllNotes";
 import {Note} from "../../feature/account/models/Note";
 import {MessageSimplifiedInfo} from "../models/MessageSimplifiedInfo";
+import {PasswordFormInfo} from "../models/PasswordFormInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class UserService {
       }});
   }
 
-  changePassword(userId :number, passwordForm: any): Observable<string>{
+  changePassword(userId :number, passwordForm: PasswordFormInfo): Observable<string>{
     return this.http.put<string>(environment.apiHost + `user/${userId}/changePassword`,passwordForm)
   }
 

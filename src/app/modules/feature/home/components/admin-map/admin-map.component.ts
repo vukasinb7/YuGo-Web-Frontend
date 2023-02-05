@@ -148,7 +148,9 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
   }
 
   ngOnDestroy() {
-    this.map!.off();
-    this.map!.remove();
+    if(this.map!=null) {
+      this.map.off();
+      this.map.remove();
+    }
   }
 }

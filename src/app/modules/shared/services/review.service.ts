@@ -3,9 +3,6 @@ import {Observable} from "rxjs";
 import {environment} from "../../../../enviroments/environment";
 import {HttpClient} from "@angular/common/http";
 import {ReviewPerPassengerInfo} from "../../feature/history/models/ReviewPerPassengerInfo";
-import {
-  ReviewOut
-} from "../../feature/history/components/history-review-card-driver/history-review-card-driver.component";
 import {ReviewInfoOut} from "../../feature/history/models/ReviewInfoOut";
 
 @Injectable({

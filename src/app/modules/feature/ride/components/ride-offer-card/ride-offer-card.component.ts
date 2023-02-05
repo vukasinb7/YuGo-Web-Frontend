@@ -55,10 +55,12 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
     tiles.addTo(this.map);
   }
   route(depLat:number, depLng:number, destLat:number, destLng:number): void {
-    L.Routing.control({
-      addWaypoints:false,
-      waypoints: [L.latLng(depLat, depLng), L.latLng(destLat, destLng)],
-    }).addTo(this.map!);
+    if (this.map!=null) {
+      L.Routing.control({
+        addWaypoints: false,
+        waypoints: [L.latLng(depLat, depLng), L.latLng(destLat, destLng)],
+      }).addTo(this.map);
+    }
   }
 
 
@@ -71,9 +73,12 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
     L.Marker.prototype.options.icon = DefaultIcon;
 
     this.initMap();
-    const departure:LocationInfo = this.data.locations.at(0)!.departure;
-    const destination:LocationInfo = this.data.locations.at(0)!.destination;
-    this.route(departure.latitude, departure.longitude, destination.latitude, destination.longitude);
+    const path=this.data.locations.at(0);
+    if (path!=null) {
+      const departure: LocationInfo = path.departure;
+      const destination: LocationInfo = path.destination;
+      this.route(departure.latitude, departure.longitude, destination.latitude, destination.longitude);
+    }
   }
 
   rejectRide(){
@@ -92,18 +97,23 @@ export class RideOfferCardComponent implements OnInit,AfterViewInit{
   ngOnInit(): void {
     this.getPassenger();
     this.getPassengers();
-    const departure:LocationInfo = this.data.locations.at(0)!.departure;
-    const destination:LocationInfo = this.data.locations.at(0)!.destination;
-    let tokens:string[] = departure.address.split(',');
-    const departureAddress:string = tokens[0] + " " + tokens[1] + " " + tokens[2];
-    tokens = destination.address.split(',');
-    const destinationAddress:string = tokens[0] + " " + tokens[1] + " " + tokens[2];
-    this.startLocation = departureAddress;
-    this.endLocation = destinationAddress;
-    this.numOfPassengers = this.data.passengers.length;
-    this.passengerService.getPassenger(this.data.passengers.at(0)!.id).subscribe(passenger => {
-      this.passengerName = passenger.name + " " + passenger.surname;
-    });
+    const path=this.data.locations.at(0);
+    if (path!=null) {
+      const departure: LocationInfo = path.departure;
+      const destination: LocationInfo = path.destination;
+      let tokens: string[] = departure.address.split(',');
+      const departureAddress: string = tokens[0] + " " + tokens[1] + " " + tokens[2];
+      tokens = destination.address.split(',');
+      const destinationAddress: string = tokens[0] + " " + tokens[1] + " " + tokens[2];
+      this.startLocation = departureAddress;
+      this.endLocation = destinationAddress;
+      this.numOfPassengers = this.data.passengers.length;
+      const mainPassenger = this.data.passengers.at(0);
+      if (mainPassenger != null)
+        this.passengerService.getPassenger(mainPassenger.id).subscribe(passenger => {
+          this.passengerName = passenger.name + " " + passenger.surname;
+        });
+    }
   }
 
   getPassenger(){

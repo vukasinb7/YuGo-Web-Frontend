@@ -99,11 +99,12 @@ export class AccountInfoComponent implements OnInit{
   }
 
   public onImageUpload(event:Event) {
-    //@ts-ignore
-    this.uploadedImage = event.target.files[0];
+    const files=(event.target as HTMLInputElement).files;
+    if(files!=null)
+      this.uploadedImage=files[0];
     const reader = new FileReader();
     reader.readAsDataURL(this.uploadedImage)
-    reader.onload = (_event) => {
+    reader.onload = () => {
       this.profilePicture = reader.result;
     }
   }

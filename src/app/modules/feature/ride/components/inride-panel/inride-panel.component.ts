@@ -43,9 +43,11 @@ export class InridePanelComponent implements OnInit{
     this.panicDialog = this.dialog.open(PanicDialogComponent);
     this.panicDialog.afterClosed().subscribe(res => {
       if(res != undefined){
-        const rideID:number = this.rideService.currentRide!.id;
-        this.rideService.createPanic(rideID, res.message).subscribe();
-        this.panicEnabled = false;
+        if(this.rideService.currentRide!=null) {
+          const rideID: number = this.rideService.currentRide.id;
+          this.rideService.createPanic(rideID, res.message).subscribe();
+          this.panicEnabled = false;
+        }
       }
     });
   }
@@ -58,9 +60,12 @@ export class InridePanelComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.destinationAddress = this.currentRide!.locations[0].destination.address;
-    this.departureAddress = this.currentRide!.locations[0].departure.address;
-    const estTimeMinutes:number = this.currentRide!.estimatedTimeInMinutes;
+    let estTimeMinutes=0;
+    if (this.currentRide!=null) {
+      this.destinationAddress = this.currentRide.locations[0].destination.address;
+      this.departureAddress = this.currentRide.locations[0].departure.address;
+      estTimeMinutes = this.currentRide.estimatedTimeInMinutes;
+    }
     const hours:number = Math.floor(estTimeMinutes / 60);
     const minutes:number = estTimeMinutes % 60;
     if(hours == 0){
@@ -68,22 +73,26 @@ export class InridePanelComponent implements OnInit{
     }else{
       this.rideEstTime = `${hours}hr ${minutes}min`;
     }
-    this.rideLength = `${Math.round(this.rideLengthKm! * 10) / 10}km`;
+    if (this.rideLengthKm!=null)
+      this.rideLength = `${Math.round(this.rideLengthKm * 10) / 10}km`;
     this.distanceLeftChangedEvent?.subscribe(distance => {
-      const ridePercent:number = Math.ceil((1 - (distance / this.rideLengthKm!)) * 100);
-      this.progressBarHeight = ridePercent+"%";
+      if(this.rideLengthKm!=null) {
+        const ridePercent: number = Math.ceil((1 - (distance / this.rideLengthKm)) * 100);
+        this.progressBarHeight = ridePercent + "%";
+      }
     });
-    if(this.userType == "DRIVER"){
-      const passengerBase:UserSimpleInfo = this.currentRide!.passengers[0];
-      this.passengerService.getPassenger(passengerBase.id).subscribe(user => {
-        this.setupImage(user.profilePicture);
-      });
-    }else if(this.userType == "PASSENGER"){
-      const driverBase:UserSimpleInfo = this.currentRide!.driver;
-      this.driverService.getDriver(driverBase.id).subscribe(user => {
-        this.setupImage(user.profilePicture);
-      });
-    }
+    if (this.currentRide!=null)
+      if(this.userType == "DRIVER"){
+        const passengerBase:UserSimpleInfo = this.currentRide.passengers[0];
+        this.passengerService.getPassenger(passengerBase.id).subscribe(user => {
+          this.setupImage(user.profilePicture);
+        });
+      }else if(this.userType == "PASSENGER"){
+        const driverBase:UserSimpleInfo = this.currentRide.driver;
+        this.driverService.getDriver(driverBase.id).subscribe(user => {
+          this.setupImage(user.profilePicture);
+        });
+      }
 
 
   }

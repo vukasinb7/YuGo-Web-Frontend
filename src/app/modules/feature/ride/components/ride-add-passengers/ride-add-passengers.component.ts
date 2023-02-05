@@ -35,7 +35,8 @@ export class RideAddPassengersComponent implements OnInit{
   }
   nextFormPage(){
     const output:UserSimpleInfo[] = [{id:this.authService.getId(), email:this.authService.getEmail()}, ...this.ridePassengers];
-    this.passengersChangedEvent!.next(output);
+    if (this.passengersChangedEvent!=null)
+      this.passengersChangedEvent.next(output);
     this.changeFormPageEmitter.emit(1);
   }
   addPassenger(){
