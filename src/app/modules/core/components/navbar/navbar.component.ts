@@ -6,6 +6,7 @@ import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {AccountActivationComponent} from "../account-activation/account-activation.component";
+import {DriverService} from "../../../shared/services/driver.service";
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +21,7 @@ export class NavbarComponent implements OnInit{
   registerDialog?: MatDialogRef<PassengerRegisterComponent>;
   accountActivationDialog?: MatDialogRef<AccountActivationComponent>;
 
-  constructor(private _dialog: MatDialog, private _authService: AuthService, private _router: Router, private _route:ActivatedRoute) {
+  constructor(private _dialog: MatDialog, private _authService: AuthService, private _router: Router, private _route:ActivatedRoute, private driverService:DriverService) {
     this.routeQueryParams = _route.queryParams.subscribe(params => {
       if(params['loginDialog']){
         this.registerDialog?.close();
@@ -83,6 +84,9 @@ export class NavbarComponent implements OnInit{
   }
 
   logOut(){
+    if(this._authService.getRole() == "DRIVER"){
+      this.driverService.updateDriverStatus(this._authService.getId(), {online: false}).subscribe();
+    }
     this._authService.logOut().subscribe({
       next: () => {
         localStorage.clear();
