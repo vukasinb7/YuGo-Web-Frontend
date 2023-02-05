@@ -132,6 +132,7 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   }
 
   ngAfterViewInit(): void {
+    console.log("---------------- AfterViewInit ----------------");
     L.Marker.prototype.options.icon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
       iconSize: [25, 41],
@@ -144,15 +145,33 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
     this.passengerRideService.rideAcceptedEvent.subscribe(ride => {
       this.currentRide = ride;
       this.startRideSubscription = this.passengerRideService.startRideEvent.subscribe(() => {
-        this.map.removeControl(this.fromAddressMarker);
+        if(this.fromAddressMarker != undefined && this.toAddressMarker != undefined){
+          this.map.removeControl(this.fromAddressMarker);
+          this.map.removeControl(this.toAddressMarker);
+        }
         this.fromAddressMarker = undefined;
-        this.map.removeControl(this.toAddressMarker);
         this.toAddressMarker = undefined;
         this.hasActiveRide = true;
+        const loc = ride.locations.at(0);
+        if(loc != null){
+          this.destination = loc.destination;
+        }
         this.driverLocationSubscription = this.passengerRideService.driverLocationUpdatedEvent.subscribe(coordinates => {
-          if(this.destination!=null)
-            this.path?.setWaypoints([L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination.latitude, this.destination.longitude)]);
-          if (this.path!=null) {
+          if(this.path == null){
+            if(this.destination!=null){
+              this.path = L.Routing.control({
+                addWaypoints:false,
+                autoRoute:true,
+                waypoints: [L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination!.latitude, this.destination!.longitude)],
+              }).addTo(this.map).on('routesfound', e => {
+                const routes:any = e.routes;
+                const summary = routes[0].summary;
+                this.rideDistance = summary.totalDistance / 1000.0;
+              });
+            }
+          }else{
+            if(this.destination!=null)
+              this.path?.setWaypoints([L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination.latitude, this.destination.longitude)]);
             this.path.on('routesfound', e => {
               const routes: any = e.routes;
               const summary = routes[0].summary;
@@ -160,6 +179,7 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
               this.rideDistanceLeftChanged.next(distance);
             });
           }
+
         });
         this.passengerRideService.endRideEvent.subscribe(() => {
           this.hasActiveRide = false;

@@ -19,7 +19,7 @@ export class RideService {
     return this.http.post<void>(environment.apiHost + `ride/vehicle-arrived/${rideID}`, {});
   }
   getActivePassengerRide(passengerID:number):Observable<RideInfo>{
-    return this.http.get<RideInfo>(environment.apiHost + "ride/passenger/${passengerID}/active");
+    return this.http.get<RideInfo>(environment.apiHost + `ride/passenger/${passengerID}/active`);
   }
   createPanic(rideID:number, message:{reason:string}):Observable<Panic>{
     return this.http.put<Panic>(environment.apiHost + `ride/${rideID}/panic`, message);

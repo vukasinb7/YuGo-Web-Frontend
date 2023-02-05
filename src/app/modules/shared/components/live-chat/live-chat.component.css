@@ -17,7 +17,7 @@ button {
 }
 button.chatbox-open {
   position:fixed;
-  bottom:0px;
+  bottom:10px;
   right:0px;
   width: 52px;
   height: 52px;

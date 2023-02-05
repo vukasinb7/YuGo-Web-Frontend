@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {RideInfo} from "../../../shared/models/RideInfo";
 import {Coordinates} from "../model/Coordinates";
-import {Subject} from "rxjs";
+import {ReplaySubject, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +9,13 @@ import {Subject} from "rxjs";
 export class PassengerRideNotificationsService {
 
 
-  driverLocationUpdatedEvent:Subject<Coordinates> = new Subject<Coordinates>();
+  driverLocationUpdatedEvent:ReplaySubject<Coordinates> = new ReplaySubject<Coordinates>(1);
   passengerAddedToRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
   vehicleArrivedEvent:Subject<void> = new Subject<void>();
   rideNotAvailableEvent:Subject<void> = new Subject();
-  rideAcceptedEvent:Subject<RideInfo> = new Subject<RideInfo>();
+  rideAcceptedEvent:ReplaySubject<RideInfo> = new ReplaySubject<RideInfo>(1);
   rideRejectedEvent:Subject<RideInfo> = new Subject<RideInfo>();
-  startRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
+  startRideEvent:ReplaySubject<RideInfo> = new ReplaySubject<RideInfo>(1);
   endRideEvent:Subject<RideInfo> = new Subject<RideInfo>();
 
 
