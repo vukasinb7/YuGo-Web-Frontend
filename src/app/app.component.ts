@@ -183,6 +183,9 @@ export class AppComponent implements OnInit, OnDestroy{
     const message:{userId:number,message:string} = JSON.parse(frame.body);
     this.passengerLiveChat?.addMessage(message.message,"self")
 
+    if (this.passengerLiveChat != undefined){
+      this.passengerLiveChat.buttonColor="#FF0000";
+    }
   }
 
   notifyPassengerAboutRide(frameRide:Frame){

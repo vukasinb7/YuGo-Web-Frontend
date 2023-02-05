@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Inject} from '@angular/core';
 import {
   AbstractControl,
-  AsyncValidatorFn, Form,
+  AsyncValidatorFn,
   FormControl,
   FormGroup,
   ValidationErrors,

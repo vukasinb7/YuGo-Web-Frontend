@@ -162,7 +162,7 @@ export class PassengerMapComponent implements AfterViewInit, OnInit, OnDestroy{
               this.path = L.Routing.control({
                 addWaypoints:false,
                 autoRoute:true,
-                waypoints: [L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination!.latitude, this.destination!.longitude)],
+                waypoints: [L.latLng(coordinates.latitude, coordinates.longitude), L.latLng(this.destination.latitude, this.destination.longitude)],
               }).addTo(this.map).on('routesfound', e => {
                 const routes:any = e.routes;
                 const summary = routes[0].summary;

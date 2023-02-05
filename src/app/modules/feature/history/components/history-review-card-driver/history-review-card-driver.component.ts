@@ -6,7 +6,7 @@ import {ReviewPerPassengerInfo} from "../../models/ReviewPerPassengerInfo";
 import {ReviewInfoOut} from "../../models/ReviewInfoOut";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {RideDataInfo} from "../history-review-card-passenger/history-review-card-passenger.component";
 
 @Component({

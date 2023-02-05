@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {VehicleService} from "../../../shared/services/vehicle.service";
-import {BehaviorSubject, Observable, take} from "rxjs";
+import {BehaviorSubject, take} from "rxjs";
 import {VehicleChangeRequest} from "../model/VehicleChangeRequest";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";

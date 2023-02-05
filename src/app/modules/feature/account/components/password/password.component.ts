@@ -91,17 +91,6 @@ export class PasswordComponent{
       next: () => {
         this.cancelEdit();
         this._snackBar.open("Password successfully changed!", "OK");
-        if (this.userId == this._authService.getId()){
-          this._authService.logOut().subscribe({
-            next: () => {
-              localStorage.clear()
-              this._authService.setUser();
-              this._router.navigate(['/']).then(() => {
-                window.location.reload();
-              });
-            }
-          });
-        }
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {

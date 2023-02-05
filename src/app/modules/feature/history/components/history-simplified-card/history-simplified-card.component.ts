@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {MatTableDataSource} from "@angular/material/table";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {HttpErrorResponse} from "@angular/common/http";
 import {HistoryDetailedDialogComponent} from "../history-detailed-dialog/history-detailed-dialog.component";

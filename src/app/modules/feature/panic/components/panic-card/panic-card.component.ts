@@ -22,10 +22,10 @@ export class PanicCardComponent {
   openRidePreview(){
     const ridePreview = this._dialog.open(HistoryDetailedRideCardComponent, {
       minWidth: '300px',
-      maxWidth: '500px',
+      maxWidth: '550px',
       minHeight: '650px',
       width: '30%',
-      height: '50%',
+      height: '80%',
     })
     const ridePreviewDialogInstance = ridePreview.componentInstance;
     ridePreviewDialogInstance.ride = this.panic.ride;

@@ -21,6 +21,7 @@ export class InridePanelComponent implements OnInit{
   destinationAddress = "Bulevar oslobodjenja 30"
   rideEstTime = "1hr 15min"
   rideLength = "55km"
+  toolTipInfo = ""
   image:any;
 
   @Input() currentRide?:RideInfo;
@@ -86,11 +87,13 @@ export class InridePanelComponent implements OnInit{
         const passengerBase:UserSimpleInfo = this.currentRide.passengers[0];
         this.passengerService.getPassenger(passengerBase.id).subscribe(user => {
           this.setupImage(user.profilePicture);
+          this.toolTipInfo = user.name + " " + user.surname + "\n" + user.email + "\n" + user.telephoneNumber;
         });
       }else if(this.userType == "PASSENGER"){
         const driverBase:UserSimpleInfo = this.currentRide.driver;
         this.driverService.getDriver(driverBase.id).subscribe(user => {
           this.setupImage(user.profilePicture);
+          this.toolTipInfo = user.name + " " + user.surname + "\n" + user.email + "\n" + user.telephoneNumber;
         });
       }
 

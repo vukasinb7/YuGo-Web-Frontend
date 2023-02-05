@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {FavoritePathInfo} from "../../models/FavoritePathInfo";
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
