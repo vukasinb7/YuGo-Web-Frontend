@@ -66,6 +66,34 @@ export class AppComponent implements OnInit, OnDestroy{
       this.subscribeToSocket();
     });
   }
+  private checkIfPassengerIsInRide(passengerID:number){
+    this.rideService.getActivePassengerRide(passengerID).subscribe(ride => {
+      this.stompClient.subscribe("/ride-topic/notify-passenger-start-ride/" + this.userID, () => {
+        this.stompClient.subscribe("/ride-topic/notify-passenger-vehicle-location/" + this.userID, (frameLocation:Frame) => {
+          const coordinates:Coordinates = JSON.parse(frameLocation.body);
+          this.passengerRideService.driverLocationUpdatedEvent.next(coordinates);
+        }, {id:"notify-passenger-vehicle-location"});
+        this.rideService.currentRide = ride;
+        this.passengerRideService.startRideEvent.next(ride);
+        this.stompClient.unsubscribe("notify-passenger-start-ride");
+        this.stompClient.subscribe("/ride-topic/notify-passenger-end-ride/" + this.userID, () => {
+          this.dialog.open(HistoryReviewCardPassengerComponent,{
+            data: {ride:ride, userId:this.authService.getId(), role:this.role},
+            width: '60%',
+            maxWidth: '600px',
+            backdropClass: 'backdropBackground',
+            hasBackdrop:true
+          })
+          this.passengerRideService.endRideEvent.next(ride);
+          this.rideService.currentRide = undefined;
+          this.stompClient.unsubscribe("notify-passenger-end-ride");
+          this.stompClient.unsubscribe("notify-passenger-vehicle-location");
+          this.stompClient.unsubscribe("notify-passenger-vehicle-arrival");
+          this.stompClient.unsubscribe("notify-passenger-vehicle-arrival");
+        }, {id:"notify-passenger-end-ride"});
+      }, {id:"notify-passenger-start-ride"});
+    });
+  }
   private subscribeToSocket(){
     if(this.isLoaded){
       if(this.role == "DRIVER"){
@@ -81,6 +109,7 @@ export class AppComponent implements OnInit, OnDestroy{
         }, {id:"user-live-chat"});
       }
       else if(this.role == "PASSENGER"){
+        this.checkIfPassengerIsInRide(this.authService.getId());
         this.stompClient.subscribe("/ride-topic/notify-passenger/" + this.userID, (frame:Frame) => {
           this.notifyPassengerAboutRide(frame);
         },{id:"notify-passenger"});
