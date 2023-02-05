@@ -92,7 +92,7 @@ export class HistoryDetailedRideCardComponent implements OnInit{
     return this._sanitizer.sanitize(SecurityContext.HTML,this._sanitizer.bypassSecurityTrustHtml(profilePic));
 
   }
-  onProfilePictureError(event : any) {
+  onProfilePictureError(event : any){
     event.target.src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
   }
   cleanUpLocation(location:string): string{

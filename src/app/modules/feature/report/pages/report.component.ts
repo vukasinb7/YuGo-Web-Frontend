@@ -16,7 +16,7 @@ export class ReportComponent implements OnInit{
   basicData:any;
   basicOptions:any
   horizontalOptions:any;
-  reportInfoForm: any;
+  reportInfoForm: FormGroup;
   public userId = -1;
   public role = "";
   selected="rides";

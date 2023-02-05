@@ -33,12 +33,12 @@ export class AdminMapComponent implements AfterViewInit, OnDestroy{
   updateVehicles(){
     this._vehicleService.getAllVehicles().subscribe({
       next: (vehicles) => {
-        if (this.counter%30 == 0 ){
+        if (this.counter%10 == 0 ){
           this.vehiclesMarkersLayout.clearLayers();
         }
 
         vehicles.forEach((vehicle) => {
-          if (this.counter%30 == 0){
+          if (this.counter%10 == 0){
             this.recreateMarker(vehicle);
           }
           else{

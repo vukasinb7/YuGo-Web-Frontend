@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {MatTableDataSource} from "@angular/material/table";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {HttpErrorResponse} from "@angular/common/http";
 import {HistoryDetailedDialogComponent} from "../history-detailed-dialog/history-detailed-dialog.component";
@@ -40,7 +40,7 @@ export class HistorySimplifiedCardComponent implements OnInit, AfterViewInit{
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-  obs: Observable<any>;
+  obs:  BehaviorSubject<RideInfo[]>;
   @Output()
   dateChange: EventEmitter<MatDatepickerInputEvent<any>> = new EventEmitter();
 

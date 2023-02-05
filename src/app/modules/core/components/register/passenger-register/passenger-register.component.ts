@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Inject} from '@angular/core';
 import {
   AbstractControl,
-  AsyncValidatorFn,
+  AsyncValidatorFn, Form,
   FormControl,
   FormGroup,
   ValidationErrors,
@@ -25,24 +25,25 @@ export class PassengerRegisterComponent implements AfterViewInit{
   constructor(private _snackBar: MatSnackBar, private registrationService:RegistrationService,
               private dialogRef:MatDialogRef<PassengerRegisterComponent>, private router: Router,
               @Inject(MAT_DIALOG_DATA) public unregistered: boolean) {
+    this.registrationForm=new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, this.passwordValidator()]),
+      confirmPassword: new FormControl('', [Validators.required],[this.confirmPasswordValidator()]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      address: new FormControl('', [Validators.required]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(this.TEL_REGEX)])
+    });
   }
   ngAfterViewInit(): void {
-    this.registrationForm.controls.password.valueChanges.subscribe(()=>{
-      this.registrationForm.controls.confirmPassword.updateValueAndValidity();
+    this.registrationForm.controls['password'].valueChanges.subscribe(()=>{
+      this.registrationForm.controls['confirmPassword'].updateValueAndValidity();
     });
   }
   TEL_REGEX = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]{0,10}$";
   errorMessage = '';
   isFinished = false;
-  registrationForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, this.passwordValidator()]),
-    confirmPassword: new FormControl('', [Validators.required],[this.confirmPasswordValidator()]),
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    address: new FormControl('', [Validators.required]),
-    phoneNumber: new FormControl('', [Validators.required, Validators.pattern(this.TEL_REGEX)])
-  });
+  registrationForm:FormGroup;
 
   private passwordValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -62,7 +63,7 @@ export class PassengerRegisterComponent implements AfterViewInit{
   private confirmPasswordValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return of((() => {
-        const passwordField = this.registrationForm.controls.password;
+        const passwordField = this.registrationForm.controls['password'];
         if(passwordField?.valid){
           if(passwordField.value != control.value){
             return {passwordsNotMatching:{value:control.value}};
@@ -73,13 +74,14 @@ export class PassengerRegisterComponent implements AfterViewInit{
     };
   }
   onSubmit(){
+    if (this.registrationForm.valid){
     const user:UserRegistration = {
-      name:this.registrationForm.controls.firstName.value!,
-      surname:this.registrationForm.controls.lastName.value!,
-      address:this.registrationForm.controls.address.value!,
-      telephoneNumber:this.registrationForm.controls.phoneNumber.value!,
-      password:this.registrationForm.controls.password.value!,
-      email:this.registrationForm.controls.email.value!
+      name:this.registrationForm.controls['firstName'].value,
+      surname:this.registrationForm.controls['lastName'].value,
+      address:this.registrationForm.controls['address'].value,
+      telephoneNumber:this.registrationForm.controls['phoneNumber'].value,
+      password:this.registrationForm.controls['password'].value,
+      email:this.registrationForm.controls['email'].value
     };
     this.registrationService.registerPassenger(user).subscribe({
       next:()=>{
@@ -98,6 +100,7 @@ export class PassengerRegisterComponent implements AfterViewInit{
         }
       }
     });
+    }
   }
 
   navigateToLogin() {

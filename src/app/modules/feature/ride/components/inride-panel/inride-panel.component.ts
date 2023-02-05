@@ -45,7 +45,7 @@ export class InridePanelComponent implements OnInit{
       if(res != undefined){
         if(this.rideService.currentRide!=null) {
           const rideID: number = this.rideService.currentRide.id;
-          this.rideService.createPanic(rideID, res.message).subscribe();
+          this.rideService.createPanic(rideID, {"reason":res.message}).subscribe();
           this.panicEnabled = false;
         }
       }

@@ -6,7 +6,7 @@ import {ReviewPerPassengerInfo} from "../../models/ReviewPerPassengerInfo";
 import {ReviewInfoOut} from "../../models/ReviewInfoOut";
 import {PassengerService} from "../../../../shared/services/passenger.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {RideDataInfo} from "../history-review-card-passenger/history-review-card-passenger.component";
 
 @Component({
@@ -20,7 +20,7 @@ export class HistoryReviewCardDriverComponent implements OnInit{
   reviewOut:ReviewOut[]=[];
   rideReviewList:ReviewPerPassengerInfo[]=[];
   dataSource= new MatTableDataSource<ReviewOut>();
-  obs: Observable<any>;
+  obs:  BehaviorSubject<ReviewOut[]>;
   showReviewError=false;
   passengerName="";
   public ride : RideInfo;
@@ -70,19 +70,6 @@ export class HistoryReviewCardDriverComponent implements OnInit{
         }})
   }
 
-  getPassengerCredentials(id: number){
-     // this.passengerService.getPassenger(id).subscribe(
-     //  {next:(passenger) => {
-     //      this.passengerName= passenger.name+" "+ passenger.surname;
-     //    },
-     //   error: (error) => {
-     //  if (error instanceof HttpErrorResponse) {
-     //  }}})
-    if (id==1)
-      this.passengerName="PRVI";
-    else
-      this.passengerName="DRUGI";
-  }
   getTypeString(typeOfReview:string):string{
     if (typeOfReview=="VEHICLE")
       return "Vehicle Review";

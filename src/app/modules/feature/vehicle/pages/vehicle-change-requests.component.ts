@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {VehicleService} from "../../../shared/services/vehicle.service";
-import {Observable, take} from "rxjs";
+import {BehaviorSubject, Observable, take} from "rxjs";
 import {VehicleChangeRequest} from "../model/VehicleChangeRequest";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
@@ -18,7 +18,7 @@ export class VehicleChangeRequestsComponent implements OnInit, AfterViewInit{
   pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-  dataSourceObservable: Observable<any>;
+  dataSourceObservable: BehaviorSubject<VehicleChangeRequest[]>;
   constructor(private _vehicleService: VehicleService, private _snackBar : MatSnackBar) {
     this.dataSourceObservable = this.dataSource.connect();
   }

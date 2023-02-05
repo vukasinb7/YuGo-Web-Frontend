@@ -4,7 +4,6 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
 import {RideInfo} from "../../../../shared/models/RideInfo";
 import {CreateFavoriteRideDTO} from "../../../../shared/models/CreateFavoriteRideDTO";
-import {RideComponent} from "../../../ride/pages/ride.component";
 
 @Component({
   selector: 'app-favorite-path-input',

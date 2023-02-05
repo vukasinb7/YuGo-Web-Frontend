@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {FavoritePathInfo} from "../../models/FavoritePathInfo";
 import {FavoritePathService} from "../../../../shared/services/favorite.path.service";
@@ -15,7 +15,7 @@ import {FavoriteRouteLoadingService} from "../../../ride/services/favorite-route
 })
 export class FavoritePathCardComponent implements OnInit{
 
-  obs: Observable<any>;
+  obs: BehaviorSubject<FavoritePathInfo[]>;
   dataSource= new MatTableDataSource<FavoritePathInfo>();
   constructor(private favoritePathService:FavoritePathService, public dialog: MatDialog,private router: Router,private favoriteRouteLoadingService:FavoriteRouteLoadingService) {
     this.obs = this.dataSource.connect();

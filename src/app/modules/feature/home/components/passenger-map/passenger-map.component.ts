@@ -54,12 +54,12 @@ export class PassengerMapComponent implements AfterViewInit,OnInit{
   updateVehicles(){
     this._vehicleService.getAllVehicles().subscribe({
       next: (vehicles) => {
-        if (this.counter%20 == 0 ){
+        if (this.counter%10 == 0 ){
           this.vehiclesMarkersLayout.clearLayers();
         }
 
         vehicles.forEach((vehicle) => {
-          if (this.counter%20 == 0){
+          if (this.counter%10 == 0){
             this.recreateMarker(vehicle);
           }
           else if (this.vehiclesMarkersMap.get(vehicle.id)){
