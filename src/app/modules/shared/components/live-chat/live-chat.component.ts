@@ -27,6 +27,7 @@ export class LiveChatComponent implements OnInit{
   bottom=0;
   right=0;
   buttonColor="#fad02c";
+
   tooltipText="";
 
 
